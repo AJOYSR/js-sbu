@@ -1,69 +1,92 @@
-# Welcome to your Lovable project
+<p align="center">
+  <a href="https://funkyton.com/payload-cms/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png">
+      <img alt="Payload CMS logo" src="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png" width=100>
+    </picture>
+  </a>
+  <a href="https://railway.app/template/L8TUlT?referralCode=-Yg50p">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://railway.app/brand/logo-light.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://railway.app/brand/logo-dark.svg">
+      <img alt="Railway logo" src="https://railway.app/brand/logo-light.svg" width=100>
+    </picture>
+  </a>
+</p>
 
-## Project info
+<h2 align="center">
+  Payload CMS V3 Website Template<br>
+  <a href="https://railway.app/template/L8TUlT?referralCode=-Yg50p">One-click deploy on Railway!</a>
+</h2>
 
-**URL**: https://lovable.dev/projects/038b49e4-a40e-4731-8f09-d46dd5a6f578
+<h1 align="center">
+  Need help?<br>
+  <a href="https://funkyton.com/payload-cms/">Step by step guide and instructions</a>
+</h1>
 
-## How can I edit this code?
+<p align="center">
+  A powerful, flexible, and production-ready Payload CMS V3 website builder with PostgreSQL database.
+</p>
 
-There are several ways of editing your application.
+<p align="center">
+  <a href="https://github.com/payloadcms/payload/blob/main/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+  <a href="https://discord.gg/payload">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+</p>
 
-**Use Lovable**
+## About this boilerplate
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/038b49e4-a40e-4731-8f09-d46dd5a6f578) and start prompting.
+This boilerplate is a pre-configured, ready-to-deploy solution for Payload CMS as a website builder. It includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website. This template is optimized for seamless deployment on [Railway](https://railway.app?referralCode=-Yg50p), and uses PostgreSQL for both local development and production environments.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Preconfigured Features & Integrations
 
-**Use your preferred IDE**
+- **Authentication**: Robust user authentication system
+- **Access Control**: Role-based access control for admins and users
+- **Premium Content**: Gated content for authenticated users
+- **Comments**: User commenting system with admin approval
+- **Layout Builder**: Flexible content creation with pre-configured blocks
+- **Draft Preview**: Preview unpublished content before going live
+- **SEO**: Built-in SEO optimization tools
+- **Redirects**: Easy management of URL redirects
+- **PostgreSQL Support**: Configured for both local and production use
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Railway Setup
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Use one-click deploy template:
 
-Follow these steps:
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/L8TUlT?referralCode=-Yg50p)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Local Setup
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. Clone proejct: (recommeded) Laucnh on Railway and ejct [watch how](https://www.youtube.com/watch?v=LJFek8JP8TE). Alternatively clone this repo or fork it.
+2. Copy `.env.example` to `.env` (fill in your own values..)
+3. Install dependencies: `pnpm install` or `npm install`
+4. Run development mode: `pnpm dev` or `npm run dev`
+or
+5. Build the project: `pnpm build` or `npm run build`
+6. Start the server: `pnpm start` or `npm run start`
 
-# Step 3: Install the necessary dependencies.
-npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Requirements
 
-**Edit a file directly in GitHub**
+- **Database**: PostgreSQL
+- **Node.js**: Compatible version as specified in `package.json`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Useful Resources
 
-**Use GitHub Codespaces**
+- **Blog post about this template**: [Read here](https://funkyton.com/payload-cms/)
+- **Official Payload Documentation**: [Read here](https://payloadcms.com/docs)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/038b49e4-a40e-4731-8f09-d46dd5a6f578) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+<p align="center">
+  <a href="https://funkyton.com/">
+    A template by,
+    <br><br>
+    <picture>
+      <img alt="FUNKYTON logo" src="https://res-5.cloudinary.com/hczpmiapo/image/upload/q_auto/v1/ghost-blog-images/funkyton-logo.png" width=200>
+    </picture>
+  </a>
+</p>
