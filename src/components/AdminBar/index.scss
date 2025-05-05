@@ -1,7 +1,39 @@
+
 @import '~@payloadcms/ui/scss';
 
 .admin-bar {
   @include small-break {
     display: none;
+  }
+  
+  a, button {
+    transition: all 0.2s ease;
+    border-radius: 0.5rem;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  .admin-bar__controls {
+    gap: 0.5rem;
+  }
+  
+  .admin-bar__logo {
+    opacity: 0.9;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// Add styling for dark mode
+[data-theme='dark'] .admin-bar {
+  a, button {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
   }
 }

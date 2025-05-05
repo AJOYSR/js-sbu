@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -22,6 +23,14 @@ export default {
     'bg-success/30',
     'border-warning',
     'bg-warning/30',
+    'animate-fadeIn',
+    'animation-delay-200',
+    'animation-delay-400',
+    'hover-scale',
+    'card-hover',
+    'soft-shadow',
+    'glass-card',
+    'btn-gradient',
   ],
   theme: {
     container: {
@@ -46,6 +55,9 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'slide-in': 'slideIn 0.3s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -103,6 +115,18 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'fadeIn': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'slideIn': {
+          '0%': { transform: 'translateX(-20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        'scaleIn': {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
       },
       typography: ({ theme }) => ({
         DEFAULT: {
@@ -111,12 +135,34 @@ export default {
             '--tw-prose-headings': 'var(--text)',
             h1: {
               fontSize: '3.5rem',
-              fontWeight: 'normal',
+              fontWeight: '600',
               marginBottom: '0.25em',
+              letterSpacing: '-0.025em',
+            },
+            h2: {
+              fontSize: '2.25rem',
+              fontWeight: '600',
+              letterSpacing: '-0.025em',
+            },
+            h3: {
+              fontSize: '1.5rem',
+              fontWeight: '600',
+            },
+            a: {
+              color: 'hsl(var(--primary))',
+              '&:hover': {
+                color: 'hsl(var(--primary))',
+                opacity: 0.8,
+              },
             },
           },
         },
       }),
+      boxShadow: {
+        'soft-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02)',
+        'soft-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
+        'soft-md': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
+      },
     },
   },
 }

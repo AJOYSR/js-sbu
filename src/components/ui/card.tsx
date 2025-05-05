@@ -1,3 +1,4 @@
+
 /* eslint-disable jsx-a11y/heading-has-content */
 import { cn } from 'src/utilities/cn'
 import * as React from 'react'
@@ -5,7 +6,7 @@ import * as React from 'react'
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
-      className={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)}
+      className={cn('rounded-xl border bg-card text-card-foreground shadow-sm card-hover', className)}
       ref={ref}
       {...props}
     />
