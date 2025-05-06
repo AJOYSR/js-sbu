@@ -167,6 +167,20 @@ html[data-theme='light'] {
   }
 }
 
+/* React logo spinning animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
 /* Enhanced button gradient for more pop */
 .btn-gradient {
   background: linear-gradient(135deg, hsl(328, 100%, 54%) 0%, hsl(310, 95%, 65%) 100%);
@@ -296,4 +310,18 @@ html[data-theme='light'] {
 
 .bounce-hover:hover {
   transform: translateY(-8px);
+}
+
+/* Slow zoom animation for hero slider */
+@keyframes slowZoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1.15);
+  }
+}
+
+.animate-slowZoom {
+  animation: slowZoom 10s ease-out forwards;
 }

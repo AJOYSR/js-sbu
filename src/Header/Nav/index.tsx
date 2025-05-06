@@ -5,6 +5,7 @@ import type { Header as HeaderType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
 import { SearchIcon, ChevronDown } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 // Define dropdown menu items
 const aboutDropdown = [
@@ -40,24 +41,66 @@ const Dropdown: React.FC<{
   isOpen: boolean
   onHover: () => void
   onLeave: () => void
-}> = ({ items, label, isOpen, onHover, onLeave }) => {
+  isMobile?: boolean
+}> = ({ items, label, isOpen, onHover, onLeave, isMobile = false }) => {
+  const pathname = usePathname()
+
+  if (isMobile) {
+    return (
+      <div className="py-2">
+        <div
+          className="font-medium text-foreground mb-2 flex items-center justify-between"
+          onClick={onHover}
+        >
+          {label}
+          <ChevronDown
+            className={`w-4 h-4 text-primary transition-transform duration-200 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
+        </div>
+        {isOpen && (
+          <div className="pl-4 space-y-2 border-l-2 border-primary/20">
+            {items.map((item, index) => (
+              <Link
+                key={index}
+                href={item.href || '#'}
+                className={`block py-1 text-sm transition-colors duration-150 ${
+                  pathname === item.href
+                    ? 'text-primary font-medium'
+                    : 'text-foreground/80 hover:text-primary'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="relative" onMouseEnter={onHover} onMouseLeave={onLeave}>
-      <button className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:text-primary transition-colors">
+      <button className="flex items-center gap-1 px-3 py-2 text-foreground hover:text-primary transition-colors">
         {label}
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
       <div
-        className={`absolute left-0 mt-1 w-56 glass-card rounded-md shadow-lg py-1 z-50 transition-all duration-200 origin-top
+        className={`absolute left-0 mt-1 w-56 glass-card rounded-xl shadow-lg py-2 z-50 transition-all duration-200 origin-top
           ${isOpen ? 'opacity-100 scale-100 neon-glow' : 'opacity-0 scale-95 pointer-events-none'}`}
       >
         {items.map((item, index) => (
           <Link
             key={index}
-            href={item.href}
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors duration-150"
+            href={item.href || '#'}
+            className={`block px-4 py-2 text-sm transition-colors duration-150 ${
+              pathname === item.href
+                ? 'text-primary font-medium bg-primary/5'
+                : 'text-foreground/80 hover:bg-primary/10 hover:text-primary'
+            }`}
           >
             {item.label}
           </Link>
@@ -70,6 +113,8 @@ const Dropdown: React.FC<{
 export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null)
+  const pathname = usePathname()
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
 
   const handleDropdownHover = (label: string) => {
     if (closeTimeout) {
@@ -85,6 +130,10 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
     setCloseTimeout(timeout)
   }
 
+  const handleDropdownToggle = (label: string) => {
+    setOpenDropdown(openDropdown === label ? null : label)
+  }
+
   useEffect(() => {
     return () => {
       if (closeTimeout) {
@@ -93,59 +142,106 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
     }
   }, [closeTimeout])
 
+  const navItems = [
+    { label: 'Home', href: '/' as string },
+    {
+      label: 'About',
+      dropdown: aboutDropdown,
+    },
+    {
+      label: 'Services',
+      dropdown: servicesDropdown,
+    },
+    {
+      label: 'Skills',
+      dropdown: skillsDropdown,
+    },
+    { label: 'Portfolio', href: '/portfolio' as string },
+    {
+      label: 'Insights',
+      dropdown: insightsDropdown,
+    },
+    { label: 'Contact', href: '/contact' as string },
+  ]
+
+  // Mobile navigation
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    return (
+      <nav className="flex flex-col space-y-2">
+        {navItems.map((item) => {
+          if ('href' in item) {
+            return (
+              <Link
+                key={item.label}
+                href={item.href || '#'}
+                className={`block py-2 transition-colors ${
+                  pathname === item.href
+                    ? 'text-primary font-medium'
+                    : 'text-foreground/80 hover:text-primary'
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          } else {
+            return (
+              <Dropdown
+                key={item.label}
+                label={item.label}
+                items={item.dropdown}
+                isOpen={openDropdown === item.label}
+                onHover={() => handleDropdownToggle(item.label)}
+                onLeave={() => {}}
+                isMobile={true}
+              />
+            )
+          }
+        })}
+        <Link href="/search" className="flex items-center gap-2 py-2 text-primary">
+          <SearchIcon className="w-4 h-4" />
+          <span>Search</span>
+        </Link>
+      </nav>
+    )
+  }
+
+  // Desktop navigation
   return (
-    <nav className="flex gap-6 items-center">
-      <Link href="/" className="px-3 py-2 text-gray-700 hover:text-primary transition-colors">
-        Home
-      </Link>
-
-      <Dropdown
-        label="About"
-        items={aboutDropdown}
-        isOpen={openDropdown === 'About'}
-        onHover={() => handleDropdownHover('About')}
-        onLeave={handleDropdownLeave}
-      />
-      <Dropdown
-        label="Services"
-        items={servicesDropdown}
-        isOpen={openDropdown === 'Services'}
-        onHover={() => handleDropdownHover('Services')}
-        onLeave={handleDropdownLeave}
-      />
-      <Dropdown
-        label="Skills"
-        items={skillsDropdown}
-        isOpen={openDropdown === 'Skills'}
-        onHover={() => handleDropdownHover('Skills')}
-        onLeave={handleDropdownLeave}
-      />
-
+    <nav className="flex items-center">
+      {navItems.map((item) => {
+        if ('href' in item) {
+          return (
+            <Link
+              key={item.label}
+              href={item.href || '#'}
+              className={`px-3 py-2 transition-colors ${
+                pathname === item.href
+                  ? 'text-primary font-medium'
+                  : 'text-foreground/80 hover:text-primary'
+              }`}
+            >
+              {item.label}
+            </Link>
+          )
+        } else {
+          return (
+            <Dropdown
+              key={item.label}
+              label={item.label}
+              items={item.dropdown}
+              isOpen={openDropdown === item.label}
+              onHover={() => handleDropdownHover(item.label)}
+              onLeave={handleDropdownLeave}
+            />
+          )
+        }
+      })}
       <Link
-        href="/portfolio"
-        className="px-3 py-2 text-gray-700 hover:text-primary transition-colors"
+        href="/search"
+        className="ml-2 p-2 text-primary rounded-full hover:bg-primary/10 transition-colors hover:scale-110"
+        aria-label="Search"
       >
-        Portfolio
-      </Link>
-
-      <Dropdown
-        label="Insights"
-        items={insightsDropdown}
-        isOpen={openDropdown === 'Insights'}
-        onHover={() => handleDropdownHover('Insights')}
-        onLeave={handleDropdownLeave}
-      />
-
-      <Link
-        href="/contact"
-        className="px-3 py-2 text-gray-700 hover:text-primary transition-colors"
-      >
-        Contact
-      </Link>
-
-      <Link href="/search" className="ml-2 hover:scale-110 transition-transform">
-        <span className="sr-only">Search</span>
-        <SearchIcon className="w-5 text-primary" />
+        <SearchIcon className="w-5 h-5" />
       </Link>
     </nav>
   )

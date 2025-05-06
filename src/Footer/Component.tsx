@@ -2,6 +2,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
 import { Linkedin, Github, Mail, Twitter, Instagram, ArrowRight } from 'lucide-react'
+import { useTheme } from '@/providers/Theme'
 
 import type { Footer } from '@/payload-types'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
@@ -16,11 +17,16 @@ export async function Footer() {
   const quickLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
+    { name: 'Services', href: '/services/web-app' },
     { name: 'Portfolio', href: '/portfolio' },
   ]
 
-  const popularServices = ['Web Application', 'Mobile App Development']
+  const popularServices = [
+    'Web Application',
+    'Mobile App Development',
+    'UI/UX & Product Design',
+    'Machine Learning & AI',
+  ]
 
   const techStacks = {
     backend: ['Node.js', 'NestJS', 'Express.js'],
@@ -31,10 +37,11 @@ export async function Footer() {
   }
 
   return (
-    <footer className="bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 text-white relative overflow-hidden">
+    <footer className="bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 text-gray-800 dark:text-white relative overflow-hidden">
       {/* Decorative floating orbs */}
       <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+      <div className="absolute top-60 right-40 w-40 h-40 rounded-full bg-primary/5 blur-2xl pointer-events-none animate-pulse"></div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Top Section with Gradient Line */}
@@ -54,7 +61,7 @@ export async function Footer() {
                   <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
                   <Link
                     href={link.href}
-                    className="hover:text-primary transition-colors duration-300 text-gray-300"
+                    className="hover:text-primary transition-colors duration-300 text-gray-600 dark:text-gray-300"
                   >
                     {link.name}
                   </Link>
@@ -72,7 +79,7 @@ export async function Footer() {
               {popularServices.map((service) => (
                 <li key={service} className="group flex items-center">
                   <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
-                  <span className="text-gray-300 hover:text-primary transition-colors duration-300 cursor-pointer">
+                  <span className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-300 cursor-pointer">
                     {service}
                   </span>
                 </li>
@@ -89,7 +96,9 @@ export async function Footer() {
               {Object.entries(techStacks).map(([category, technologies]) => (
                 <div key={category} className="bounce-hover">
                   <h4 className="font-medium text-primary capitalize mb-1">{category}:</h4>
-                  <p className="text-sm text-gray-300">{technologies.join(', ')}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {technologies.join(', ')}
+                  </p>
                 </div>
               ))}
             </div>
@@ -105,7 +114,7 @@ export async function Footer() {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Linkedin size={24} />
                 <span className="sr-only">LinkedIn</span>
@@ -114,7 +123,7 @@ export async function Footer() {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Github size={24} />
                 <span className="sr-only">GitHub</span>
@@ -123,7 +132,7 @@ export async function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Twitter size={24} />
                 <span className="sr-only">Twitter</span>
@@ -132,22 +141,22 @@ export async function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Instagram size={24} />
                 <span className="sr-only">Instagram</span>
               </a>
             </div>
 
-            <div className="gradient-border p-4 bg-gray-800/50">
+            <div className="gradient-border p-4 bg-gray-200/50 dark:bg-gray-800/50 shadow-sm dark:shadow-none">
               <h4 className="text-lg font-semibold mb-3 text-primary">Newsletter</h4>
               <form className="space-y-3">
                 <div className="relative">
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 
-                             focus:outline-none focus:border-primary text-gray-300 pr-10"
+                    className="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                             focus:outline-none focus:border-primary text-gray-800 dark:text-gray-300 pr-10"
                   />
                   <Mail className="absolute right-3 top-2.5 text-gray-400" size={20} />
                 </div>
@@ -158,8 +167,8 @@ export async function Footer() {
             </div>
           </div>
         </div>
-
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        {/* 
+        <div className="border-t border-gray-300 dark:border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <Link
               href="/"
@@ -173,17 +182,17 @@ export async function Footer() {
             <nav className="flex space-x-4">
               {navItems.map(({ link }, i) => (
                 <CMSLink
-                  className="text-gray-300 hover:text-primary transition-colors duration-300"
+                  className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-300"
                   key={i}
                   {...link}
                 />
               ))}
             </nav>
           </div>
-        </div>
+        </div> */}
 
         {/* Enhanced Bottom Wave SVG with new color */}
-        <div className="relative mt-16 h-16 overflow-hidden">
+        {/* <div className="relative mt-16 h-16 overflow-hidden">
           <svg
             className="absolute bottom-0 w-full h-16"
             xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +204,7 @@ export async function Footer() {
               d="M0,160L48,170.7C96,181,192,203,288,181.3C384,160,480,96,576,74.7C672,53,768,75,864,96C960,117,1056,139,1152,133.3C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             ></path>
           </svg>
-        </div>
+        </div> */}
       </div>
     </footer>
   )

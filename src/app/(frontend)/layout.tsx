@@ -26,8 +26,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body>
+      <body className="flex flex-col min-h-screen bg-background text-foreground">
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -36,8 +37,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
           <LivePreviewListener />
 
+          {/* Decorative elements for visual interest */}
+          <div className="fixed top-0 left-0 w-full h-2 bg-gradient-to-r from-primary/20 via-primary to-primary/20 z-50"></div>
+          <div className="fixed -top-32 -left-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="fixed -bottom-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+
           <Header />
-          <main className="pt-24 min-h-[calc(100vh-4rem)]">{children}</main>
+          <main className="flex-grow pt-24 relative z-10 animate-fadeIn">{children}</main>
           <Footer />
         </Providers>
       </body>
@@ -47,7 +53,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
+  title: 'JS-SBU | Modern Web Solutions',
+  description: 'Building innovative digital solutions for tomorrow with cutting-edge technology',
+  openGraph: mergeOpenGraph({
+    title: "JS-SBU  | Building Tomorrow's Digital Solutions",
+    description: 'Expert web, mobile, and AI solutions for modern businesses',
+    images: [
+      {
+        url: '/og-image.jpg',
+      },
+    ],
+  }),
   twitter: {
     card: 'summary_large_image',
     creator: '@payloadcms',

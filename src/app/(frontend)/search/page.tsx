@@ -116,6 +116,6 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata({ searchParams }: { searchParams: { q?: string } }): Metadata {
   return {
-    title: searchParams.q ? `Search: ${searchParams.q} | Mergeway` : `Search | Mergeway`,
+    title: searchParams.q ? `Search: ${searchParams.q} | JS-SBU ` : `Search | JS-SBU `,
   }
 }
