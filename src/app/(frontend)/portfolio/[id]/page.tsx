@@ -1,5 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -50,28 +52,41 @@ export default async function ProjectPage({ params: paramsPromise }: Args) {
     typeof project.image === 'number' ? '' : project.image.url || '/placeholder-image.jpg'
 
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="relative h-96 mb-8">
-            <Image src={imageUrl} alt={project.title} fill className="object-cover rounded-lg" />
+          {/* Back Button */}
+          <Link
+            href="/portfolio"
+            className="inline-flex items-center text-primary hover:text-primary/80 mb-8 animation-delay-200 animate-fadeIn btn-pop hover-scale"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Portfolio
+          </Link>
+
+          <div className="glass-card rounded-xl shadow-md overflow-hidden mb-12 animation-delay-300 animate-fadeIn">
+            <div className="relative h-96">
+              <Image src={imageUrl} alt={project.title} fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <span className="btn-gradient px-4 py-2 rounded-full text-sm mb-4 inline-block">
+                  {project.category}
+                </span>
+                <h1 className="text-4xl font-bold">{project.title}</h1>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
-          <span className="inline-block bg-primary text-white px-4 py-2 rounded-full text-sm mb-6">
-            {project.category}
-          </span>
-
-          <div className="prose max-w-none mb-8">
-            <p className="text-xl text-gray-600 mb-6">{project.description}</p>
+          <div className="glass-card rounded-xl shadow-md p-8 mb-8 animation-delay-400 animate-fadeIn">
+            <p className="text-xl text-foreground mb-6">{project.description}</p>
 
             <div className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4">Technologies Used</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-gradient">Technologies Used</h2>
               <div className="flex flex-wrap gap-2">
                 {project.technologies?.map((tech) => (
                   <span
                     key={tech.tech}
-                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full"
+                    className="bg-primary/10 text-primary px-4 py-2 rounded-full"
                   >
                     {tech.tech}
                   </span>
@@ -80,22 +95,46 @@ export default async function ProjectPage({ params: paramsPromise }: Args) {
             </div>
 
             <div className="mb-8">
-              <h2 className="text-2xl font-semibold mb-4">Key Results</h2>
-              <ul className="space-y-2">
-                {project.results?.map((result) => (
-                  <li key={result.result} className="flex items-center text-gray-600">
-                    <span className="text-primary mr-2">•</span>
-                    {result.result}
+              <h2 className="text-2xl font-semibold mb-4 text-gradient">Key Results</h2>
+              <ul className="space-y-3">
+                {project.results?.map((result, index) => (
+                  <li key={result.result} className="flex items-start ml-3">
+                    <div className="mr-4">
+                      <span className="text-primary font-bold">•</span>
+                    </div>
+                    <span className="text-foreground">{result.result}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">Project Details</h2>
-              <div className="prose max-w-none">
+            <div className="mt-8 animation-delay-600 animate-fadeIn">
+              <h2 className="text-2xl font-semibold mb-4 text-gradient">Project Details</h2>
+              <div className="prose prose-neutral prose-p:text-left prose-headings:text-left prose-ul:text-left prose-ol:text-left prose-blockquote:text-left prose-blockquote:m-0 prose-blockquote:p-0 prose-blockquote:border-0 max-w-none text-foreground">
                 <RichText content={project.content} enableProse={false} />
               </div>
+            </div>
+          </div>
+          <div className="shiny-card glass-card rounded-xl p-8 shadow-md animation-delay-800 animate-fadeIn text-center">
+            <h2 className="text-2xl font-semibold mb-4 text-gradient">
+              Ready to Start Your Project?
+            </h2>
+            <p className="text-foreground mb-6">
+              Interested in seeing how we can deliver similar results for your business?
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/contact"
+                className="btn-gradient text-white px-6 py-3 rounded-lg shadow-md hover-scale btn-pop"
+              >
+                Get in Touch
+              </Link>
+              <Link
+                href="/portfolio"
+                className="glass-card px-6 py-3 rounded-lg shadow-md hover:bg-primary/10 btn-pop hover-scale"
+              >
+                View More Projects
+              </Link>
             </div>
           </div>
         </div>

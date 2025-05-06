@@ -43,21 +43,21 @@ const Dropdown: React.FC<{
 }> = ({ items, label, isOpen, onHover, onLeave }) => {
   return (
     <div className="relative" onMouseEnter={onHover} onMouseLeave={onLeave}>
-      <button className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:text-primary">
+      <button className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:text-primary transition-colors">
         {label}
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
       <div
-        className={`absolute left-0 mt-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 transition-all duration-200 origin-top
-          ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+        className={`absolute left-0 mt-1 w-56 glass-card rounded-md shadow-lg py-1 z-50 transition-all duration-200 origin-top
+          ${isOpen ? 'opacity-100 scale-100 neon-glow' : 'opacity-0 scale-95 pointer-events-none'}`}
       >
         {items.map((item, index) => (
           <Link
             key={index}
             href={item.href}
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors duration-150"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary transition-colors duration-150"
           >
             {item.label}
           </Link>
@@ -95,7 +95,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
 
   return (
     <nav className="flex gap-6 items-center">
-      <Link href="/" className="px-3 py-2 text-gray-700 hover:text-primary">
+      <Link href="/" className="px-3 py-2 text-gray-700 hover:text-primary transition-colors">
         Home
       </Link>
 
@@ -121,7 +121,10 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
         onLeave={handleDropdownLeave}
       />
 
-      <Link href="/portfolio" className="px-3 py-2 text-gray-700 hover:text-primary">
+      <Link
+        href="/portfolio"
+        className="px-3 py-2 text-gray-700 hover:text-primary transition-colors"
+      >
         Portfolio
       </Link>
 
@@ -133,11 +136,14 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
         onLeave={handleDropdownLeave}
       />
 
-      <Link href="/contact" className="px-3 py-2 text-gray-700 hover:text-primary">
+      <Link
+        href="/contact"
+        className="px-3 py-2 text-gray-700 hover:text-primary transition-colors"
+      >
         Contact
       </Link>
 
-      <Link href="/search" className="ml-2">
+      <Link href="/search" className="ml-2 hover:scale-110 transition-transform">
         <span className="sr-only">Search</span>
         <SearchIcon className="w-5 text-primary" />
       </Link>

@@ -85,26 +85,30 @@ export default async function MachineLearningPage() {
   const relatedPosts = await fetchRelatedPostsBySkill('Machine Learning', 2)
 
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h1 className="text-4xl font-bold mb-6">Machine Learning Implementation</h1>
-          <p className="text-xl text-gray-600">
+          <h1 className="text-4xl font-bold mb-6 text-gradient">Machine Learning Implementation</h1>
+          <p className="text-xl text-gray-600 animation-delay-200 animate-fadeIn">
             Transforming business operations with intelligent, data-driven solutions powered by
             state-of-the-art machine learning techniques
           </p>
         </div>
 
         {/* ML Technologies Section */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">ML Technologies</h2>
+        <div className="mb-20 animation-delay-400 animate-fadeIn">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">ML Technologies</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {mlTechnologies.map((tech) => (
-              <div key={tech.name} className="bg-white p-6 rounded-lg shadow-md">
-                <h4 className="text-xl font-semibold mb-3">{tech.name}</h4>
+            {mlTechnologies.map((tech, index) => (
+              <div
+                key={tech.name}
+                className="glass-card card-hover p-6 rounded-lg shadow-md"
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
+              >
+                <h4 className="text-xl font-semibold mb-3 text-primary">{tech.name}</h4>
                 <p className="text-gray-600 mb-4">{tech.description}</p>
-                <h5 className="font-semibold text-sm text-gray-800 mb-2">Key Applications:</h5>
+                <h5 className="font-semibold text-sm text-primary mb-2">Key Applications:</h5>
                 <ul className="space-y-2">
                   {tech.applications.map((application) => (
                     <li key={application} className="flex items-center text-sm text-gray-600">
@@ -119,18 +123,22 @@ export default async function MachineLearningPage() {
         </div>
 
         {/* ML Frameworks Section */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Frameworks & Tools</h2>
+        <div className="mb-20 animation-delay-600 animate-fadeIn">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Frameworks & Tools</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            {mlFrameworks.map((framework) => (
-              <div key={framework.title} className="bg-white p-8 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">{framework.title}</h3>
+            {mlFrameworks.map((framework, index) => (
+              <div
+                key={framework.title}
+                className="shiny-card gradient-border p-8 bg-card"
+                style={{ animationDelay: `${(index + 1) * 150}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-primary">{framework.title}</h3>
                 <p className="text-gray-600 mb-6">{framework.description}</p>
-                <h5 className="font-semibold text-sm text-gray-800 mb-2">Key Features:</h5>
+                <h5 className="font-semibold text-sm text-primary mb-2">Key Features:</h5>
                 <ul className="space-y-3">
                   {framework.features.map((feature) => (
                     <li key={feature} className="flex items-center">
-                      <span className="text-primary mr-2">✓</span>
+                      <span className="text-primary mr-2 font-bold">✓</span>
                       {feature}
                     </li>
                   ))}
@@ -144,15 +152,17 @@ export default async function MachineLearningPage() {
         <SkillRelatedPosts posts={relatedPosts} />
 
         {/* CTA Section */}
-        <div className="max-w-4xl mx-auto text-center bg-gradient-to-r from-primary/10 to-primary/5 p-12 rounded-lg">
-          <h2 className="text-3xl font-bold mb-6">Ready to Leverage Machine Learning?</h2>
+        <div className="max-w-4xl mx-auto text-center glass-card p-12 rounded-lg soft-shadow">
+          <h2 className="text-3xl font-bold mb-6 text-gradient">
+            Ready to Leverage Machine Learning?
+          </h2>
           <p className="text-lg text-gray-700 mb-8">
             Let&lsquo;s explore how machine learning can transform your business operations, enhance
             customer experiences, and drive innovation in your products.
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition"
+            className="btn-gradient btn-pop inline-block text-white px-8 py-3 rounded-lg hover-scale transition"
           >
             Discuss Your ML Project
           </Link>

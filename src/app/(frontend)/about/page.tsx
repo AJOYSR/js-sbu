@@ -3,12 +3,12 @@ import Link from 'next/link'
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16">
-          <h1 className="text-4xl font-bold mb-6">About JS-SBU</h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <h1 className="text-4xl font-bold mb-6 text-gradient">About JS-SBU</h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animation-delay-200 animate-fadeIn">
             The JavaScript Special Business Unit (JS-SBU) at Brain Station 23 PLC is a dedicated
             team of expert developers and engineers who specialize in delivering cutting-edge
             solutions using modern JavaScript technologies.
@@ -17,9 +17,9 @@ export default function AboutPage() {
 
         {/* Core Strengths */}
         <div className="grid md:grid-cols-2 gap-12 mb-16">
-          <div>
+          <div className="glass-card p-8 rounded-lg hover-scale animation-delay-200 animate-fadeIn">
             <h2 className="text-2xl font-bold mb-4">Our Expertise</h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               We excel in developing robust and scalable applications using the latest JavaScript
               technologies. Our team&apos;s expertise spans across:
             </p>
@@ -42,9 +42,9 @@ export default function AboutPage() {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="glass-card p-8 rounded-lg hover-scale animation-delay-400 animate-fadeIn">
             <h2 className="text-2xl font-bold mb-4">Our Approach</h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               We believe in delivering solutions that not only meet current needs but are also
               future-proof. Our approach combines:
             </p>
@@ -70,28 +70,31 @@ export default function AboutPage() {
         </div>
 
         {/* Team Overview */}
-        <div className="bg-gray-50 p-8 rounded-lg mb-16">
+        <div className="shiny-card bg-gray-50 dark:bg-gray-800/40 p-8 rounded-lg mb-16 soft-shadow animation-delay-400 animate-fadeIn">
           <h2 className="text-2xl font-bold mb-6">Our Team</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
             Our team consists of highly skilled developers, designers, and engineers who are
             passionate about creating innovative solutions. We continuously invest in learning and
             staying updated with the latest technologies and industry trends.
           </p>
-          <Link href="/team" className="text-primary hover:text-primary/80 font-semibold">
-            Meet Our Team →
+          <Link
+            href="/team"
+            className="text-primary hover:text-primary/80 font-semibold btn-pop inline-flex items-center"
+          >
+            Meet Our Team <span className="ml-1">→</span>
           </Link>
         </div>
 
         {/* Vision & Mission Preview */}
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="text-center bg-[rgba(255,105,180,0.2)] max-w-3xl mx-auto glass-card p-8 animation-delay-600 animate-fadeIn">
           <h2 className="text-2xl font-bold mb-6">Our Vision & Mission</h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 dark:text-gray-300 mb-8">
             We strive to be the leading JavaScript solutions provider, delivering innovative and
             impactful digital solutions that transform businesses and enhance user experiences.
           </p>
           <Link
             href="/vision-mission"
-            className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition"
+            className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition soft-shadow"
           >
             Learn More About Our Vision
           </Link>

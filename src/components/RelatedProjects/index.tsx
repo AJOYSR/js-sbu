@@ -2,43 +2,44 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Portfolio, Media } from '@/payload-types'
+
 const RelatedProjects = ({ projects }: { projects: Portfolio[] }) => {
-  console.log('🚀 ~ RelatedProjects ~ projects:', projects)
   return (
     <div>
       {projects.length > 0 && (
         <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">
-            Our Recent Web Application Projects
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project: Portfolio) => {
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project: Portfolio, index: number) => {
               const image = project.image as Media
               const imageUrl = image?.url || '/placeholder-image.jpg'
               return (
                 <Link
                   href={`/portfolio/${String(project.id)}`}
                   key={project.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+                  className="glass-card rounded-lg card-hover neon-glow overflow-hidden animate-fadeIn"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative h-48">
+                  <div className="relative h-44">
                     <Image
                       src={imageUrl}
                       alt={project.title || 'Project'}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-300 hover:scale-105"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end">
+                      <span className="text-white p-4 font-medium">View Project</span>
+                    </div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mt-2 mb-3">{project.title}</h3>
-                    <p className="text-gray-600 mb-4">{project.description}</p>
-                    <div className="mb-4">
-                      <h4 className="font-semibold mb-2">Technologies Used:</h4>
-                      <div className="flex flex-wrap gap-2">
+                  <div className="p-5">
+                    <h3 className="text-lg font-semibold mb-2 text-gradient">{project.title}</h3>
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{project.description}</p>
+                    <div className="mb-3">
+                      <h4 className="font-medium mb-1.5 text-primary/80 text-sm">Technologies:</h4>
+                      <div className="flex flex-wrap gap-1.5">
                         {project.technologies?.map((tech) => (
                           <span
                             key={tech.tech}
-                            className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
+                            className="bg-primary/10 text-primary px-2 py-0.5 rounded-full text-xs hover:bg-primary/20 transition-colors"
                           >
                             {tech.tech}
                           </span>
@@ -50,12 +51,12 @@ const RelatedProjects = ({ projects }: { projects: Portfolio[] }) => {
               )
             })}
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link
-              href="/portfolio?category=web-application"
-              className="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition"
+              href="/portfolio?category=all"
+              className="btn-gradient text-white px-6 py-2.5 rounded-full font-medium btn-pop shadow-lg inline-block text-sm"
             >
-              View All Web Application Projects
+              View All Projects
             </Link>
           </div>
         </div>

@@ -32,36 +32,42 @@ export const Card: React.FC<{
   return (
     <article
       className={cn(
-        'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer',
+        'glass-card card-hover rounded-xl shadow-md overflow-hidden transition-all hover:cursor-pointer',
         className,
       )}
       ref={card.ref}
     >
-      <div className="relative w-full ">
-        {!metaImage && <div className="">No image</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+      <div className="relative w-full overflow-hidden">
+        {!metaImage && (
+          <div className="bg-primary/10 flex items-center justify-center h-48 text-primary font-medium">
+            No image available
+          </div>
+        )}
+        {metaImage && typeof metaImage !== 'string' && (
+          <div className="hover:scale-105 transition-transform duration-700">
+            <Media resource={metaImage} size="33vw" />
+          </div>
+        )}
       </div>
-      <div className="p-4">
+      <div className="p-6">
         {showCategories && hasCategories && (
-          <div className="uppercase text-sm mb-4">
+          <div className="mb-3">
             {showCategories && hasCategories && (
-              <div>
+              <div className="flex flex-wrap gap-2">
                 {categories?.map((category, index) => {
                   if (typeof category === 'object') {
                     const { title: titleFromCategory } = category
-
                     const categoryTitle = titleFromCategory || 'Untitled category'
 
-                    const isLast = index === categories.length - 1
-
                     return (
-                      <Fragment key={index}>
+                      <span
+                        key={index}
+                        className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm"
+                      >
                         {categoryTitle}
-                        {!isLast && <Fragment>, &nbsp;</Fragment>}
-                      </Fragment>
+                      </span>
                     )
                   }
-
                   return null
                 })}
               </div>
@@ -70,14 +76,45 @@ export const Card: React.FC<{
         )}
         {titleToUse && (
           <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
+            <h3 className="text-gradient font-semibold text-xl mb-2">
+              <Link
+                className="not-prose hover:opacity-90 transition-opacity"
+                href={href}
+                ref={link.ref}
+              >
                 {titleToUse}
               </Link>
             </h3>
           </div>
         )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
+        {description && (
+          <div className="mt-2 text-foreground/90">
+            {description && <p className="line-clamp-3">{sanitizedDescription}</p>}
+          </div>
+        )}
+        <div className="mt-4">
+          <Link
+            href={href}
+            ref={link.ref}
+            className="text-primary hover:text-primary/90 font-medium flex items-center"
+          >
+            Read More
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="ml-1"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </article>
   )

@@ -13,13 +13,20 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const { posts } = props
 
   return (
-    <div className={cn('container')}>
-      <div>
-        <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-y-4 gap-x-4 lg:gap-y-8 lg:gap-x-8 xl:gap-x-8">
+    <div className={cn('container mx-auto')}>
+      <div className="mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts?.map((result, index) => {
             if (typeof result === 'object' && result !== null) {
+              const animationDelay =
+                index % 3 === 0
+                  ? 'animation-delay-200'
+                  : index % 3 === 1
+                    ? 'animation-delay-400'
+                    : 'animation-delay-600'
+
               return (
-                <div className="col-span-4" key={index}>
+                <div className={`animate-fadeIn ${animationDelay}`} key={index}>
                   <Card className="h-full" doc={result} relationTo="posts" showCategories />
                 </div>
               )

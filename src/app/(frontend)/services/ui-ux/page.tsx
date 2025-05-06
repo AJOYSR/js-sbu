@@ -90,29 +90,33 @@ const benefits = [
 export default async function UIUXPage() {
   const projects = await getRecentProjects('ui-ux-design')
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h1 className="text-4xl font-bold mb-6">UI/UX & Product Design</h1>
-          <p className="text-xl text-gray-600">
+          <h1 className="text-4xl font-bold mb-6 text-gradient">UI/UX & Product Design</h1>
+          <p className="text-xl text-gray-600 animation-delay-200 animate-fadeIn">
             Creating exceptional digital experiences through user-centered design and innovative
             solutions
           </p>
         </div>
 
         {/* Services Section */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Our Services</h2>
+        <div className="mb-20 animation-delay-400 animate-fadeIn">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Our Services</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service) => (
-              <div key={service.title} className="bg-white p-8 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+            {services.map((service, index) => (
+              <div
+                key={service.title}
+                className="shiny-card gradient-border p-8 bg-card"
+                style={{ animationDelay: `${(index + 1) * 150}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-primary">{service.title}</h3>
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 <ul className="space-y-3">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center">
-                      <span className="text-primary mr-2">✓</span>
+                      <span className="text-primary mr-2 font-bold">✓</span>
                       {feature}
                     </li>
                   ))}
@@ -123,12 +127,16 @@ export default async function UIUXPage() {
         </div>
 
         {/* Process Section */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Our Design Process</h2>
+        <div className="mb-20 animation-delay-600 animate-fadeIn">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Our Design Process</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {process.map((step) => (
-              <div key={step.phase} className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">{step.phase}</h3>
+            {process.map((step, index) => (
+              <div
+                key={step.phase}
+                className="glass-card card-hover p-6 rounded-lg shadow-md"
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-primary">{step.phase}</h3>
                 <p className="text-gray-600 mb-4">{step.description}</p>
                 <ul className="space-y-2">
                   {step.activities.map((activity) => (
@@ -145,11 +153,15 @@ export default async function UIUXPage() {
 
         {/* Benefits Section */}
         <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Benefits</h2>
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Benefits</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit) => (
-              <div key={benefit.title} className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
+            {benefits.map((benefit, index) => (
+              <div
+                key={benefit.title}
+                className="bounce-hover neon-glow bg-card p-6 rounded-lg shadow-md"
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-3 text-primary">{benefit.title}</h3>
                 <p className="text-gray-600">{benefit.description}</p>
               </div>
             ))}
@@ -158,15 +170,17 @@ export default async function UIUXPage() {
         {/* Related Projects */}
         <RelatedProjects projects={projects} />
         {/* CTA Section */}
-        <div className="max-w-4xl mx-auto text-center bg-gradient-to-r from-primary/10 to-primary/5 p-12 rounded-lg">
-          <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Digital Experience?</h2>
+        <div className="max-w-4xl mx-auto text-center glass-card p-12 rounded-lg soft-shadow">
+          <h2 className="text-3xl font-bold mb-6 text-gradient">
+            Ready to Transform Your Digital Experience?
+          </h2>
           <p className="text-lg text-gray-700 mb-8">
             Let&apos;s work together to create user-centered designs that drive results for your
             business.
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition"
+            className="btn-gradient btn-pop inline-block text-white px-8 py-3 rounded-lg hover-scale transition"
           >
             Start Your Design Journey
           </Link>

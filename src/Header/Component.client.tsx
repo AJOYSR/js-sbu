@@ -1,4 +1,3 @@
-
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
@@ -26,7 +25,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
     }
-    
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -43,30 +42,38 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
 
   return (
     <header
-      className={`w-full backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 fixed top-0 left-0 right-0 border-b transition-all duration-300 ${
+      className={`w-full backdrop-blur-md supports-[backdrop-filter]:bg-background/60 z-50 fixed top-0 left-0 right-0 border-b transition-all duration-300 ${
         scrolled
-          ? 'bg-background/95 border-border shadow-md'
+          ? 'bg-background/95 border-border shadow-md neon-glow'
           : 'bg-background/50 border-transparent'
       }`}
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="container mx-auto">
         <div className="py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center group transition-transform hover:scale-105">
+          <Link
+            href="/"
+            className="flex items-center group transition-transform hover:scale-110 animate-fadeIn"
+          >
             <Logo loading="eager" priority="high" className="invert dark:invert-0" />
           </Link>
-          
+
           <div className="flex items-center gap-4">
             <ThemeSelector />
             <HeaderNav header={header} />
           </div>
         </div>
       </div>
-      
-      {/* Gradient line at bottom of header that shows on scroll */}
-      <div className={`h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-500 ${
-        scrolled ? 'opacity-100' : 'opacity-0'
-      }`}></div>
+
+      {/* Enhanced gradient line at bottom of header that shows on scroll */}
+      <div
+        className={`h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent transition-all duration-500 ${
+          scrolled ? 'opacity-100' : 'opacity-0'
+        }`}
+      ></div>
+
+      {/* Added decorative element */}
+      <div className="absolute top-0 right-0 w-32 h-32 -translate-y-1/2 translate-x-1/2 bg-gradient-to-bl from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
     </header>
   )
 }

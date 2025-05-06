@@ -11,77 +11,109 @@ export const PostHero: React.FC<{
   const { categories, meta: { image: metaImage } = {}, populatedAuthors, publishedAt, title } = post
 
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
+    <div className="relative animate-fadeIn">
+      <div className="absolute inset-0 w-full min-h-[85vh] z-0">
+        {metaImage && typeof metaImage !== 'string' && (
+          <Media fill imgClassName="object-cover" resource={metaImage} />
+        )}
+        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-2/3 bg-gradient-to-t from-background via-background/90 to-transparent" />
+      </div>
+
+      <div className="container relative z-10 mx-auto px-4 pt-40">
+        <div className="max-w-4xl mx-auto text-white">
+          <div className="flex flex-wrap gap-2 mb-6 animation-delay-200 animate-fadeIn">
             {categories?.map((category, index) => {
               if (typeof category === 'object' && category !== null) {
                 const { title: categoryTitle } = category
-
                 const titleToUse = categoryTitle || 'Untitled category'
 
-                const isLast = index === categories.length - 1
-
                 return (
-                  <React.Fragment key={index}>
+                  <span
+                    key={index}
+                    className="bg-primary/80 text-white px-4 py-1 rounded-full text-sm font-medium shadow-md"
+                  >
                     {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
+                  </span>
                 )
               }
               return null
             })}
           </div>
 
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 animate-fadeIn animation-delay-300">
+            {title}
+          </h1>
 
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            <div className="flex flex-col gap-4">
-              {populatedAuthors && (
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-                  {populatedAuthors.map((author, index) => {
-                    const { name } = author
-
-                    const isLast = index === populatedAuthors.length - 1
-                    const secondToLast = index === populatedAuthors.length - 2
-
-                    return (
-                      <React.Fragment key={index}>
-                        {name}
-                        {secondToLast && populatedAuthors.length > 2 && (
-                          <React.Fragment>, </React.Fragment>
-                        )}
-                        {secondToLast && populatedAuthors.length === 2 && (
-                          <React.Fragment> </React.Fragment>
-                        )}
-                        {!isLast && populatedAuthors.length > 1 && (
-                          <React.Fragment>and </React.Fragment>
-                        )}
-                      </React.Fragment>
-                    )
-                  })}
+          <div className="glass-card rounded-xl p-6 shadow-lg flex flex-col md:flex-row gap-8 animation-delay-400 animate-fadeIn">
+            {populatedAuthors && populatedAuthors.length > 0 && (
+              <div className="flex items-center gap-4">
+                <div className="bg-primary/20 p-3 rounded-full text-primary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                  >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
                 </div>
-              )}
-            </div>
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
+                <div>
+                  <p className="text-foreground/60 text-sm">Author</p>
+                  <p className="text-foreground font-medium">
+                    {populatedAuthors.map((author, index) => {
+                      const { name } = author
+                      const isLast = index === populatedAuthors.length - 1
 
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+                      return (
+                        <React.Fragment key={index}>
+                          <span className="text-gradient">{name}</span>
+                          {!isLast && <span className="mx-1">&</span>}
+                        </React.Fragment>
+                      )
+                    })}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {publishedAt && (
+              <div className="flex items-center gap-4">
+                <div className="bg-primary/20 p-3 rounded-full text-primary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                  >
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                    <line x1="16" x2="16" y1="2" y2="6" />
+                    <line x1="8" x2="8" y1="2" y2="6" />
+                    <line x1="3" x2="21" y1="10" y2="10" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-foreground/60 text-sm">Published</p>
+                  <time className="text-foreground font-medium" dateTime={publishedAt}>
+                    {formatDateTime(publishedAt)}
+                  </time>
+                </div>
               </div>
             )}
           </div>
         </div>
-      </div>
-      <div className="min-h-[80vh] select-none">
-        {metaImage && typeof metaImage !== 'string' && (
-          <Media fill imgClassName="-z-10 object-cover" resource={metaImage} />
-        )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
       </div>
     </div>
   )

@@ -1,4 +1,3 @@
-
 import { cn } from 'src/utilities/cn'
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
@@ -20,13 +19,20 @@ const buttonVariants = cva(
         sm: 'h-9 rounded px-3',
       },
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md hover:translate-y-[-2px]',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:translate-y-[-2px]',
+        default:
+          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md hover:translate-y-[-2px]',
+        destructive:
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:translate-y-[-2px]',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary items-start justify-start underline-offset-4 hover:underline',
-        outline: 'border border-border bg-background hover:bg-accent hover:text-accent-foreground hover:translate-y-[-2px]',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:translate-y-[-2px]',
+        outline:
+          'border border-border bg-background hover:bg-accent hover:text-accent-foreground hover:translate-y-[-2px]',
+        secondary:
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:translate-y-[-2px]',
         gradient: 'btn-gradient text-white shadow-sm hover:shadow-md',
+        glow: 'bg-primary text-primary-foreground shadow-sm hover:shadow-md neon-glow hover:translate-y-[-2px]',
+        glass:
+          'glass-card text-foreground hover:text-primary-foreground hover:bg-primary/90 transition-all duration-300 hover:translate-y-[-2px]',
       },
     },
   },
