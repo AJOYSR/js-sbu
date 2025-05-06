@@ -4,7 +4,17 @@ import React, { useState, useEffect } from 'react'
 import type { Header as HeaderType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
-import { SearchIcon, ChevronDown } from 'lucide-react'
+import {
+  SearchIcon,
+  ChevronDown,
+  Home,
+  Users,
+  Briefcase,
+  Cpu,
+  Image,
+  BookOpen,
+  Mail,
+} from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 // Define dropdown menu items
@@ -35,6 +45,17 @@ const insightsDropdown = [
   { label: 'Tutorials', href: '/tutorials' },
 ]
 
+// Map icons to navigation items
+const navIcons = {
+  Home: Home,
+  About: Users,
+  Services: Briefcase,
+  Skills: Cpu,
+  Portfolio: Image,
+  Insights: BookOpen,
+  Contact: Mail,
+}
+
 const Dropdown: React.FC<{
   items: Array<{ label: string; href: string }>
   label: string
@@ -44,15 +65,19 @@ const Dropdown: React.FC<{
   isMobile?: boolean
 }> = ({ items, label, isOpen, onHover, onLeave, isMobile = false }) => {
   const pathname = usePathname()
+  const IconComponent = navIcons[label as keyof typeof navIcons] || null
 
   if (isMobile) {
     return (
       <div className="py-2">
         <div
-          className="font-medium text-foreground mb-2 flex items-center justify-between"
+          className="font-medium text-foreground mb-2 flex items-center justify-between cursor-pointer"
           onClick={onHover}
         >
-          {label}
+          <div className="flex items-center gap-2">
+            {IconComponent && <IconComponent className="w-4 h-4 text-primary" />}
+            {label}
+          </div>
           <ChevronDown
             className={`w-4 h-4 text-primary transition-transform duration-200 ${
               isOpen ? 'rotate-180' : ''
@@ -60,15 +85,15 @@ const Dropdown: React.FC<{
           />
         </div>
         {isOpen && (
-          <div className="pl-4 space-y-2 border-l-2 border-primary/20">
+          <div className="pl-4 space-y-2 border-l-2 border-primary/20 animate-fadeIn">
             {items.map((item, index) => (
               <Link
                 key={index}
                 href={item.href || '#'}
-                className={`block py-1 text-sm transition-colors duration-150 ${
+                className={`block py-2 px-2 text-sm transition-colors duration-150 rounded-md ${
                   pathname === item.href
-                    ? 'text-primary font-medium'
-                    : 'text-foreground/80 hover:text-primary'
+                    ? 'text-primary font-medium bg-primary/5'
+                    : 'text-foreground/80 hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 {item.label}
@@ -81,25 +106,27 @@ const Dropdown: React.FC<{
   }
 
   return (
-    <div className="relative" onMouseEnter={onHover} onMouseLeave={onLeave}>
-      <button className="flex items-center gap-1 px-3 py-2 text-foreground hover:text-primary transition-colors">
+    <div className="relative group" onMouseEnter={onHover} onMouseLeave={onLeave}>
+      <button className="flex items-center gap-1.5 px-3 py-2 text-foreground/90 hover:text-primary transition-all font-medium group-hover:text-primary">
+        {IconComponent && <IconComponent className="w-4 h-4 opacity-75 group-hover:opacity-100" />}
         {label}
         <ChevronDown
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3.5 h-3.5 text-primary/70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
       <div
-        className={`absolute left-0 mt-1 w-56 glass-card rounded-xl shadow-lg py-2 z-50 transition-all duration-200 origin-top
-          ${isOpen ? 'opacity-100 scale-100 neon-glow' : 'opacity-0 scale-95 pointer-events-none'}`}
+        className={`absolute left-0 mt-1.5 w-60 glass-card rounded-xl shadow-lg py-2 z-50 transition-all duration-200 origin-top-left border border-primary/20
+          ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'}`}
       >
+        <div className="h-1 w-12 bg-gradient-to-r from-primary to-pink-400 rounded-full mx-auto mb-2"></div>
         {items.map((item, index) => (
           <Link
             key={index}
             href={item.href || '#'}
-            className={`block px-4 py-2 text-sm transition-colors duration-150 ${
+            className={`block px-4 py-2.5 text-sm transition-all duration-150 mx-1 rounded-md ${
               pathname === item.href
                 ? 'text-primary font-medium bg-primary/5'
-                : 'text-foreground/80 hover:bg-primary/10 hover:text-primary'
+                : 'text-foreground/80 hover:bg-primary/10 hover:text-primary hover:translate-x-1'
             }`}
           >
             {item.label}
@@ -113,8 +140,24 @@ const Dropdown: React.FC<{
 export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const pathname = usePathname()
-  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
+
+  // Handle screen size detection safely with useEffect
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    // Set the initial value
+    checkIsMobile()
+
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIsMobile)
+
+    // Clean up
+    return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
 
   const handleDropdownHover = (label: string) => {
     if (closeTimeout) {
@@ -126,7 +169,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
   const handleDropdownLeave = () => {
     const timeout = setTimeout(() => {
       setOpenDropdown(null)
-    }, 300) // 300ms delay before closing
+    }, 200) // Reduced delay for better responsiveness
     setCloseTimeout(timeout)
   }
 
@@ -164,22 +207,25 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
     { label: 'Contact', href: '/contact' as string },
   ]
 
-  // Mobile navigation
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+  // Render mobile navigation
+  if (isMobile) {
     return (
       <nav className="flex flex-col space-y-2">
         {navItems.map((item) => {
           if ('href' in item) {
+            const IconComponent = navIcons[item.label as keyof typeof navIcons] || null
+
             return (
               <Link
                 key={item.label}
                 href={item.href || '#'}
-                className={`block py-2 transition-colors ${
+                className={`flex items-center gap-2 py-2 px-2 transition-colors rounded-md ${
                   pathname === item.href
-                    ? 'text-primary font-medium'
-                    : 'text-foreground/80 hover:text-primary'
+                    ? 'text-primary font-medium bg-primary/5'
+                    : 'text-foreground/80 hover:text-primary hover:bg-primary/5'
                 }`}
               >
+                {IconComponent && <IconComponent className="w-4 h-4 text-primary" />}
                 {item.label}
               </Link>
             )
@@ -197,7 +243,10 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
             )
           }
         })}
-        <Link href="/search" className="flex items-center gap-2 py-2 text-primary">
+        <Link
+          href="/search"
+          className="flex items-center gap-2 py-2 px-2 text-primary hover:bg-primary/5 rounded-md transition-colors"
+        >
           <SearchIcon className="w-4 h-4" />
           <span>Search</span>
         </Link>
@@ -210,16 +259,19 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
     <nav className="flex items-center">
       {navItems.map((item) => {
         if ('href' in item) {
+          const IconComponent = navIcons[item.label as keyof typeof navIcons] || null
+
           return (
             <Link
               key={item.label}
               href={item.href || '#'}
-              className={`px-3 py-2 transition-colors ${
+              className={`px-3 py-2 transition-all hover-scale flex items-center gap-1.5 ${
                 pathname === item.href
                   ? 'text-primary font-medium'
                   : 'text-foreground/80 hover:text-primary'
               }`}
             >
+              {IconComponent && <IconComponent className="w-4 h-4 opacity-75" />}
               {item.label}
             </Link>
           )
@@ -238,10 +290,10 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
       })}
       <Link
         href="/search"
-        className="ml-2 p-2 text-primary rounded-full hover:bg-primary/10 transition-colors hover:scale-110"
+        className="ml-2 p-2.5 text-white rounded-full btn-gradient hover-scale btn-pop transition-all shadow-sm"
         aria-label="Search"
       >
-        <SearchIcon className="w-5 h-5" />
+        <SearchIcon className="w-4 h-4" />
       </Link>
     </nav>
   )

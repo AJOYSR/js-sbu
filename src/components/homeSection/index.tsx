@@ -20,7 +20,6 @@ const HomeSection = async () => {
     limit: 5,
     sort: 'order',
   })) as Slide[]
-  console.log('🚀 ~ HomeSection ~ slides:', slides)
 
   // Fetch partners data (for the "Trusted By" section)
   const partners = (await fetchDocs('partners', {
