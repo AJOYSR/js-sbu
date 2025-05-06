@@ -1,3 +1,4 @@
+
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
@@ -8,6 +9,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 
 interface HeaderClientProps {
   header: Header
@@ -18,6 +20,16 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -31,17 +43,30 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
 
   return (
     <header
-      className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 fixed top-0 left-0 right-0 border-b border-border"
+      className={`w-full backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 fixed top-0 left-0 right-0 border-b transition-all duration-300 ${
+        scrolled
+          ? 'bg-background/95 border-border shadow-md'
+          : 'bg-background/50 border-transparent'
+      }`}
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="container mx-auto">
         <div className="py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center group transition-transform hover:scale-105">
             <Logo loading="eager" priority="high" className="invert dark:invert-0" />
           </Link>
-          <HeaderNav header={header} />
+          
+          <div className="flex items-center gap-4">
+            <ThemeSelector />
+            <HeaderNav header={header} />
+          </div>
         </div>
       </div>
+      
+      {/* Gradient line at bottom of header that shows on scroll */}
+      <div className={`h-0.5 w-full bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-500 ${
+        scrolled ? 'opacity-100' : 'opacity-0'
+      }`}></div>
     </header>
   )
 }

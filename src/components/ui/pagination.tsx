@@ -1,3 +1,4 @@
+
 /* eslint-disable react/button-has-type */
 import type { ButtonProps } from '@/components/ui/button'
 
@@ -39,8 +40,10 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
     className={cn(
       buttonVariants({
         size,
-        variant: isActive ? 'outline' : 'ghost',
+        variant: isActive ? 'default' : 'outline',
       }),
+      isActive && 'bg-primary hover:bg-primary/90 pointer-events-none',
+      !isActive && 'hover:bg-accent hover:text-accent-foreground btn-pop',
       className,
     )}
     {...props}
@@ -54,7 +57,7 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    className={cn('gap-1 pl-2.5', className)}
+    className={cn('gap-1 pl-2.5 btn-pop', className)}
     size="default"
     {...props}
   >
@@ -67,7 +70,7 @@ PaginationPrevious.displayName = 'PaginationPrevious'
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    className={cn('gap-1 pr-2.5', className)}
+    className={cn('gap-1 pr-2.5 btn-pop', className)}
     size="default"
     {...props}
   >
