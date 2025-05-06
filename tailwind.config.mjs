@@ -30,6 +30,10 @@ export default {
     'soft-shadow',
     'glass-card',
     'btn-gradient',
+    'delay-0',
+    'delay-100',
+    'delay-200',
+    'animate-bounce',
   ],
   theme: {
     container: {
@@ -58,6 +62,15 @@ export default {
         'slide-in': 'slideIn 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         slowZoom: 'slowZoom 10s ease-out forwards',
+        'spin-slow': 'spin 3s linear infinite',
+      },
+      animationDelay: {
+        0: '0ms',
+        100: '100ms',
+        200: '200ms',
+        300: '300ms',
+        400: '400ms',
+        500: '500ms',
       },
       borderRadius: {
         lg: 'var(--radius)',
