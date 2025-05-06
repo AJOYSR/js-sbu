@@ -57,9 +57,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
     >
       <div className="container mx-auto px-4">
         <div className="py-4 flex items-center justify-between">
-          <div className="group transition-all duration-300 hover:scale-110 animate-fadeIn">
-            <Logo loading="eager" priority="high" className="invert dark:invert-0" isLink={true} />
-          </div>
+          <Logo
+            loading="eager"
+            priority="high"
+            className="invert dark:invert-0"
+            isLink={true}
+            linkClassName="group transition-all duration-300 hover:scale-110 animate-fadeIn"
+          />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-5 animate-fadeIn animation-delay-200">

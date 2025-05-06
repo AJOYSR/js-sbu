@@ -1,15 +1,27 @@
 <svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
-    path {
+    .primary {
+      fill: #0F72E5;
+    }
+    .secondary {
       fill: #0F0F0F;
     }
-
+    
     @media (prefers-color-scheme: dark) {
-      path {
+      .primary {
+        fill: #3D90FF;
+      }
+      .secondary {
         fill: white;
       }
     }
   </style>
-	<path d="M120.59 8.5824L231.788 75.6142V202.829L148.039 251.418V124.203L36.7866 57.2249L120.59 8.5824Z" />
-	<path d="M112.123 244.353V145.073L28.2114 193.769L112.123 244.353Z" />
+  <!-- Main document/page shape -->
+  <rect x="40" y="40" width="180" height="180" rx="20" class="secondary" />
+  
+  <!-- Content blocks representing a website builder -->
+  <rect x="60" y="70" width="140" height="25" rx="6" class="primary" />
+  <rect x="60" y="110" width="80" height="80" rx="6" class="primary" />
+  <rect x="150" y="110" width="50" height="25" rx="6" class="primary" />
+  <rect x="150" y="145" width="50" height="45" rx="6" class="primary" />
 </svg>
