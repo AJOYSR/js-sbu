@@ -1,92 +1,183 @@
+# Payload CMS V3 Website Template
+
 <p align="center">
   <a href="https://funkyton.com/payload-cms/">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png">
-      <source media="(prefers-color-scheme: light)" srcset="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png">
-      <img alt="Payload CMS logo" src="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png" width=100>
-    </picture>
+    <img alt="Payload CMS logo" src="https://res.cloudinary.com/hczpmiapo/image/upload/v1732576652/Static%20assets/Logos/payload_V3_mhv6wc.png" width=100>
   </a>
   <a href="https://railway.app/template/L8TUlT?referralCode=-Yg50p">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://railway.app/brand/logo-light.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://railway.app/brand/logo-dark.svg">
-      <img alt="Railway logo" src="https://railway.app/brand/logo-light.svg" width=100>
-    </picture>
+    <img alt="Railway logo" src="https://railway.app/brand/logo-light.svg" width=100>
   </a>
 </p>
 
 <h2 align="center">
-  Payload CMS V3 Website Template<br>
+  A powerful, flexible, and production-ready Payload CMS V3 website builder with PostgreSQL database.
+  <br>
   <a href="https://railway.app/template/L8TUlT?referralCode=-Yg50p">One-click deploy on Railway!</a>
 </h2>
 
-<h1 align="center">
-  Need help?<br>
-  <a href="https://funkyton.com/payload-cms/">Step by step guide and instructions</a>
-</h1>
-
-<p align="center">
-  A powerful, flexible, and production-ready Payload CMS V3 website builder with PostgreSQL database.
-</p>
-
-<p align="center">
-  <a href="https://github.com/payloadcms/payload/blob/main/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-  <a href="https://discord.gg/payload">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-</p>
-
-## About this boilerplate
+## About
 
 This boilerplate is a pre-configured, ready-to-deploy solution for Payload CMS as a website builder. It includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website. This template is optimized for seamless deployment on [Railway](https://railway.app?referralCode=-Yg50p), and uses PostgreSQL for both local development and production environments.
 
-## Preconfigured Features & Integrations
+## Features
 
-- **Authentication**: Robust user authentication system
+- **Modern Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Authentication System**: Complete user authentication with roles and permissions
 - **Access Control**: Role-based access control for admins and users
-- **Premium Content**: Gated content for authenticated users
-- **Comments**: User commenting system with admin approval
-- **Layout Builder**: Flexible content creation with pre-configured blocks
-- **Draft Preview**: Preview unpublished content before going live
-- **SEO**: Built-in SEO optimization tools
-- **Redirects**: Easy management of URL redirects
-- **PostgreSQL Support**: Configured for both local and production use
+- **Premium Content**: Gated content accessible only to authenticated users
+- **Content Management**:
+  - Layout Builder with flexible blocks
+  - Rich text editor powered by Lexical
+  - Media library with image optimization
+  - Collections for structured content
+- **User Engagement**:
+  - Commenting system with admin approval
+  - SEO optimization tools built-in
+  - Social sharing capabilities
+- **Developer Experience**:
+  - TypeScript for type safety
+  - API endpoints for custom logic
+  - Draft Preview for content before publishing
+  - Hot reloading during development
+- **Performance**:
+  - Server-side rendering
+  - Static site generation capabilities
+  - Image optimization with Sharp
+- **Production-Ready**:
+  - URL redirects management
+  - PostgreSQL database support
+  - Railway deployment configuration
 
-### Railway Setup
+## Project Structure
 
-Use one-click deploy template:
+```
+├── public/              # Static files
+├── src/                 # Source code
+│   ├── access/          # Access control functions
+│   ├── app/             # Next.js app directory
+│   ├── blocks/          # Content blocks for layout builder
+│   ├── collections/     # Payload collections (data models)
+│   ├── components/      # React components
+│   ├── endpoints/       # API endpoints
+│   ├── fields/          # Custom field types
+│   ├── Footer/          # Footer components
+│   ├── Header/          # Header components
+│   ├── heros/           # Hero section components
+│   ├── hooks/           # Custom React hooks
+│   ├── migrations/      # Database migrations
+│   ├── plugins/         # Payload plugins
+│   ├── providers/       # React context providers
+│   ├── search/          # Search functionality
+│   ├── utilities/       # Utility functions
+│   ├── payload.config.ts # Payload configuration
+│   └── environment.d.ts  # TypeScript environment declarations
+├── .next/               # Next.js build output
+├── node_modules/        # Dependencies
+├── docker-compose.yml   # Docker configuration
+├── next.config.js       # Next.js configuration
+├── package.json         # Project dependencies and scripts
+├── tailwind.config.mjs  # Tailwind CSS configuration
+└── tsconfig.json        # TypeScript configuration
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js: ^18.20.2 or >=20.9.0
+- PostgreSQL database
+- Yarn package manager
+
+### Railway Deployment (Recommended)
+
+Use the one-click deploy template:
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/L8TUlT?referralCode=-Yg50p)
 
 ### Local Setup
 
-1. Clone proejct: (recommeded) Laucnh on Railway and ejct [watch how](https://www.youtube.com/watch?v=LJFek8JP8TE). Alternatively clone this repo or fork it.
-2. Copy `.env.example` to `.env` (fill in your own values..)
-3. Install dependencies: `pnpm install` or `npm install`
-4. Run development mode: `pnpm dev` or `npm run dev`
-or
-5. Build the project: `pnpm build` or `npm run build`
-6. Start the server: `pnpm start` or `npm run start`
+1. Clone the project:
 
+   ```bash
+   git clone <repository-url>
+   cd payload-3-boilerplate
+   ```
 
-### Requirements
+2. Copy `.env.example` to `.env` and fill in your PostgreSQL database connection details and other environment variables.
 
-- **Database**: PostgreSQL
-- **Node.js**: Compatible version as specified in `package.json`
+3. Install dependencies:
+
+   ```bash
+   yarn install
+   ```
+
+4. Run in development mode:
+
+   ```bash
+   yarn dev
+   ```
+
+5. Access the site at http://localhost:3000 and the admin panel at http://localhost:3000/admin
+
+### Production Deployment
+
+1. Build the project:
+
+   ```bash
+   yarn build
+   ```
+
+2. Start the production server:
+
+   ```bash
+   yarn start
+   ```
+
+3. For a production-like environment locally:
+   ```bash
+   yarn dev:prod
+   ```
+
+### Working with the Codebase
+
+- Generate TypeScript types from your collections:
+
+  ```bash
+  yarn generate:types
+  ```
+
+- Run linting:
+
+  ```bash
+  yarn lint
+  ```
+
+- Fix linting issues:
+
+  ```bash
+  yarn lint:fix
+  ```
+
+- Rebuild dependencies (if needed):
+  ```bash
+  yarn reinstall
+  ```
 
 ## Useful Resources
 
-- **Blog post about this template**: [Read here](https://funkyton.com/payload-cms/)
-- **Official Payload Documentation**: [Read here](https://payloadcms.com/docs)
+- **[Official Documentation](https://funkyton.com/payload-cms/)**: Step-by-step guide and instructions
+- **[Payload CMS Docs](https://payloadcms.com/docs)**: Official Payload documentation
+- **[Next.js Documentation](https://nextjs.org/docs)**: Learn about Next.js features
+- **[TypeScript Documentation](https://www.typescriptlang.org/docs/)**: TypeScript language reference
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 <p align="center">
   <a href="https://funkyton.com/">
     A template by,
     <br><br>
-    <picture>
-      <img alt="FUNKYTON logo" src="https://res-5.cloudinary.com/hczpmiapo/image/upload/q_auto/v1/ghost-blog-images/funkyton-logo.png" width=200>
-    </picture>
+    <img alt="FUNKYTON logo" src="https://res-5.cloudinary.com/hczpmiapo/image/upload/q_auto/v1/ghost-blog-images/funkyton-logo.png" width=200>
   </a>
 </p>
