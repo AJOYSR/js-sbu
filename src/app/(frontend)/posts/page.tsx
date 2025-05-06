@@ -18,7 +18,7 @@ export default async function Page() {
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
-    limit: 12,
+    limit: 3,
     overrideAccess: false,
     select: {
       title: true,
@@ -29,45 +29,58 @@ export default async function Page() {
   })
 
   return (
-    <div className="pt-24 pb-24">
+    <div className="min-h-screen py-16 animate-fadeIn">
       <PageClient />
 
-      {posts.docs.length === 0 ? (
-        <div className="container text-center py-16">
-          <div className="flex justify-center mb-6">
-            <FileX className="w-16 h-16 text-gray-400 dark:text-gray-500" />
-          </div>
-          <h2 className="text-2xl font-medium text-gray-600 dark:text-gray-400 mb-4">
-            No Posts Found
-          </h2>
-          <p className="text-gray-500 dark:text-gray-500 max-w-lg mx-auto">
-            We haven&apos;t published any posts yet, but great content is on the way! Check back
-            soon for insightful articles and updates.
+      <div className="container mx-auto px-4">
+        {/* Hero Section */}
+        <div className="max-w-4xl mx-auto mb-16 text-center animation-delay-200 animate-fadeIn">
+          <h1 className="text-4xl font-bold mb-6 text-gradient">Our Blog</h1>
+          <p className="text-xl text-primary mb-4">Insights & Inspiration</p>
+          <p className="text-foreground">
+            Explore our collection of articles, tutorials, and industry insights
           </p>
         </div>
-      ) : (
-        <>
-          <div className="container mb-8">
-            <PageRange
-              collection="posts"
-              currentPage={posts.page}
-              limit={12}
-              totalDocs={posts.totalDocs}
-            />
-          </div>
 
-          <CollectionArchive posts={posts.docs} />
-
-          <div className="container">
-            {posts.totalPages > 1 && posts.page && (
-              <Pagination page={posts.page} totalPages={posts.totalPages} />
-            )}
+        {posts.docs.length === 0 ? (
+          <div className="glass-card rounded-xl shadow-md p-12 text-center max-w-2xl mx-auto animation-delay-300 animate-fadeIn">
+            <div className="flex justify-center mb-6">
+              <FileX className="w-16 h-16 text-primary/80" />
+            </div>
+            <h2 className="text-2xl font-semibold mb-4 text-gradient">No Posts Found</h2>
+            <p className="text-foreground max-w-lg mx-auto">
+              We haven&apos;t published any posts yet, but great content is on the way! Check back
+              soon for insightful articles and updates.
+            </p>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <div className="mb-8 animation-delay-300 animate-fadeIn">
+              <PageRange
+                collection="posts"
+                currentPage={posts.page}
+                limit={12}
+                totalDocs={posts.totalDocs}
+                className="text-foreground font-medium"
+              />
+            </div>
+
+            <div className="animation-delay-400 animate-fadeIn">
+              <CollectionArchive posts={posts.docs} />
+            </div>
+
+            <div className="animation-delay-600 animate-fadeIn">
+              {posts.totalPages > 1 && posts.page && (
+                <Pagination page={posts.page} totalPages={posts.totalPages} />
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 }
+
 export function generateMetadata(): Metadata {
   return {
     title: `JS-SBU | Posts`,

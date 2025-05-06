@@ -95,24 +95,28 @@ const features = [
 export default async function MobileAppPage() {
   const projects = await getRecentProjects('mobile-development')
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h1 className="text-4xl font-bold mb-6">Mobile App Development</h1>
-          <p className="text-xl text-gray-600">
+          <h1 className="text-4xl font-bold mb-6 text-gradient">Mobile App Development</h1>
+          <p className="text-xl text-gray-600 animation-delay-200 animate-fadeIn">
             Creating powerful, engaging, and scalable mobile applications for iOS and Android
             platforms using modern technologies
           </p>
         </div>
 
         {/* Technologies Section */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Our Tech Stack</h2>
+        <div className="mb-20 animation-delay-400 animate-fadeIn">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Our Tech Stack</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {technologies.map((tech) => (
-              <div key={tech.name} className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">{tech.name}</h3>
+            {technologies.map((tech, index) => (
+              <div
+                key={tech.name}
+                className="glass-card card-hover p-6 rounded-lg shadow-md"
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-primary">{tech.name}</h3>
                 <p className="text-gray-600 mb-4">{tech.description}</p>
                 <ul className="space-y-2">
                   {tech.features.map((feature) => (
@@ -128,17 +132,21 @@ export default async function MobileAppPage() {
         </div>
 
         {/* Services Section */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Our Services</h2>
+        <div className="mb-20 animation-delay-600 animate-fadeIn">
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Our Services</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service) => (
-              <div key={service.title} className="bg-white p-8 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+            {services.map((service, index) => (
+              <div
+                key={service.title}
+                className="shiny-card gradient-border p-8 bg-card"
+                style={{ animationDelay: `${(index + 1) * 150}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-primary">{service.title}</h3>
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 <ul className="space-y-3">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center">
-                      <span className="text-primary mr-2">✓</span>
+                      <span className="text-primary mr-2 font-bold">✓</span>
                       {feature}
                     </li>
                   ))}
@@ -150,11 +158,15 @@ export default async function MobileAppPage() {
 
         {/* Features Grid */}
         <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">Key Features</h2>
+          <h2 className="text-3xl font-bold mb-12 text-center text-gradient">Key Features</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <div key={feature.title} className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+            {features.map((feature, index) => (
+              <div
+                key={feature.title}
+                className="bounce-hover neon-glow bg-card p-6 rounded-lg shadow-md"
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
+              >
+                <h3 className="text-xl font-semibold mb-3 text-primary">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
@@ -165,15 +177,15 @@ export default async function MobileAppPage() {
         <RelatedProjects projects={projects} />
 
         {/* CTA Section */}
-        <div className="max-w-4xl mx-auto text-center bg-gradient-to-r from-primary/10 to-primary/5 p-12 rounded-lg">
-          <h2 className="text-3xl font-bold mb-6">Ready to Build Your Mobile App?</h2>
+        <div className="max-w-4xl mx-auto text-center glass-card p-12 rounded-lg soft-shadow">
+          <h2 className="text-3xl font-bold mb-6 text-gradient">Ready to Build Your Mobile App?</h2>
           <p className="text-lg text-gray-700 mb-8">
             Let&apos;s discuss how we can help you create a successful mobile application that meets
             your business goals.
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition"
+            className="btn-gradient btn-pop inline-block text-white px-8 py-3 rounded-lg hover-scale transition"
           >
             Get Started
           </Link>

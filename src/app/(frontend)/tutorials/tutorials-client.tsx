@@ -30,7 +30,7 @@ const FilterButton = ({
   <button
     onClick={onClick}
     className={`px-6 py-2 rounded-full shadow-md transition ${
-      isActive ? 'bg-primary text-white' : 'bg-white hover:bg-primary hover:text-white'
+      isActive ? 'btn-gradient text-white' : 'bg-card hover:bg-primary/10 hover:text-primary'
     }`}
   >
     {label}
@@ -121,7 +121,7 @@ export default function TutorialsClient({
   return (
     <>
       {/* Filters */}
-      <div className="mb-12">
+      <div className="mb-12 animate-fadeIn animation-delay-300">
         <div className="flex flex-wrap justify-center gap-4 mb-6">
           {categories.map((cat) => (
             <FilterButton
@@ -145,18 +145,18 @@ export default function TutorialsClient({
       </div>
 
       {/* Search Bar */}
-      <div className="max-w-2xl mx-auto mb-12">
+      <div className="max-w-2xl mx-auto mb-12 animate-fadeIn animation-delay-400">
         <form onSubmit={handleSearch} className="relative">
           <input
             type="text"
             placeholder="Search tutorials..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full px-6 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
+            className="w-full px-6 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary bg-card"
           />
           <button
             type="submit"
-            className="absolute right-3 top-1/2 -translate-y-1/2 px-4 py-1 bg-primary text-white rounded-full"
+            className="absolute right-3 top-1/2 -translate-y-1/2 px-4 py-1 btn-gradient text-white rounded-full btn-pop"
           >
             Search
           </button>
@@ -166,7 +166,7 @@ export default function TutorialsClient({
       {/* Tutorials Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         {displayedTutorials.length > 0 ? (
-          displayedTutorials.map((tutorial) => {
+          displayedTutorials.map((tutorial, index) => {
             const image = tutorial.image as Media
             // Ensure imageUrl is always a string, using a fallback if needed
             const imageUrl =
@@ -178,11 +178,12 @@ export default function TutorialsClient({
               <Link
                 key={tutorial.id}
                 href={`/tutorials/${tutorial.slug}`}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+                className="glass-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition card-hover animate-fadeIn"
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
               >
                 <div className="relative h-48">
                   <Image src={imageUrl} alt={tutorial.title} fill className="object-cover" />
-                  <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="absolute top-4 left-4 bg-card px-3 py-1 rounded-full text-sm font-medium">
                     {tutorial.level}
                   </div>
                 </div>
@@ -192,19 +193,19 @@ export default function TutorialsClient({
                       {categoryDisplayNames[tutorial.category] || tutorial.category}
                     </span>
                     <span className="text-sm text-gray-500 flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
+                      <Clock className="w-4 h-4 mr-1 text-primary" />
                       {tutorial.duration}
                     </span>
                   </div>
-                  <h2 className="text-xl font-semibold mb-3">{tutorial.title}</h2>
+                  <h2 className="text-xl font-semibold mb-3 text-primary">{tutorial.title}</h2>
                   <p className="text-gray-600 mb-4 line-clamp-2">{tutorial.description}</p>
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center text-gray-500">
-                      <BookOpen className="w-4 h-4 mr-1" />
+                      <BookOpen className="w-4 h-4 mr-1 text-primary" />
                       {tutorial.lessons} lessons
                     </div>
-                    <div className="flex items-center text-yellow-500">
-                      <Star className="w-4 h-4 mr-1" />
+                    <div className="flex items-center text-primary">
+                      <Star className="w-4 h-4 mr-1 text-primary" />
                       {tutorial.rating.toFixed(1)}
                     </div>
                   </div>
@@ -213,8 +214,8 @@ export default function TutorialsClient({
             )
           })
         ) : (
-          <div className="col-span-3 text-center py-12">
-            <h3 className="text-xl font-semibold mb-2">No tutorials found</h3>
+          <div className="col-span-3 text-center py-12 glass-card p-8 rounded-lg soft-shadow">
+            <h3 className="text-xl font-semibold mb-2 text-primary">No tutorials found</h3>
             <p className="text-gray-600">Try adjusting your search or filter criteria</p>
           </div>
         )}

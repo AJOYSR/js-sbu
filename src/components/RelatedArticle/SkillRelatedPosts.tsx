@@ -13,26 +13,28 @@ export const SkillRelatedPosts: React.FC<SkillRelatedPostsProps> = ({ posts }) =
   }
 
   return (
-    <div className="mb-20">
-      <h2 className="text-3xl font-bold mb-12 text-center">Related Articles</h2>
-      <div className="grid md:grid-cols-2 gap-8">
-        {posts.map((post) => (
+    <div className="mb-20 animate-fadeIn">
+      <h2 className="text-3xl font-bold mb-3 text-center text-gradient">Related Articles</h2>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post, index) => (
           <div
             key={post.id}
-            className="bg-white p-8 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg hover:translate-y-[-5px]"
+            className="glass-card p-6 rounded-lg shadow-md card-hover"
+            style={{ animationDelay: `${(index + 1) * 150}ms` }}
           >
             {post.meta?.image && typeof post.meta.image !== 'string' && (
               <div className="mb-4 h-48 overflow-hidden rounded">
-                <Media resource={post.meta.image} size="250px" />
+                <Media resource={post.meta.image} size="100%" />
               </div>
             )}
-            <h3 className="text-xl font-semibold mb-4">{post.title}</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-xl font-semibold mb-3 text-primary">{post.title}</h3>
+            <p className="text-gray-600 mb-5">
               {post.meta?.description || 'Read more about this topic.'}
             </p>
             <Link
               href={`/posts/${post.slug}`}
-              className="inline-flex items-center text-primary hover:underline"
+              className="btn-gradient btn-pop inline-flex items-center text-white px-4 py-2 rounded-lg hover-scale transition"
             >
               Read Article
               <svg

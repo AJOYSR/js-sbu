@@ -14,6 +14,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Slides } from './collections/Slides'
 import { Partners } from './collections/Partners'
+import { TeamMembers } from './collections/TeamMembers'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -80,6 +81,7 @@ export default buildConfig({
     Portfolio,
     Tutorials,
     Partners,
+    TeamMembers,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

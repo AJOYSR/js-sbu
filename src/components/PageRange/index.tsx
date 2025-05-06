@@ -42,13 +42,12 @@ export const PageRange: React.FC<{
     collectionLabelsFromProps || defaultCollectionLabels[collection || ''] || defaultLabels || {}
 
   return (
-    <div className={[className, 'font-semibold'].filter(Boolean).join(' ')}>
-      {(typeof totalDocs === 'undefined' || totalDocs === 0) && 'Search produced no results.'}
-      {typeof totalDocs !== 'undefined' &&
-        totalDocs > 0 &&
-        `Showing ${indexStart}${indexStart > 0 ? ` - ${indexEnd}` : ''} of ${totalDocs} ${
-          totalDocs > 1 ? plural : singular
-        }`}
+    <div
+      className={[className, 'rounded-lg p-2 bg-card/30 inline-block'].filter(Boolean).join(' ')}
+    >
+      {(typeof totalDocs === 'undefined' || totalDocs === 0) && (
+        <span className="text-primary">Search produced no results.</span>
+      )}
     </div>
   )
 }

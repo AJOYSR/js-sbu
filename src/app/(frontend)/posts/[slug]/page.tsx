@@ -8,6 +8,8 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
 import { Comments } from '@/components/Comments'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 import type { Post } from '@/payload-types'
 
@@ -48,7 +50,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="min-h-screen animate-fadeIn">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -56,18 +58,37 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" content={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+      <div className="container mx-auto px-4 pb-16">
+        <div className="max-w-4xl mx-auto mt-8 animation-delay-200 animate-fadeIn">
+          <Link
+            href="/posts"
+            className="inline-flex items-center text-primary hover:text-primary/80 mb-8 btn-pop hover-scale"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Blog
+          </Link>
+
+          <div className="glass-card rounded-xl shadow-md p-8 mb-12 animation-delay-300 animate-fadeIn">
+            <RichText
+              className="prose-lg dark:prose-invert prose-headings:text-gradient prose-headings:font-bold prose-p:text-foreground/90 prose-a:text-primary hover:prose-a:text-primary/80 prose-img:rounded-xl prose-img:shadow-md max-w-none"
+              content={post.content}
+              enableGutter={false}
+              enableProse={true}
             />
+          </div>
+
+          {post.relatedPosts && post.relatedPosts.length > 0 && (
+            <div className="animation-delay-400 animate-fadeIn">
+              <h2 className="text-2xl font-semibold mb-6 text-gradient">Related Articles</h2>
+              <RelatedPosts
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+              />
+            </div>
           )}
-          
+
           {/* Add Comments section */}
-          <div className="max-w-[48rem] mx-auto mt-16">
+          <div className="mt-16 glass-card rounded-xl shadow-md p-8 animation-delay-500 animate-fadeIn">
             <Comments postId={typeof post.id === 'string' ? parseInt(post.id, 10) : post.id} />
           </div>
         </div>

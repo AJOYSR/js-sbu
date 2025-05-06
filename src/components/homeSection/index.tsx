@@ -29,7 +29,6 @@ const HomeSection = async () => {
       },
     },
   })) as Partner[]
-  console.log('🚀 ~ HomeSection ~ partners:', partners)
 
   // Fetch featured portfolio projects
   const projects = (await fetchDocs('portfolio', {
