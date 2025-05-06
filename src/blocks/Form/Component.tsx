@@ -6,6 +6,7 @@ import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { Loader2, CheckCircle, AlertCircle, Send } from 'lucide-react'
 
 import { buildInitialFormState } from './buildInitialFormState'
 import { fields } from './fields'
@@ -126,20 +127,44 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="container lg:max-w-[48rem]">
+    <div className="w-full">
       {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" content={introContent} enableGutter={false} />
+        <RichText className="mb-8 text-foreground/90" content={introContent} enableGutter={false} />
       )}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
+      <div className="w-full">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText content={confirmationMessage} />
+            <div className="p-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl animate-fadeIn">
+              <div className="flex items-center gap-3 mb-4">
+                <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <h3 className="text-xl font-semibold text-green-700 dark:text-green-400">
+                  Thank you!
+                </h3>
+              </div>
+              <RichText content={confirmationMessage} />
+            </div>
           )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-          {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
+
+          {isLoading && !hasSubmitted && (
+            <div className="p-6 flex flex-col items-center justify-center text-center space-y-4 animate-fadeIn">
+              <Loader2 className="w-10 h-10 text-primary animate-spin" />
+              <p className="text-foreground/80 text-lg">Submitting your message...</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl animate-fadeIn">
+              <div className="flex items-center gap-3 mb-2">
+                <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <h3 className="text-xl font-semibold text-red-700 dark:text-red-400">Error</h3>
+              </div>
+              <p className="text-red-600 dark:text-red-400">{`${error.status || '500'}: ${error.message || 'Something went wrong.'}`}</p>
+            </div>
+          )}
+
+          {!hasSubmitted && !isLoading && (
+            <form id={formID} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
                 {formFromProps &&
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
@@ -162,8 +187,13 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
+              <Button
+                form={formID}
+                type="submit"
+                className="w-full btn-gradient text-white px-6 py-3 h-auto rounded-lg shadow-md hover-scale btn-pop transition-all flex items-center justify-center gap-2"
+              >
+                <Send className="w-4 h-4" />
+                {submitButtonLabel || 'Submit'}
               </Button>
             </form>
           )}
