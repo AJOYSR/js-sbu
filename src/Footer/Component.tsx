@@ -111,7 +111,7 @@ export async function Footer() {
             </h3>
             <div className="flex space-x-5 mb-6">
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/company/brain-station-23"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
@@ -120,7 +120,7 @@ export async function Footer() {
                 <span className="sr-only">LinkedIn</span>
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/BrainStation-23/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
@@ -129,7 +129,7 @@ export async function Footer() {
                 <span className="sr-only">GitHub</span>
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/BrainStation23"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
@@ -138,7 +138,7 @@ export async function Footer() {
                 <span className="sr-only">Twitter</span>
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/brainstation23ltd/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
@@ -149,7 +149,7 @@ export async function Footer() {
             </div>
 
             <div className="gradient-border p-4 bg-gray-200/50 dark:bg-gray-800/50 shadow-sm dark:shadow-none">
-              <h4 className="text-lg font-semibold mb-3 text-primary">Newsletter</h4>
+              <h4 className="text-lg font-semibold mb-3 text-white">Newsletter</h4>
               <form className="space-y-3">
                 <div className="relative">
                   <input
