@@ -69,6 +69,55 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Technology Stack Details */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center">Our Technology Stack</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="glass-card p-8 rounded-lg hover-scale animation-delay-200 animate-fadeIn">
+              <h3 className="text-2xl font-bold mb-4">Backend & Frontend</h3>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-xl font-semibold mb-2">Node.js</h4>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Our server-side platform of choice for building scalable network applications.
+                    We leverage Node.js to create reliable, fast, and scalable backend systems that
+                    can handle high traffic loads while maintaining optimal performance.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold mb-2">React & Angular</h4>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    We use React to create high-quality, responsive, and dynamic front-end
+                    applications. Angular is our go-to framework for building robust, scalable web
+                    applications that are easy to maintain and extend.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="glass-card p-8 rounded-lg hover-scale animation-delay-400 animate-fadeIn">
+              <h3 className="text-2xl font-bold mb-4">Mobile & E-commerce</h3>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-xl font-semibold mb-2">React Native & Flutter</h4>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    For mobile development, we utilize React Native and Flutter to create native
+                    mobile applications for iOS and Android. These frameworks enable us to build
+                    fast, reliable, and user-friendly mobile apps with a single codebase.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold mb-2">Shopify</h4>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    We specialize in creating customized e-commerce solutions using Shopify,
+                    including setting up online stores, integrating payment gateways, and optimizing
+                    the shopping experience for customers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Team Overview */}
         <div className="shiny-card bg-gray-50 dark:bg-gray-800/40 p-8 rounded-lg mb-16 soft-shadow animation-delay-400 animate-fadeIn">
           <h2 className="text-2xl font-bold mb-6">Our Team</h2>
