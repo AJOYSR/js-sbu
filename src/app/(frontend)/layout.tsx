@@ -35,11 +35,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       >
         <Providers>
           <Loader />
-          <AdminBar
+          {/* <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
-          />
+          /> */}
           <LivePreviewListener />
 
           {/* Decorative elements for visual interest */}

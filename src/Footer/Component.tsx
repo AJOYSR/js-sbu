@@ -1,7 +1,17 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
-import { Linkedin, Github, Mail, Twitter, Instagram, ArrowRight } from 'lucide-react'
+import {
+  Linkedin,
+  Github,
+  Mail,
+  Twitter,
+  Instagram,
+  ArrowRight,
+  Heart,
+  Shield,
+  ExternalLink,
+} from 'lucide-react'
 import { useTheme } from '@/providers/Theme'
 
 import type { Footer } from '@/payload-types'
@@ -9,6 +19,9 @@ import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { Button } from '@/components/ui/button'
+
+// Use a constant for the copyright year to avoid hydration issues
+const CURRENT_YEAR = new Date().getFullYear()
 
 export async function Footer() {
   const footer: Footer = await getCachedGlobal('footer', 1)()
@@ -19,6 +32,7 @@ export async function Footer() {
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services/web-app' },
     { name: 'Portfolio', href: '/portfolio' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
   ]
 
   const popularServices = [
@@ -38,20 +52,30 @@ export async function Footer() {
 
   return (
     <footer className="bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 text-gray-800 dark:text-white relative overflow-hidden">
-      {/* Decorative floating orbs */}
-      <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
-      <div className="absolute top-60 right-40 w-40 h-40 rounded-full bg-primary/5 blur-2xl pointer-events-none animate-pulse"></div>
+      {/* Decorative floating orbs - updated with more vibrant effects */}
+      <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/15 blur-3xl pointer-events-none"></div>
+      <div className="absolute top-60 right-40 w-40 h-40 rounded-full bg-pink-400/10 blur-2xl pointer-events-none animate-pulse"></div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
         {/* Top Section with Gradient Line */}
         <div className="relative mb-12">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-1.5 w-4/5 bg-gradient-to-r from-primary/30 via-primary to-primary/30 rounded-full"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-2 w-4/5 bg-gradient-to-r from-primary/30 via-primary to-primary/30 rounded-full"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Quick Links */}
+          {/* Company Info & Quick Links */}
           <div className="animate-fadeIn">
+            <div className="mb-6">
+              <Link href="/" className="inline-block mb-4 hover:scale-105 transition-transform">
+                <Logo className="h-10 w-auto" />
+              </Link>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Creating innovative digital solutions with a focus on user experience and
+                cutting-edge technology.
+              </p>
+            </div>
+
             <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
               Quick Links
             </h3>
@@ -85,6 +109,24 @@ export async function Footer() {
                 </li>
               ))}
             </ul>
+
+            {/* Trust Badges - Added for poppy visual enhancement */}
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3">
+                Trusted By
+              </h4>
+              <div className="flex items-center space-x-4">
+                <div className="bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-sm">
+                  <Shield className="h-5 w-5 text-primary" />
+                </div>
+                <div className="bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-sm">
+                  <Heart className="h-5 w-5 text-pink-500" />
+                </div>
+                <div className="bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-sm">
+                  <ExternalLink className="h-5 w-5 text-blue-500" />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Technology Stacks */}
@@ -148,7 +190,7 @@ export async function Footer() {
               </a>
             </div>
 
-            <div className="gradient-border p-4 bg-gray-200/50 dark:bg-gray-800/50 shadow-sm dark:shadow-none">
+            <div className="gradient-border p-4 bg-white/10 dark:bg-gray-800/50 shadow-sm backdrop-blur-sm">
               <h4 className="text-lg font-semibold mb-3 text-white">Newsletter</h4>
               <form className="space-y-3">
                 <div className="relative">
@@ -160,51 +202,64 @@ export async function Footer() {
                   />
                   <Mail className="absolute right-3 top-2.5 text-gray-400" size={20} />
                 </div>
-                <Button type="submit" variant="gradient" className="w-full btn-pop">
+                <Button type="submit" variant="gradient" className="w-full btn-pop border-2">
                   Subscribe
                 </Button>
               </form>
             </div>
           </div>
         </div>
-        {/* 
-        <div className="border-t border-gray-300 dark:border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center mb-4 md:mb-0">
-            <Link
-              href="/"
-              className="flex items-center hover:opacity-80 transition-all duration-300 hover:scale-110"
-            >
-              <Logo className="h-8 w-auto" />
-            </Link>
-          </div>
-          <div className="flex items-center space-x-4">
-            <ThemeSelector />
-            <nav className="flex space-x-4">
-              {navItems.map(({ link }, i) => (
-                <CMSLink
-                  className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-300"
-                  key={i}
-                  {...link}
-                />
-              ))}
-            </nav>
-          </div>
-        </div> */}
 
-        {/* Enhanced Bottom Wave SVG with new color */}
-        {/* <div className="relative mt-16 h-16 overflow-hidden">
+        {/* Copyright & Bottom Links - New */}
+        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-center md:text-left mb-4 md:mb-0">
+              <p className="text-gray-600 dark:text-gray-400">
+                Copyright © {CURRENT_YEAR} JS SBU. All rights reserved.
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-6">
+              <Link
+                href="/privacy-policy"
+                className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+              >
+                Terms of Service
+              </Link>
+              <div className="flex items-center ml-2">
+                <span className="text-gray-600 dark:text-gray-400 mr-2">Theme:</span>
+                <ThemeSelector />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Enhanced Bottom Wave SVG with vibrant colors */}
+        <div className="relative h-16 overflow-hidden">
           <svg
-            className="absolute bottom-0 w-full h-16"
+            className="absolute bottom-0 w-full h-24"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
+            preserveAspectRatio="none"
           >
             <path
               fill="hsl(328, 100%, 54%)"
-              fillOpacity="0.15"
-              d="M0,160L48,170.7C96,181,192,203,288,181.3C384,160,480,96,576,74.7C672,53,768,75,864,96C960,117,1056,139,1152,133.3C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+              fillOpacity="0.1"
+              d="M0,224L40,213.3C80,203,160,181,240,181.3C320,181,400,203,480,218.7C560,235,640,245,720,229.3C800,213,880,171,960,170.7C1040,171,1120,213,1200,218.7C1280,224,1360,192,1400,176L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
+            ></path>
+            <path
+              fill="hsl(328, 100%, 54%)"
+              fillOpacity="0.05"
+              d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,261.3C960,256,1056,224,1152,224C1248,224,1344,256,1392,272L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             ></path>
           </svg>
-        </div> */}
+        </div>
       </div>
     </footer>
   )
