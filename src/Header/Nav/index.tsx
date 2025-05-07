@@ -141,10 +141,12 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [isClient, setIsClient] = useState(false)
   const pathname = usePathname()
 
   // Handle screen size detection safely with useEffect
   useEffect(() => {
+    setIsClient(true)
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
@@ -184,6 +186,11 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
       }
     }
   }, [closeTimeout])
+
+  // Only render mobile/desktop content after client-side hydration
+  if (!isClient) {
+    return null // or a loading state if preferred
+  }
 
   const navItems = [
     { label: 'Home', href: '/' as string },

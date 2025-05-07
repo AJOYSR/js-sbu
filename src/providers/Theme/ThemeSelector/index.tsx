@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import React, { useState } from 'react'
-import { Sun, Moon, Laptop, Palette } from 'lucide-react'
+import { Sun, Moon, Laptop, Palette, Check } from 'lucide-react'
 
 import type { Theme } from './types'
 
@@ -53,33 +53,29 @@ export const ThemeSelector: React.FC = () => {
       >
         <div className="flex items-center gap-2">
           {getIconForCurrentTheme()}
-          <span className="sr-only md:not-sr-only md:inline-block text-sm font-medium">
+          <div className="h-4 w-[1px] bg-primary/20" />
+          <span className="sr-only md:not-sr-only md:inline-block text-sm font-medium whitespace-nowrap">
             {value.charAt(0).toUpperCase() + value.slice(1)}
           </span>
         </div>
       </SelectTrigger>
       <SelectContent className="w-40 border border-primary/20 backdrop-blur-md">
-        <SelectItem
-          value="auto"
-          className="flex items-center gap-2 py-2.5 hover:bg-primary/10 hover:text-primary transition-all"
-        >
-          <Laptop className="h-4 w-4 text-primary" />
-          <span>Auto</span>
-        </SelectItem>
-        <SelectItem
-          value="light"
-          className="flex items-center gap-2 py-2.5 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-600 dark:hover:text-amber-400 transition-all"
-        >
-          <Sun className="h-4 w-4 text-amber-500" />
-          <span>Light</span>
-        </SelectItem>
-        <SelectItem
-          value="dark"
-          className="flex items-center gap-2 py-2.5 hover:bg-primary/10 hover:text-primary transition-all"
-        >
-          <Moon className="h-4 w-4 text-primary" />
-          <span>Dark</span>
-        </SelectItem>
+        {['auto', 'light', 'dark'].map((option, index, array) => (
+          <SelectItem
+            key={option}
+            value={option}
+            className={`flex flex-row items-center py-2.5 hover:bg-primary/10 hover:text-primary transition-all h-9 ${
+              index !== array.length - 1 ? 'border-b border-primary/10' : ''
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              {option === 'auto' && <Laptop className="h-4 w-4 text-primary mr-2" />}
+              {option === 'light' && <Sun className="h-4 w-4 text-amber-500 mr-2" />}
+              {option === 'dark' && <Moon className="h-4 w-4 text-primary mr-2" />}
+              <span>{option.charAt(0).toUpperCase() + option.slice(1)}</span>
+            </div>
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   )
