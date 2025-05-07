@@ -24,25 +24,19 @@ export const Logo = (props: Props) => {
 
   const LogoContent = (
     <div className={clsx('flex items-center gap-2', className)}>
-      {/* React Logo Icon */}
-      <div className="relative h-10 w-10 flex-shrink-0 animate-spin-slow">
-        <div className="absolute inset-0 rounded-full border-[2.5px] border-primary opacity-75"></div>
-        <div className="absolute inset-0 rounded-full border-[2.5px] border-transparent border-t-primary"></div>
-        <div className="absolute inset-0 rounded-full border-[2.5px] border-transparent border-l-primary"></div>
-        <div className="absolute inset-1.5 flex items-center justify-center">
-          <div className="h-4 w-4 rounded-full bg-primary shadow-[0_0_10px_rgba(var(--primary),0.8)]"></div>
+      {/* JavaScript Logo Icon */}
+      <div className="relative h-10 w-10 flex-shrink-0">
+        <div className="absolute inset-0 rounded-lg bg-[#F7DF1E] shadow-lg"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-[#000000] font-bold text-xl">JS</span>
         </div>
       </div>
 
       {/* Title */}
       <div className="flex items-center gap-1 text-2xl font-bold leading-none">
-        <span className="bg-gradient-to-r from-primary via-primary to-pink-500 bg-clip-text text-transparent">
-          JS-SBU
-        </span>
-        <span className="text-primary font-extrabold">@</span>
-        <span className="bg-gradient-to-r from-pink-500 to-primary bg-clip-text text-transparent">
-          BS23
-        </span>
+        <span className="text-[#F7DF1E]">JS-SBU</span>
+        <span className="text-gray-900 dark:text-white font-extrabold">@</span>
+        <span className="text-[#DD0031]">BS23</span>
       </div>
     </div>
   )

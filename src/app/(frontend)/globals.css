@@ -23,8 +23,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Updated even more vibrant primary color - electric magenta */
-    --primary: 328 100% 54%;
+    /* Updated modern primary color - vibrant blue */
+    --primary: 210 100% 50%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -33,7 +33,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 328 94% 92%;
+    --accent: 210 94% 92%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -41,7 +41,7 @@
 
     --border: 240 6% 90%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 328 100% 54%;
+    --ring: 210 100% 50%;
 
     --radius: 0.75rem;
 
@@ -60,8 +60,8 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    /* Updated even more vibrant primary color for dark mode */
-    --primary: 328 100% 60%;
+    /* Updated primary color for dark mode */
+    --primary: 210 100% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -70,7 +70,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 328 94% 25%;
+    --accent: 210 94% 25%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -78,7 +78,7 @@
 
     --border: 0, 0%, 15%, 0.5;
     --input: 217.2 32.6% 17.5%;
-    --ring: 328 94% 60%;
+    --ring: 210 94% 60%;
 
     --success: 160 84% 39%;
     --warning: 38 92% 50%;
@@ -181,14 +181,14 @@ html[data-theme='light'] {
   animation: spin-slow 12s linear infinite;
 }
 
-/* Enhanced button gradient for more pop */
+/* Updated button gradient for more pop */
 .btn-gradient {
-  background: linear-gradient(135deg, hsl(328, 100%, 54%) 0%, hsl(310, 95%, 65%) 100%);
+  background: linear-gradient(135deg, hsl(210, 100%, 50%) 0%, hsl(230, 95%, 65%) 100%);
   transition: all 0.3s ease;
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(135deg, hsl(328, 100%, 50%) 0%, hsl(310, 95%, 60%) 100%);
+  background: linear-gradient(135deg, hsl(210, 100%, 45%) 0%, hsl(230, 95%, 60%) 100%);
   transform: translateY(-2px);
   box-shadow:
     0 7px 14px rgba(50, 50, 93, 0.1),
@@ -266,7 +266,7 @@ html[data-theme='light'] {
   transform: translateY(0) scale(0.97);
 }
 
-/* New gradient borders */
+/* Updated gradient borders */
 .gradient-border {
   position: relative;
   background-clip: padding-box;
@@ -284,23 +284,23 @@ html[data-theme='light'] {
   z-index: -1;
   margin: -2px;
   border-radius: inherit;
-  background: linear-gradient(to right, hsl(328, 100%, 54%), hsl(310, 95%, 65%));
+  background: linear-gradient(to right, hsl(210, 100%, 50%), hsl(230, 95%, 65%));
 }
 
-/* Neon glow effect */
+/* Updated neon glow effect */
 .neon-glow {
   box-shadow:
-    0 0 5px rgba(255, 105, 180, 0.2),
-    0 0 10px rgba(255, 105, 180, 0.1),
-    0 0 15px rgba(255, 105, 180, 0.05);
+    0 0 5px rgba(0, 122, 255, 0.2),
+    0 0 10px rgba(0, 122, 255, 0.1),
+    0 0 15px rgba(0, 122, 255, 0.05);
   transition: box-shadow 0.3s ease;
 }
 
 .neon-glow:hover {
   box-shadow:
-    0 0 5px rgba(255, 105, 180, 0.3),
-    0 0 15px rgba(255, 105, 180, 0.2),
-    0 0 25px rgba(255, 105, 180, 0.1);
+    0 0 5px rgba(0, 122, 255, 0.3),
+    0 0 15px rgba(0, 122, 255, 0.2),
+    0 0 25px rgba(0, 122, 255, 0.1);
 }
 
 /* Bouncy hover animation */

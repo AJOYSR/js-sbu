@@ -60,7 +60,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
           <Logo
             loading="eager"
             priority="high"
-            className="invert dark:invert-0"
+            className="h-10 w-auto"
             isLink={true}
             linkClassName="group transition-all duration-300 hover-scale btn-pop animate-fadeIn"
           />
