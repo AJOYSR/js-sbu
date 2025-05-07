@@ -94,7 +94,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
           <div className="mb-4 flex justify-end items-center">
             <ThemeSelector />
           </div>
-          <HeaderNav header={header} />
+          <HeaderNav header={header} onMobileNavClick={() => setMobileMenuOpen(false)} />
 
           {/* Added CTA button to mobile menu */}
           <div className="mt-6 pt-6 border-t border-primary/10">

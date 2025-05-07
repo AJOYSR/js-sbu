@@ -63,7 +63,8 @@ const Dropdown: React.FC<{
   onHover: () => void
   onLeave: () => void
   isMobile?: boolean
-}> = ({ items, label, isOpen, onHover, onLeave, isMobile = false }) => {
+  onMobileNavClick?: () => void
+}> = ({ items, label, isOpen, onHover, onLeave, isMobile = false, onMobileNavClick }) => {
   const pathname = usePathname()
   const IconComponent = navIcons[label as keyof typeof navIcons] || null
 
@@ -90,6 +91,7 @@ const Dropdown: React.FC<{
               <Link
                 key={index}
                 href={item.href || '#'}
+                onClick={onMobileNavClick}
                 className={`block py-2 px-2 text-sm transition-colors duration-150 rounded-md ${
                   pathname === item.href
                     ? 'text-primary font-medium bg-primary/5'
@@ -123,6 +125,7 @@ const Dropdown: React.FC<{
           <Link
             key={index}
             href={item.href || '#'}
+            onClick={onMobileNavClick}
             className={`block px-4 py-2.5 text-sm transition-all duration-150 mx-1 rounded-md ${
               pathname === item.href
                 ? 'text-primary font-medium bg-primary/5'
@@ -137,7 +140,10 @@ const Dropdown: React.FC<{
   )
 }
 
-export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
+export const HeaderNav: React.FC<{
+  header: HeaderType
+  onMobileNavClick?: () => void
+}> = ({ onMobileNavClick }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -226,6 +232,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
               <Link
                 key={item.label}
                 href={item.href || '#'}
+                onClick={onMobileNavClick}
                 className={`flex items-center gap-2 py-2 px-2 transition-colors rounded-md ${
                   pathname === item.href
                     ? 'text-primary font-medium bg-primary/5'
@@ -246,6 +253,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
                 onHover={() => handleDropdownToggle(item.label)}
                 onLeave={() => {}}
                 isMobile={true}
+                onMobileNavClick={onMobileNavClick}
               />
             )
           }
@@ -291,6 +299,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = () => {
               isOpen={openDropdown === item.label}
               onHover={() => handleDropdownHover(item.label)}
               onLeave={handleDropdownLeave}
+              onMobileNavClick={onMobileNavClick}
             />
           )
         }
