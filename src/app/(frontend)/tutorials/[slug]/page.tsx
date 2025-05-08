@@ -9,9 +9,12 @@ import configPromise from '@payload-config'
 import { Tutorial } from '@/payload-types'
 import RichText from '@/components/RichText'
 
+type PageParams = Promise<{ slug: string }>
+
 // Generate metadata for SEO
-export async function generateMetadata({ params }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
   try {
+    const { slug } = await params
     const payload = await getPayload({ config: configPromise })
 
     const tutorial = await payload
@@ -19,7 +22,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
         collection: 'tutorials',
         where: {
           slug: {
-            equals: params.slug,
+            equals: slug,
           },
         },
         depth: 1,
@@ -59,8 +62,9 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   }
 }
 
-export default async function TutorialPage({ params: { slug } }) {
+export default async function TutorialPage({ params }: { params: PageParams }) {
   try {
+    const { slug } = await params
     const payload = await getPayload({ config: configPromise })
 
     const tutorial = await payload
