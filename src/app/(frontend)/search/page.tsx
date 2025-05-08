@@ -1,4 +1,4 @@
-import type { Metadata } from 'next/types'
+import type { Metadata, ResolvingMetadata } from 'next'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import configPromise from '@payload-config'
@@ -10,13 +10,13 @@ import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
 import { Search as SearchIcon } from 'lucide-react'
 
-type Args = {
-  searchParams: Promise<{
-    q: string
-  }>
+type Props = {
+  params: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
-export default async function Page({ searchParams: searchParamsPromise }: Args) {
-  const { q: query } = await searchParamsPromise
+
+export default async function Page({ searchParams }: Props) {
+  const { q: query } = (await searchParams) || {}
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
@@ -35,26 +35,10 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       ? {
           where: {
             or: [
-              {
-                title: {
-                  like: query,
-                },
-              },
-              {
-                'meta.description': {
-                  like: query,
-                },
-              },
-              {
-                'meta.title': {
-                  like: query,
-                },
-              },
-              {
-                slug: {
-                  like: query,
-                },
-              },
+              { title: { like: query } },
+              { 'meta.description': { like: query } },
+              { 'meta.title': { like: query } },
+              { slug: { like: query } },
             ],
           },
         }
@@ -114,8 +98,12 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   )
 }
 
-export function generateMetadata({ searchParams }: { searchParams: { q?: string } }): Metadata {
+export async function generateMetadata(
+  { searchParams }: Props,
+  _parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const params = await searchParams
   return {
-    title: searchParams.q ? `Search: ${searchParams.q} | JS-SBU ` : `Search | JS-SBU `,
+    title: params.q ? `Search: ${params.q} | JS-SBU` : `Search | JS-SBU`,
   }
 }

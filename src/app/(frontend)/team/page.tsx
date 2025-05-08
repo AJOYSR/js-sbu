@@ -31,9 +31,9 @@ const teamCategories = [
 
 // Define props type
 type Props = {
-  searchParams?: {
+  searchParams: Promise<{
     page?: string
-  }
+  }>
 }
 
 // Items per page
@@ -41,7 +41,8 @@ const ITEMS_PER_PAGE = 6
 
 export default async function TeamPage({ searchParams }: Props) {
   // Parse current page from search params or default to 1
-  const currentPage = Number(searchParams?.page) || 1
+  const params = await searchParams
+  const currentPage = Number(params?.page) || 1
 
   try {
     const payload = await getPayload({ config: configPromise })

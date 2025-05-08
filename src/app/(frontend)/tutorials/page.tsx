@@ -17,22 +17,23 @@ export const metadata: Metadata = {
 export default async function TutorialsPage({
   searchParams,
 }: {
-  searchParams?: { category?: string; level?: string; search?: string }
+  searchParams: Promise<{ category?: string; level?: string; search?: string }>
 }) {
+  const params = await searchParams
   const payload = await getPayload({ config: configPromise })
 
   const where: any = {}
 
-  if (searchParams?.category && searchParams.category !== 'All') {
-    where.category = { equals: searchParams.category }
+  if (params?.category && params.category !== 'All') {
+    where.category = { equals: params.category }
   }
 
-  if (searchParams?.level && searchParams.level !== 'All Levels') {
-    where.level = { equals: searchParams.level.toLowerCase() }
+  if (params?.level && params.level !== 'All Levels') {
+    where.level = { equals: params.level.toLowerCase() }
   }
 
-  if (searchParams?.search) {
-    where.title = { like: searchParams.search }
+  if (params?.search) {
+    where.title = { like: params.search }
   }
 
   const { docs: tutorials } = await payload
@@ -72,9 +73,9 @@ export default async function TutorialsPage({
             initialTutorials={tutorials}
             categories={categories}
             levels={levels}
-            initialCategory={searchParams?.category || 'All'}
-            initialLevel={searchParams?.level || 'All Levels'}
-            initialSearch={searchParams?.search || ''}
+            initialCategory={params?.category || 'All'}
+            initialLevel={params?.level || 'All Levels'}
+            initialSearch={params?.search || ''}
           />
         </div>
 
