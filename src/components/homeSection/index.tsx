@@ -2,7 +2,14 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { fetchDocs } from '@/utilities/fetchDocs'
-import { Portfolio, Post, Slide, Partner } from '@/payload-types'
+import type {
+  Slide,
+  Partner,
+  Portfolio as IPortfolio,
+  Post as IPost,
+  Media,
+  User,
+} from '@/payload-types'
 import { ArrowRight } from 'lucide-react'
 import HeroSlider from '@/components/HeroSlider'
 
@@ -10,8 +17,55 @@ import HeroSlider from '@/components/HeroSlider'
 interface HomeSectionProps {
   slides?: Slide[]
   partners?: Partner[]
-  projects?: Portfolio[]
-  posts?: Post[]
+  projects?: IPortfolio[]
+  posts?: IPost[]
+}
+
+// Add these interfaces based on the collections
+interface Portfolio {
+  id: string
+  title: string
+  description: string
+  slug: string
+  image: Media | number | null
+  category: string
+  technologies: { tech: string }[]
+}
+
+interface Post {
+  id: string
+  title: string
+  description: string
+  slug: string
+  meta: {
+    image: Media | number | null
+    description: string
+  }
+  publishedAt: string | null
+  authors: (User | number | null)[]
+}
+
+const getImageUrl = (media: Media | number | null | undefined): string => {
+  if (typeof media === 'object' && media !== null && 'url' in media && media.url) {
+    return media.url
+  }
+  return '/placeholder.jpg'
+}
+
+const getUserName = (user: User | number | null | undefined): string => {
+  if (typeof user === 'object' && user !== null && 'name' in user && user.name) {
+    return user.name
+  }
+  return ''
+}
+
+const formatDate = (date: string | null | undefined): string => {
+  if (!date) return ''
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 
 const HomeSection = async () => {
@@ -40,7 +94,7 @@ const HomeSection = async () => {
         equals: 'published',
       },
     },
-  })) as Portfolio[]
+  })) as IPortfolio[]
 
   // Fetch latest blog posts
   const posts = (await fetchDocs('posts', {
@@ -51,7 +105,7 @@ const HomeSection = async () => {
         equals: 'published',
       },
     },
-  })) as Post[]
+  })) as IPost[]
 
   return (
     <div className="relative z-10">
@@ -177,8 +231,188 @@ const HomeSection = async () => {
         </div>
       </section>
 
+      {/* Featured Portfolio Section */}
+      <section className="py-10 bg-gradient-to-b from-card/30 to-background relative overflow-hidden">
+        <div className="absolute -top-32 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-32 right-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 animate-fadeIn">
+              FEATURED WORK
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient animation-delay-200 animate-fadeIn">
+              Recent Success Stories
+            </h2>
+            <p className="text-foreground/90 max-w-2xl mx-auto animation-delay-300 animate-fadeIn">
+              Explore some of our most impactful projects and see how we help businesses transform
+              their digital presence
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects &&
+              projects.map((project, index) => (
+                <Link
+                  key={project.id}
+                  href={`/portfolio/${project.id}`}
+                  className={`group relative glass-card rounded-2xl overflow-hidden card-hover animation-delay-${200 + index * 100} animate-fadeIn hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300`}
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <Image
+                      src={getImageUrl(project.image)}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {project.technologies?.slice(0, 3).map((tech, i) => (
+                          <span
+                            key={i}
+                            className="text-xs px-2 py-1 rounded-md bg-white/10 text-white backdrop-blur-sm"
+                          >
+                            {tech.tech}
+                          </span>
+                        ))}
+                      </div>
+                      {/* <h3 className="text-xl font-bold text-white mb-2 line-clamp-2"> */}
+                      <h3 className="text-xl font-bold mb-3 text-gradient line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-white/80 text-sm line-clamp-2 mb-3">
+                        {project.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-6 bg-gradient-to-b from-background/50 to-background">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                        {project.category}
+                      </span>
+                      <div className="flex items-center text-primary group/link">
+                        <span className="font-medium text-sm">View Case Study</span>
+                        <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Blogs Section */}
+      <section className="py-10 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-1/2 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 blur-3xl"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 animate-fadeIn">
+              INSIGHTS
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient animation-delay-200 animate-fadeIn">
+              Latest from Our Blog
+            </h2>
+            <p className="text-foreground/90 max-w-2xl mx-auto animation-delay-300 animate-fadeIn">
+              Stay updated with our latest thoughts on technology, innovation, and digital
+              transformation
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {posts &&
+              posts.map((post, index) => (
+                <Link
+                  key={post.id}
+                  href={`/posts/${post.slug}`}
+                  className={`group relative glass-card rounded-2xl overflow-hidden card-hover animation-delay-${200 + index * 100} animate-fadeIn hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300`}
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={getImageUrl(post.meta?.image)}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
+                    <div className="absolute top-4 right-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white backdrop-blur-sm">
+                        {formatDate(post.publishedAt)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6 relative">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-primary font-semibold text-sm">
+                          {getUserName(post.authors?.[0])?.charAt(0) || 'A'}
+                        </span>
+                      </div>
+                      <span className="text-sm text-foreground/60">
+                        {getUserName(post.authors?.[0])}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-gradient line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                      {post.title}
+                    </h3>
+                    <p className="text-foreground/80 text-sm mb-4 line-clamp-2">
+                      {post.meta?.description}
+                    </p>
+                    <div className="flex items-center text-primary group/link">
+                      <span className="font-medium text-sm">Read Article</span>
+                      <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About JS SBU Section */}
+      <section className="py-10 bg-gradient-to-b from-card/30 to-background relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 animate-fadeIn">
+                OUR STORY
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient animation-delay-200 animate-fadeIn">
+                JavaScript Solutions Business Unit
+              </h2>
+            </div>
+
+            <div className="glass-card rounded-2xl p-8 md:p-12 shadow-md relative overflow-hidden animation-delay-300 animate-fadeIn">
+              <div className="prose prose-lg dark:prose-invert mx-auto">
+                <p className="text-foreground/90 text-lg leading-relaxed mb-6">
+                  At the JavaScript Solutions Business Unit, we&apos;re passionate about crafting
+                  exceptional digital experiences that drive business growth and innovation. Our
+                  team of expert developers and designers specializes in modern JavaScript
+                  frameworks and technologies.
+                </p>
+                <p className="text-foreground/90 text-lg leading-relaxed mb-6">
+                  With a deep understanding of both front-end and back-end development, we deliver
+                  comprehensive solutions that help businesses thrive in the digital age. From
+                  enterprise-level applications to innovative startups, we&apos;re committed to
+                  excellence in every project we undertake.
+                </p>
+                <div className="flex justify-center mt-8">
+                  <Link
+                    href="/about"
+                    className="inline-flex items-center text-primary hover:text-primary/80 group"
+                  >
+                    <span className="text-gradient">Learn more about our team</span>
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Overview Section */}
-      <section className="py-20">
+      <section className="py-10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient animation-delay-200 animate-fadeIn">
@@ -255,7 +489,7 @@ const HomeSection = async () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-background to-card/30 relative overflow-hidden">
+      <section className="py-10 bg-gradient-to-b from-background to-card/30 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gradient animation-delay-200 animate-fadeIn">
