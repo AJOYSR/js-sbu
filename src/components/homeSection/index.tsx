@@ -13,7 +13,7 @@ import type {
 import { ArrowRight } from 'lucide-react'
 import HeroSlider from '@/components/HeroSlider'
 
-// Define the props for the HomeSection component
+// Define the props for the HomeSection component up
 interface HomeSectionProps {
   slides?: Slide[]
   partners?: Partner[]
