@@ -10,13 +10,14 @@ import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
 import { Search as SearchIcon } from 'lucide-react'
 
-type Props = {
-  params: Promise<{ [key: string]: string | string[] | undefined }>
+interface PageProps {
+  params: Promise<any>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function Page({ searchParams }: Props) {
-  const { q: query } = (await searchParams) || {}
+export default async function Page({ searchParams }: PageProps) {
+  const resolvedSearchParams = await searchParams
+  const { q: query } = resolvedSearchParams || {}
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
@@ -99,11 +100,13 @@ export default async function Page({ searchParams }: Props) {
 }
 
 export async function generateMetadata(
-  { searchParams }: Props,
+  { searchParams }: PageProps,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const params = await searchParams
+  const resolvedSearchParams = await searchParams
   return {
-    title: params.q ? `Search: ${params.q} | JS-SBU` : `Search | JS-SBU`,
+    title: resolvedSearchParams.q
+      ? `Search: ${resolvedSearchParams.q} | JS-SBU`
+      : `Search | JS-SBU`,
   }
 }
