@@ -11,12 +11,12 @@ import { CardPostData } from '@/components/Card'
 import { Search as SearchIcon } from 'lucide-react'
 
 type Props = {
-  params: Promise<{ [key: string]: string | string[] | undefined }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  params: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export default async function Page({ searchParams }: Props) {
-  const { q: query } = (await searchParams) || {}
+  const { q: query } = searchParams || {}
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
@@ -102,7 +102,7 @@ export async function generateMetadata(
   { searchParams }: Props,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const params = await searchParams
+  const params = searchParams
   return {
     title: params.q ? `Search: ${params.q} | JS-SBU` : `Search | JS-SBU`,
   }
