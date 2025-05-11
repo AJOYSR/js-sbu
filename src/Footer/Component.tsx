@@ -19,6 +19,11 @@ import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { Button } from '@/components/ui/button'
+import { FormBlock } from '@/blocks/Form/Component'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
+import { Form } from '@payloadcms/plugin-form-builder/types'
+import { NewsletterFormClient } from './NewsletterFormClient'
 
 // Use a constant for the copyright year to avoid hydration issues
 const CURRENT_YEAR = new Date().getFullYear()
@@ -26,6 +31,23 @@ const CURRENT_YEAR = new Date().getFullYear()
 export async function Footer() {
   const footer: Footer = await getCachedGlobal('footer', 1)()
   const navItems = footer?.navItems || []
+
+  // Fetch the newsletter form from Payload CMS
+  const payload = await getPayload({ config: configPromise })
+
+  // Find the newsletter form by title
+  const formQuery = await payload.find({
+    collection: 'forms',
+    where: {
+      title: {
+        equals: 'NewsLetter',
+      },
+    },
+  })
+
+  // Get the form or null if not found
+  const newsletterForm = formQuery.docs.length > 0 ? formQuery.docs[0] : null
+  console.log('🚀 ~ Footer ~ newsletterForm:', newsletterForm)
 
   const quickLinks = [
     { name: 'Home', href: '/' },
@@ -192,20 +214,25 @@ export async function Footer() {
 
             <div className="gradient-border p-4 bg-white/10 dark:bg-gray-800/50 shadow-sm backdrop-blur-sm">
               <h4 className="text-lg font-semibold mb-3 text-white">Newsletter</h4>
-              <form className="space-y-3">
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+              {newsletterForm ? (
+                <NewsletterFormClient formId={String(newsletterForm.id)} />
+              ) : (
+                /* Fallback form if no form is found in CMS */
+                <form className="space-y-3">
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="Enter your email"
+                      className="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
                              focus:outline-none focus:border-primary text-gray-800 dark:text-gray-300 pr-10"
-                  />
-                  <Mail className="absolute right-3 top-2.5 text-gray-400" size={20} />
-                </div>
-                <Button type="submit" variant="gradient" className="w-full btn-pop border-2">
-                  Subscribe
-                </Button>
-              </form>
+                    />
+                    <Mail className="absolute right-3 top-2.5 text-gray-400" size={20} />
+                  </div>
+                  <Button type="submit" variant="gradient" className="w-full btn-pop border-2">
+                    Subscribe
+                  </Button>
+                </form>
+              )}
             </div>
           </div>
         </div>

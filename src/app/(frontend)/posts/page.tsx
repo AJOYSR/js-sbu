@@ -27,7 +27,6 @@ export default async function Page() {
       meta: true,
     },
   })
-  console.log('🚀 ~ Page ~ posts:', posts)
 
   return (
     <div className="min-h-screen py-16 animate-fadeIn">
