@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
+import { notFound } from 'next/navigation'
 
 import type { Page as PageType } from '@/payload-types'
 
@@ -14,6 +15,9 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { queryPageBySlug } from '@/utilities/queryPageBySlug'
 import PageClient from './page.client'
 import HomeSection from '@/components/homeSection'
+
+// Static routes that should not be handled by this dynamic route
+const STATIC_ROUTES = ['home', 'about', 'vision-mission', 'team']
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -29,10 +33,10 @@ export async function generateStaticParams() {
 
   const params = pages.docs
     ?.filter((doc) => {
-      return doc.slug !== 'home'
+      return doc?.slug && !STATIC_ROUTES.includes(doc.slug)
     })
     .map(({ slug }) => {
-      return { slug }
+      return { slug: slug || '' }
     })
 
   return params
@@ -40,13 +44,18 @@ export async function generateStaticParams() {
 
 type Args = {
   params: Promise<{
-    slug?: string
+    slug: string
   }>
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'home' } = await paramsPromise
   const url = '/' + slug
+
+  // If this is a static route, return 404
+  if (STATIC_ROUTES.includes(slug)) {
+    notFound()
+  }
 
   let page: PageType | null
 
@@ -94,6 +103,12 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }): Promise<Metadata> {
   const { slug = 'home' } = await paramsPromise
+
+  // If this is a static route, return empty metadata
+  if (STATIC_ROUTES.includes(slug)) {
+    return {}
+  }
+
   let page: PageType | null
 
   page = await queryPageBySlug({
