@@ -22,7 +22,7 @@ Add these environment variables in your Vercel project settings:
 | `NEXT_PUBLIC_SERVER_URL`    | The public URL of your website                             | `https://js-sbu.vercel.app`                   |
 | `PAYLOAD_PUBLIC_SERVER_URL` | Used by Payload CMS for media URLs                         | `https://js-sbu.vercel.app`                   |
 | `NEXT_PUBLIC_PAYLOAD_URL`   | Used by the frontend for Payload requests                  | `https://js-sbu.vercel.app`                   |
-| `BLOB_READ_WRITE_TOKEN`     | Automatically added by Vercel when you set up Blob storage | -                                             |
+| `NEW_BLOB_READ_WRITE_TOKEN` | Automatically added by Vercel when you set up Blob storage | -                                             |
 
 ## 3. How to Add Environment Variables
 

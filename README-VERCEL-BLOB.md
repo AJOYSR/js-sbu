@@ -26,7 +26,7 @@ This guide explains how we've implemented Vercel Blob Storage for handling media
          },
        },
        clientUploads: true,
-       token: process.env.BLOB_READ_WRITE_TOKEN,
+       token: process.env.NEW_BLOB_READ_WRITE_TOKEN,
        addRandomSuffix: true,
      }),
    ],
@@ -43,7 +43,7 @@ This guide explains how we've implemented Vercel Blob Storage for handling media
 
 For this to work in production, you need to set up the following environment variables in your Vercel project:
 
-1. `BLOB_READ_WRITE_TOKEN` - Automatically added by Vercel when you set up Blob storage
+1. `NEW_BLOB_READ_WRITE_TOKEN` - Automatically added by Vercel when you set up Blob storage
 2. `NEXT_PUBLIC_SERVER_URL` - Your website's public URL (e.g., https://js-sbu.vercel.app)
 3. `PAYLOAD_PUBLIC_SERVER_URL` - Same as above
 4. `NEXT_PUBLIC_PAYLOAD_URL` - Same as above
@@ -62,7 +62,7 @@ If you already have media files in your project, you'll need to re-upload them t
 
 If images are not displaying correctly:
 
-1. Check that the Vercel Blob storage is properly set up and the `BLOB_READ_WRITE_TOKEN` is correctly set.
+1. Check that the Vercel Blob storage is properly set up and the `NEW_BLOB_READ_WRITE_TOKEN` is correctly set.
 2. Verify that all environment variables are correctly configured.
 3. Try uploading a new test image to see if it works with the new configuration.
 4. Check the Vercel deployment logs for any errors related to Blob storage.

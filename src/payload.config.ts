@@ -101,7 +101,7 @@ export default buildConfig({
       // Disable client-side uploads to avoid the UploadHandlersProvider error
       clientUploads: false,
       // Use the token provided by Vercel
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      token: process.env.NEW_BLOB_READ_WRITE_TOKEN,
       // Add a random suffix to avoid filename collisions
       addRandomSuffix: true,
     }),
