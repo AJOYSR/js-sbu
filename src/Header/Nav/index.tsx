@@ -14,6 +14,7 @@ import {
   Image,
   BookOpen,
   Mail,
+  Globe,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
@@ -66,6 +67,7 @@ const Dropdown: React.FC<{
   onMobileNavClick?: () => void
 }> = ({ items, label, isOpen, onHover, onLeave, isMobile = false, onMobileNavClick }) => {
   const pathname = usePathname()
+
   const IconComponent = navIcons[label as keyof typeof navIcons] || null
 
   if (isMobile) {
@@ -86,20 +88,22 @@ const Dropdown: React.FC<{
           />
         </div>
         {isOpen && (
-          <div className="pl-4 space-y-2 border-l-2 border-primary/20 animate-fadeIn">
+          <div className="pl-4 space-y-2 border-l-2 border-primary/30 animate-fadeIn">
             {items.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href || '#'}
-                onClick={onMobileNavClick}
-                className={`block py-2 px-2 text-sm transition-colors duration-150 rounded-md ${
-                  pathname === item.href
-                    ? 'text-primary font-medium bg-primary/5'
-                    : 'text-foreground/80 hover:text-primary hover:bg-primary/5'
-                }`}
-              >
-                {item.label}
-              </Link>
+              <React.Fragment key={index}>
+                <Link
+                  href={item.href || '#'}
+                  onClick={onMobileNavClick}
+                  className={`block py-2 px-2 text-sm transition-colors duration-150 rounded-md ${
+                    pathname === item.href
+                      ? 'text-primary font-medium bg-primary/20'
+                      : 'text-foreground hover:text-primary hover:bg-primary/15'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+                {index < items.length - 1 && <div className="h-px bg-primary/30 mx-2"></div>}
+              </React.Fragment>
             ))}
           </div>
         )}
@@ -117,23 +121,25 @@ const Dropdown: React.FC<{
         />
       </button>
       <div
-        className={`absolute left-0 mt-1.5 w-60 glass-card rounded-xl shadow-lg py-2 z-50 transition-all duration-200 origin-top-left border border-primary/20
+        className={`absolute left-0 mt-1.5 w-60 bg-card rounded-xl shadow-lg py-2 z-50  transition-all duration-200 origin-top-left border border-primary/20
           ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'}`}
       >
         <div className="h-1 w-12 bg-gradient-to-r from-primary to-pink-400 rounded-full mx-auto mb-2"></div>
         {items.map((item, index) => (
-          <Link
-            key={index}
-            href={item.href || '#'}
-            onClick={onMobileNavClick}
-            className={`block px-4 py-2.5 text-sm transition-all duration-150 mx-1 rounded-md ${
-              pathname === item.href
-                ? 'text-primary font-medium bg-primary/5'
-                : 'text-foreground/80 hover:bg-primary/10 hover:text-primary hover:translate-x-1'
-            }`}
-          >
-            {item.label}
-          </Link>
+          <React.Fragment key={index}>
+            <Link
+              href={item.href || '#'}
+              onClick={onMobileNavClick}
+              className={`block px-4 py-2.5 text-sm transition-all duration-150 mx-1 rounded-md ${
+                pathname === item.href
+                  ? 'text-primary font-medium bg-primary/5'
+                  : 'text-foreground/80 hover:bg-primary/10 hover:text-primary hover:translate-x-1'
+              }`}
+            >
+              {item.label}
+            </Link>
+            {index < items.length - 1 && <div className="h-px bg-primary/10 mx-4 my-1"></div>}
+          </React.Fragment>
         ))}
       </div>
     </div>
@@ -143,13 +149,12 @@ const Dropdown: React.FC<{
 export const HeaderNav: React.FC<{
   header: HeaderType
   onMobileNavClick?: () => void
-}> = ({ onMobileNavClick }) => {
+}> = ({ onMobileNavClick, header }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const pathname = usePathname()
-
   // Handle screen size detection safely with useEffect
   useEffect(() => {
     setIsClient(true)
@@ -218,49 +223,58 @@ export const HeaderNav: React.FC<{
       dropdown: insightsDropdown,
     },
     { label: 'Contact', href: '/contact' as string },
+    {
+      label: header?.navItems?.[0]?.link?.label,
+      href: header?.navItems?.[0]?.link?.url,
+    },
   ]
 
   // Render mobile navigation
   if (isMobile) {
     return (
-      <nav className="flex flex-col space-y-2">
-        {navItems.map((item) => {
+      <nav className="flex flex-col space-y-1">
+        {navItems.map((item, index) => {
           if ('href' in item) {
             const IconComponent = navIcons[item.label as keyof typeof navIcons] || null
 
             return (
-              <Link
-                key={item.label}
-                href={item.href || '#'}
-                onClick={onMobileNavClick}
-                className={`flex items-center gap-2 py-2 px-2 transition-colors rounded-md ${
-                  pathname === item.href
-                    ? 'text-primary font-medium bg-primary/5'
-                    : 'text-foreground/80 hover:text-primary hover:bg-primary/5'
-                }`}
-              >
-                {IconComponent && <IconComponent className="w-4 h-4 text-primary" />}
-                {item.label}
-              </Link>
+              <React.Fragment key={index}>
+                <Link
+                  href={item.href || '#'}
+                  onClick={onMobileNavClick}
+                  className={`flex items-center gap-2 py-2 px-2 transition-colors rounded-md ${
+                    pathname === item.href
+                      ? 'text-primary font-medium bg-primary/20'
+                      : 'text-foreground hover:text-primary hover:bg-primary/15'
+                  }`}
+                >
+                  {IconComponent && <IconComponent className="w-4 h-4 text-primary" />}
+                  {item.label}
+                </Link>
+                {index < navItems.length - 1 && <div className="h-px bg-primary/30 mx-2"></div>}
+              </React.Fragment>
             )
           } else {
             return (
-              <Dropdown
-                key={item.label}
-                label={item.label}
-                items={item.dropdown}
-                isOpen={openDropdown === item.label}
-                onHover={() => handleDropdownToggle(item.label)}
-                onLeave={() => {}}
-                isMobile={true}
-                onMobileNavClick={onMobileNavClick}
-              />
+              <React.Fragment key={item.label}>
+                <Dropdown
+                  label={item.label}
+                  items={item.dropdown}
+                  isOpen={openDropdown === item.label}
+                  onHover={() => handleDropdownToggle(item.label)}
+                  onLeave={() => {}}
+                  isMobile={true}
+                  onMobileNavClick={onMobileNavClick}
+                />
+                {index < navItems.length - 1 && <div className="h-px bg-primary/30 mx-2"></div>}
+              </React.Fragment>
             )
           }
         })}
+        <div className="h-px bg-primary/30 mx-2"></div>
         <Link
           href="/search"
-          className="flex items-center gap-2 py-2 px-2 text-primary hover:bg-primary/5 rounded-md transition-colors"
+          className="flex items-center gap-2 py-2 px-2 text-primary hover:bg-primary/15 rounded-md transition-colors"
         >
           <SearchIcon className="w-4 h-4" />
           <span>Search</span>
@@ -272,13 +286,13 @@ export const HeaderNav: React.FC<{
   // Desktop navigation
   return (
     <nav className="flex items-center">
-      {navItems.map((item) => {
+      {navItems.map((item, index) => {
         if ('href' in item) {
           const IconComponent = navIcons[item.label as keyof typeof navIcons] || null
 
           return (
             <Link
-              key={item.label}
+              key={index}
               href={item.href || '#'}
               className={`px-3 py-2 transition-all hover-scale flex items-center gap-1.5 ${
                 pathname === item.href

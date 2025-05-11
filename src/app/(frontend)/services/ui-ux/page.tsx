@@ -112,7 +112,7 @@ export default async function UIUXPage() {
                 style={{ animationDelay: `${(index + 1) * 150}ms` }}
               >
                 <h3 className="text-xl font-semibold mb-4 text-primary">{service.title}</h3>
-                <p className="text-gray-600 mb-6">{service.description}</p>
+                <p className="text-gray-600 mb-6 dark:text-gray-400">{service.description}</p>
                 <ul className="space-y-3">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center">
@@ -137,10 +137,13 @@ export default async function UIUXPage() {
                 style={{ animationDelay: `${(index + 1) * 100}ms` }}
               >
                 <h3 className="text-xl font-semibold mb-4 text-primary">{step.phase}</h3>
-                <p className="text-gray-600 mb-4">{step.description}</p>
+                <p className="text-gray-600 mb-4 dark:text-gray-400">{step.description}</p>
                 <ul className="space-y-2">
                   {step.activities.map((activity) => (
-                    <li key={activity} className="flex items-center text-sm text-gray-600">
+                    <li
+                      key={activity}
+                      className="flex items-center text-sm text-gray-600 dark:text-gray-400"
+                    >
                       <span className="text-primary mr-2">•</span>
                       {activity}
                     </li>
@@ -162,7 +165,7 @@ export default async function UIUXPage() {
                 style={{ animationDelay: `${(index + 1) * 100}ms` }}
               >
                 <h3 className="text-xl font-semibold mb-3 text-primary">{benefit.title}</h3>
-                <p className="text-gray-600">{benefit.description}</p>
+                <p className="text-gray-600 dark:text-gray-400">{benefit.description}</p>
               </div>
             ))}
           </div>
@@ -174,7 +177,7 @@ export default async function UIUXPage() {
           <h2 className="text-3xl font-bold mb-6 text-gradient">
             Ready to Transform Your Digital Experience?
           </h2>
-          <p className="text-lg text-gray-700 mb-8">
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
             Let&apos;s work together to create user-centered designs that drive results for your
             business.
           </p>

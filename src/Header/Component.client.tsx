@@ -86,7 +86,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full glass-card border-t border-primary/20 shadow-lg transition-all duration-300 origin-top z-50 ${
+        className={`md:hidden absolute top-full left-0 w-full bg-card border-t border-primary/20 shadow-lg transition-all duration-300 origin-top z-50 ${
           mobileMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 pointer-events-none'
         }`}
       >
