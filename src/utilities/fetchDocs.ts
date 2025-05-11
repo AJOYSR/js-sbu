@@ -31,8 +31,7 @@ export const fetchDocs = async (
           Authorization: `JWT ${token.value}`,
         }),
       },
-      next: { revalidate: 0 },
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     })
 
     if (!res.ok) {
