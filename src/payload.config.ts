@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -87,7 +88,23 @@ export default buildConfig({
   globals: [Header, Footer],
   plugins: [
     ...plugins,
-    // storage-adapter-placeholder
+    // Configure Vercel Blob storage for media files
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        // Enable for the Media collection
+        media: {
+          // Add a prefix to organize files in Vercel Blob
+          prefix: 'media',
+        },
+      },
+      // Disable client-side uploads to avoid the UploadHandlersProvider error
+      clientUploads: false,
+      // Use the token provided by Vercel
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      // Add a random suffix to avoid filename collisions
+      addRandomSuffix: true,
+    }),
   ],
   endpoints: [
     {
