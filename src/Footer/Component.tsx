@@ -47,7 +47,6 @@ export async function Footer() {
 
   // Get the form or null if not found
   const newsletterForm = formQuery.docs.length > 0 ? formQuery.docs[0] : null
-  console.log('🚀 ~ Footer ~ newsletterForm:', newsletterForm)
 
   const quickLinks = [
     { name: 'Home', href: '/' },
