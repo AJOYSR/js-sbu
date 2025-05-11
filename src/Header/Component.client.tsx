@@ -3,13 +3,20 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
-import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { Menu, X } from 'lucide-react'
+
+const ThemeSelector = dynamic(
+  () => import('@/providers/Theme/ThemeSelector').then((mod) => mod.ThemeSelector),
+  {
+    ssr: false,
+  },
+)
 
 interface HeaderClientProps {
   header: Header
