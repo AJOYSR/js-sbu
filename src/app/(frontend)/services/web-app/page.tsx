@@ -107,7 +107,10 @@ export default async function WebAppPage() {
                 <p className="text-gray-600 mb-4 text-sm">{tech.description}</p>
                 <ul className="space-y-2">
                   {tech.features.map((feature) => (
-                    <li key={feature} className="flex items-center text-sm text-gray-600">
+                    <li
+                      key={feature}
+                      className="flex items-center text-sm text-gray-600 dark:text-gray-400"
+                    >
                       <span className="text-primary mr-2">•</span>
                       {feature}
                     </li>
@@ -132,7 +135,9 @@ export default async function WebAppPage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <h3 className="text-xl font-semibold mb-3 text-gradient">{service.title}</h3>
-                <p className="text-gray-600 mb-5 text-sm">{service.description}</p>
+                <p className="text-gray-600 mb-5 text-sm dark:text-gray-400">
+                  {service.description}
+                </p>
                 <ul className="space-y-2.5">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center text-sm">
@@ -193,7 +198,7 @@ export default async function WebAppPage() {
                 </div>
                 <div className="glass-card p-5 rounded-lg flex-1">
                   <h3 className="text-lg font-semibold mb-2 text-gradient">{process.title}</h3>
-                  <p className="text-gray-600 text-sm">{process.description}</p>
+                  <p className="text-gray-600 text-sm dark:text-gray-400">{process.description}</p>
                 </div>
               </div>
             ))}

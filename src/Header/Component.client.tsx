@@ -3,13 +3,20 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
-import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { Menu, X } from 'lucide-react'
+
+const ThemeSelector = dynamic(
+  () => import('@/providers/Theme/ThemeSelector').then((mod) => mod.ThemeSelector),
+  {
+    ssr: false,
+  },
+)
 
 interface HeaderClientProps {
   header: Header
@@ -86,7 +93,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full glass-card border-t border-primary/20 shadow-lg transition-all duration-300 origin-top z-50 ${
+        className={`md:hidden absolute top-full left-0 w-full bg-card border-t border-primary/20 shadow-lg transition-all duration-300 origin-top z-50 ${
           mobileMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 pointer-events-none'
         }`}
       >
@@ -121,7 +128,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
 
       {/* Subtle animated glow effect under the header when scrolled */}
       <div
-        className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none transition-opacity duration-500 ${
+        className={`absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none transition-opacity duration-500 ${
           scrolled ? 'opacity-100' : 'opacity-0'
         }`}
       ></div>

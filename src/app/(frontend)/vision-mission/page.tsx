@@ -90,20 +90,20 @@ export default function VisionMissionPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="gradient-border bg-white dark:bg-card p-6 rounded-lg shadow-md card-hover">
               <h3 className="text-xl font-semibold mb-4">Innovation</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-800 dark:text-gray-300">
                 Continuously pushing boundaries and embracing new technologies to deliver
                 cutting-edge solutions.
               </p>
             </div>
             <div className="gradient-border bg-white dark:bg-card p-6 rounded-lg shadow-md card-hover">
               <h3 className="text-xl font-semibold mb-4">Excellence</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-800 dark:text-gray-300">
                 Maintaining the highest standards in code quality, performance, and user experience.
               </p>
             </div>
             <div className="gradient-border bg-white dark:bg-card p-6 rounded-lg shadow-md card-hover">
               <h3 className="text-xl font-semibold mb-4">Collaboration</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-800 dark:text-gray-300">
                 Working together as a team and with our clients to achieve exceptional results.
               </p>
             </div>

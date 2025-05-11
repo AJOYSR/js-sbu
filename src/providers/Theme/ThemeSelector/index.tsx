@@ -7,32 +7,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Sun, Moon, Laptop, Palette, Check } from 'lucide-react'
 
 import type { Theme } from './types'
 
 import { useTheme } from '..'
+import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { themeLocalStorageKey } from './types'
 
-export const ThemeSelector: React.FC = () => {
-  const { setTheme } = useTheme()
+const ThemeSelector: React.FC = () => {
+  const { theme, setTheme } = useTheme()
+  const { setHeaderTheme } = useHeaderTheme()
   const [value, setValue] = useState('')
 
   const onThemeChange = (themeToSet: Theme & 'auto') => {
     if (themeToSet === 'auto') {
       setTheme(null)
+      setHeaderTheme(null)
       setValue('auto')
     } else {
       setTheme(themeToSet)
+      setHeaderTheme(themeToSet)
       setValue(themeToSet)
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // Initialize from localStorage or default to 'auto'
     const preference = window.localStorage.getItem(themeLocalStorageKey)
     setValue(preference ?? 'auto')
   }, [])
+
+  // Keep value in sync with theme changes
+  useEffect(() => {
+    setValue(theme ?? 'auto')
+  }, [theme])
 
   const getIconForCurrentTheme = () => {
     switch (value) {
@@ -80,3 +90,5 @@ export const ThemeSelector: React.FC = () => {
     </Select>
   )
 }
+
+export { ThemeSelector }

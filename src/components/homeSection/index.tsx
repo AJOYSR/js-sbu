@@ -13,7 +13,7 @@ import type {
 import { ArrowRight } from 'lucide-react'
 import HeroSlider from '@/components/HeroSlider'
 
-// Define the props for the HomeSection component
+// Define the props for the HomeSection component up
 interface HomeSectionProps {
   slides?: Slide[]
   partners?: Partner[]
@@ -117,41 +117,41 @@ const HomeSection = async () => {
       {/* Trusted By Section */}
       <section className="py-20 relative overflow-hidden">
         {/* Background decorative elements */}
-        <div className="absolute -top-32 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 right-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute -top-32 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
+        <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-1/2 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 blur-3xl"></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12 animate-fadeIn">
-            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3 animate-fadeIn">
+          <div className="text-center mb-16 animate-fadeIn">
+            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 animate-fadeIn backdrop-blur-sm">
               PARTNERSHIPS
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient bg-clip-text">
               Trusted By Industry Leaders
             </h2>
-            <p className="text-foreground/80 max-w-xl mx-auto animation-delay-200 animate-fadeIn">
+            <p className="text-foreground/80 max-w-2xl mx-auto text-lg animation-delay-200 animate-fadeIn">
               We&apos;re proud to work with forward-thinking companies that share our commitment to
               innovation and excellence
             </p>
           </div>
 
-          <div className="glass-card rounded-2xl p-8 md:p-12 shadow-md relative overflow-hidden">
+          <div className="glass-card rounded-3xl p-10  shadow-xl relative overflow-hidden border border-white/5 backdrop-blur-md">
             {/* Inner card decorative elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/20 to-transparent rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/20 to-transparent rounded-full blur-[100px]"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-[100px]"></div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center relative z-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-10 items-center justify-items-center relative z-10">
               {partners && partners.length > 0
                 ? partners.map((partner, index) => (
                     <div
                       key={partner.id}
-                      className="shiny-card group w-full max-w-[180px] animate-fadeIn"
-                      style={{ animationDelay: `${index * 150}ms` }}
+                      className="shiny-card group w-full max-w-[200px] animate-fadeIn"
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
                       {partner.logo ? (
                         partner.website ? (
                           <Link href={partner.website} target="_blank" rel="noopener noreferrer">
-                            <div className="glass-card p-4 rounded-xl text-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
+                            <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
                               <Image
                                 src={
                                   typeof partner.logo === 'object' && partner.logo?.url
@@ -159,17 +159,18 @@ const HomeSection = async () => {
                                     : '/placeholder.jpg'
                                 }
                                 alt={partner.name}
-                                width={160}
-                                height={80}
-                                className="object-contain h-20 mx-auto filter grayscale hover:grayscale-0 transition-all duration-500"
+                                width={180}
+                                height={90}
+                                className="object-contain h-28 mx-auto rounded-full filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                               />
-                              <p className="mt-3 text-foreground font-medium text-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
+                              <p className="mt-3 text-foreground font-medium text-gradient">
                                 {partner.name}
                               </p>
                             </div>
                           </Link>
                         ) : (
-                          <div className="glass-card p-4 rounded-xl text-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
+                          <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
                             <Image
                               src={
                                 typeof partner.logo === 'object' && partner.logo?.url
@@ -177,22 +178,24 @@ const HomeSection = async () => {
                                   : '/placeholder.jpg'
                               }
                               alt={partner.name}
-                              width={160}
-                              height={80}
-                              className="object-contain h-20 mx-auto filter grayscale hover:grayscale-0 transition-all duration-500"
+                              width={180}
+                              height={90}
+                              className="object-contain h-28 mx-auto rounded-md filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                             />
-                            <p className="mt-3 text-foreground font-medium text-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
+                            <p className="mt-3 text-foreground font-medium text-gradient">
                               {partner.name}
                             </p>
                           </div>
                         )
                       ) : (
-                        <div className="glass-card p-4 rounded-xl text-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
-                          <div className="gradient-border h-20 w-full flex items-center justify-center mx-auto neon-glow">
-                            <span className="text-primary font-bold text-3xl">
+                        <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
+                          <div className="gradient-border h-24 w-full flex items-center justify-center mx-auto">
+                            <span className="text-primary font-bold text-4xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
                               {partner.name.substring(0, 1)}
                             </span>
                           </div>
+                          <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
                           <p className="mt-3 text-foreground font-medium text-gradient">
                             {partner.name}
                           </p>
@@ -203,28 +206,33 @@ const HomeSection = async () => {
                 : ['Tennant', 'Long Shot', 'Meed', 'TechCorp'].map((client, index) => (
                     <div
                       key={client}
-                      className="shiny-card group w-full max-w-[180px] animate-fadeIn"
-                      style={{ animationDelay: `${index * 150}ms` }}
+                      className="shiny-card group w-full max-w-[200px] animate-fadeIn"
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
-                      <div className="glass-card p-4 rounded-xl text-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg">
-                        <div className="gradient-border h-20 w-full flex items-center justify-center mx-auto neon-glow">
-                          <span className="text-primary font-bold text-3xl">
+                      <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
+                        <div className="gradient-border h-24 w-full flex items-center justify-center mx-auto relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                          <span className="text-primary font-bold text-4xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent relative z-10">
                             {client.substring(0, 1)}
                           </span>
                         </div>
+                        <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
                         <p className="mt-3 text-foreground font-medium text-gradient">{client}</p>
                       </div>
                     </div>
                   ))}
             </div>
 
-            <div className="mt-12 text-center animation-delay-400 animate-fadeIn">
+            <div className="mt-8 text-center animation-delay-400 animate-fadeIn">
               <Link
                 href="/about"
-                className="inline-flex items-center text-primary hover:text-primary/80 group"
+                className="inline-flex items-center text-primary hover:text-primary/80 group relative overflow-hidden px-6 py-3 rounded-full"
               >
-                <span className="text-gradient">Learn about our partnerships</span>
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <span className="relative z-10 text-gradient font-medium">
+                  Learn about our partnerships
+                </span>
+                <span className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></span>
+                <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>

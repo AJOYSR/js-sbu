@@ -83,6 +83,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `JS-SBU | Posts`,
+    title: `Posts | JS-SBU`,
   }
 }

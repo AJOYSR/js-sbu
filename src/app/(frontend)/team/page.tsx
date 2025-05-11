@@ -115,7 +115,7 @@ export default async function TeamPage({ searchParams }: Props) {
                     <div className="relative h-64 w-full">
                       <Image
                         src={
-                          typeof leader.image === 'object' && leader.image.url
+                          typeof leader.image === 'object' && leader?.image?.url
                             ? leader.image.url
                             : '/team/placeholder.jpg'
                         }
@@ -243,7 +243,7 @@ export default async function TeamPage({ searchParams }: Props) {
                       {/* Decorative colorful top border */}
                       <div className="h-2 bg-gradient-to-r from-primary to-secondary" />
 
-                      <div className="p-8">
+                      <div className="p-8 shadow-md overflow-hidden ">
                         <div className="flex items-start gap-4 mb-6">
                           <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             {getCategoryIcon(category.value)}

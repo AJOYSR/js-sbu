@@ -2,9 +2,10 @@
 
 import type { Theme } from '@/providers/Theme/types'
 
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useState, useEffect } from 'react'
 
 import canUseDOM from '@/utilities/canUseDOM'
+import { useTheme } from '@/providers/Theme'
 
 export interface ContextType {
   headerTheme?: Theme | null
@@ -19,13 +20,26 @@ const initialContext: ContextType = {
 const HeaderThemeContext = createContext(initialContext)
 
 export const HeaderThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(
-    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
-  )
+  const { theme: mainTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(undefined)
+
+  useEffect(() => {
+    setMounted(true)
+    if (canUseDOM) {
+      setThemeState(document.documentElement.getAttribute('data-theme') as Theme)
+    }
+  }, [])
 
   const setHeaderTheme = useCallback((themeToSet: Theme | null) => {
     setThemeState(themeToSet)
   }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      setThemeState(mainTheme)
+    }
+  }, [mainTheme, mounted])
 
   return (
     <HeaderThemeContext.Provider value={{ headerTheme, setHeaderTheme }}>

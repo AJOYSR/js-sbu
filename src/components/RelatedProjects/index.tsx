@@ -32,7 +32,9 @@ const RelatedProjects = ({ projects }: { projects: Portfolio[] }) => {
                   </div>
                   <div className="p-5">
                     <h3 className="text-lg font-semibold mb-2 text-gradient">{project.title}</h3>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">{project.description}</p>
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2 dark:text-gray-400">
+                      {project.description}
+                    </p>
                     <div className="mb-3">
                       <h4 className="font-medium mb-1.5 text-primary/80 text-sm">Technologies:</h4>
                       <div className="flex flex-wrap gap-1.5">
