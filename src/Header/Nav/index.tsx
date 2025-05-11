@@ -223,10 +223,6 @@ export const HeaderNav: React.FC<{
       dropdown: insightsDropdown,
     },
     { label: 'Contact', href: '/contact' as string },
-    {
-      label: header?.navItems?.[0]?.link?.label,
-      href: header?.navItems?.[0]?.link?.url,
-    },
   ]
 
   // Render mobile navigation

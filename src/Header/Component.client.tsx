@@ -121,7 +121,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
 
       {/* Subtle animated glow effect under the header when scrolled */}
       <div
-        className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none transition-opacity duration-500 ${
+        className={`absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none transition-opacity duration-500 ${
           scrolled ? 'opacity-100' : 'opacity-0'
         }`}
       ></div>
