@@ -18,6 +18,16 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      // For Vercel Blob Storage in production
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+      // Allow local development images
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
   },
   reactStrictMode: true,
