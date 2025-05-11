@@ -27,6 +27,7 @@ interface SearchResultItem {
   role?: string
   category?: string
   level?: string
+}
 interface PageProps {
   params: Promise<any>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -149,7 +150,7 @@ export default async function Page({ searchParams }: PageProps) {
     : allResults
 
   const totalResults = sortedResults.length
-  const posts = await payload.find({
+  const searchResults = await payload.find({
     collection: 'search',
     depth: 1,
     limit: 12,
