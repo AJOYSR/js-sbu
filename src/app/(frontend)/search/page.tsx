@@ -1,4 +1,6 @@
 import type { Metadata, ResolvingMetadata } from 'next'
+import { CollectionArchive } from '@/components/CollectionArchive'
+
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
@@ -25,6 +27,9 @@ interface SearchResultItem {
   role?: string
   category?: string
   level?: string
+interface PageProps {
+  params: Promise<any>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function Page({ searchParams }: PageProps) {
@@ -144,6 +149,31 @@ export default async function Page({ searchParams }: PageProps) {
     : allResults
 
   const totalResults = sortedResults.length
+  const posts = await payload.find({
+    collection: 'search',
+    depth: 1,
+    limit: 12,
+    select: {
+      title: true,
+      slug: true,
+      categories: true,
+      meta: true,
+    },
+    // pagination: false reduces overhead if you don't need totalDocs
+    pagination: false,
+    ...(query
+      ? {
+          where: {
+            or: [
+              { title: { like: query } },
+              { 'meta.description': { like: query } },
+              { 'meta.title': { like: query } },
+              { slug: { like: query } },
+            ],
+          },
+        }
+      : {}),
+  })
 
   return (
     <div className="min-h-screen py-16 animate-fadeIn">
