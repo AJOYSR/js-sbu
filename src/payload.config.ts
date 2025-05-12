@@ -90,17 +90,17 @@ export default buildConfig({
     ...plugins,
     // Configure Vercel Blob storage for media files
     vercelBlobStorage({
-      enabled: process.env.NODE_ENV === 'production',
+      enabled: true,
       collections: {
         media: {
           prefix: 'media',
           generateFileURL: ({ filename }) => {
-            return `https://${process.env.VERCEL_BLOB_STORE_ID}.public.blob.vercel-storage.com/${filename}`
+            return `https://5zxlgj9gofvvzerw.public.blob.vercel-storage.com/${filename}`
           },
         },
       },
-      clientUploads: false,
-      token: process.env.NEW_BLOB_READ_WRITE_TOKEN,
+      clientUploads: true,
+      token: process.env.VERCEL_BLOB_READ_WRITE_TOKEN,
       addRandomSuffix: true,
     }),
   ],
