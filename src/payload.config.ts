@@ -95,7 +95,9 @@ export default buildConfig({
         media: {
           prefix: 'media',
           generateFileURL: ({ filename }) => {
-            return `https://5zxlgj9gofvvzerw.public.blob.vercel-storage.com/${filename}`
+            // Use environment variable for the base URL to make it configurable
+            const baseURL = process.env.VERCEL_BLOB_BASE_URL
+            return `${baseURL}/${filename}`
           },
         },
       },
