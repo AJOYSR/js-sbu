@@ -32,19 +32,6 @@ interface Portfolio {
   technologies: { tech: string }[]
 }
 
-interface Post {
-  id: string
-  title: string
-  description: string
-  slug: string
-  meta: {
-    image: Media | number | null
-    description: string
-  }
-  publishedAt: string | null
-  authors: (User | number | null)[]
-}
-
 const getImageUrl = (media: Media | number | null | undefined): string => {
   if (typeof media === 'object' && media !== null && 'url' in media && media.url) {
     return media.url
@@ -85,6 +72,7 @@ const HomeSection = async () => {
       },
     },
   })) as Partner[]
+  console.log('🚀 ~ HomeSection ~ partners:', partners)
 
   // Fetch featured portfolio projects
   const projects = (await fetchDocs('portfolio', {
@@ -150,18 +138,19 @@ const HomeSection = async () => {
                     >
                       {partner.logo ? (
                         partner.website ? (
-                          <Link href={partner.website} target="_blank" rel="noopener noreferrer">
+                          <Link href={partner?.website} target="_blank" rel="noopener noreferrer">
                             <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
                               <Image
                                 src={
-                                  typeof partner.logo === 'object' && partner.logo?.url
-                                    ? partner.logo.url
+                                  typeof partner?.logo === 'object' && partner?.logo?.url
+                                    ? partner?.logo?.url
                                     : '/placeholder.jpg'
                                 }
                                 alt={partner.name}
                                 width={180}
                                 height={90}
                                 className="object-contain h-28 mx-auto rounded-full filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                                unoptimized={true}
                               />
                               <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
                               <p className="mt-3 text-foreground font-medium text-gradient">
@@ -173,14 +162,15 @@ const HomeSection = async () => {
                           <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
                             <Image
                               src={
-                                typeof partner.logo === 'object' && partner.logo?.url
-                                  ? partner.logo.url
+                                typeof partner?.logo === 'object' && partner?.logo?.url
+                                  ? partner?.logo?.url
                                   : '/placeholder.jpg'
                               }
                               alt={partner.name}
                               width={180}
                               height={90}
                               className="object-contain h-28 mx-auto rounded-md filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                              unoptimized={true}
                             />
                             <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
                             <p className="mt-3 text-foreground font-medium text-gradient">
