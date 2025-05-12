@@ -12,14 +12,24 @@ import PageClient from './page.client'
 export const dynamic = 'force-static'
 export const revalidate = 600
 
-export default async function Page() {
+interface PageProps {
+  searchParams?: { [key: string]: string | string[] | undefined }
+}
+
+export default async function Page({ searchParams }: PageProps) {
   const payload = await getPayload({ config: configPromise })
+  const POSTS_PER_PAGE = 6
+
+  // Get the current page from the search params, default to 1
+  const currentPage = searchParams?.page ? parseInt(searchParams.page as string, 10) : 1
 
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
-    limit: 3,
+    limit: POSTS_PER_PAGE,
+    page: currentPage,
     overrideAccess: false,
+    sort: '-publishedAt',
     select: {
       title: true,
       slug: true,
@@ -58,8 +68,8 @@ export default async function Page() {
             <div className="mb-8 animation-delay-300 animate-fadeIn">
               <PageRange
                 collection="posts"
-                currentPage={posts.page}
-                limit={12}
+                currentPage={currentPage}
+                limit={POSTS_PER_PAGE}
                 totalDocs={posts.totalDocs}
                 className="text-foreground font-medium"
               />
@@ -70,8 +80,8 @@ export default async function Page() {
             </div>
 
             <div className="animation-delay-600 animate-fadeIn">
-              {posts.totalPages > 1 && posts.page && (
-                <Pagination page={posts.page} totalPages={posts.totalPages} />
+              {posts.totalPages > 1 && (
+                <Pagination page={currentPage} totalPages={posts.totalPages} />
               )}
             </div>
           </>
@@ -83,6 +93,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Posts | JS-SBU`,
+    title: `Blog | JS-SBU`,
   }
 }

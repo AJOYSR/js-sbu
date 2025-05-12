@@ -32,26 +32,26 @@ export const Card: React.FC<{
   return (
     <article
       className={cn(
-        'glass-card card-hover rounded-xl shadow-md overflow-hidden transition-all hover:cursor-pointer',
+        'glass-card card-hover rounded-xl shadow-md overflow-hidden transition-all hover:cursor-pointer flex flex-col h-[420px]',
         className,
       )}
       ref={card.ref}
     >
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full h-48 flex-shrink-0 overflow-hidden">
         {!metaImage && (
-          <div className="bg-primary/10 flex items-center justify-center h-48 text-primary font-medium">
+          <div className="bg-primary/10 flex items-center justify-center h-full text-primary font-medium">
             No image available
           </div>
         )}
         {metaImage && typeof metaImage !== 'string' && (
-          <div className="hover:scale-105 transition-transform duration-700">
-            <Media resource={metaImage} size="33vw" />
+          <div className="h-full hover:scale-105 transition-transform duration-700">
+            <Media resource={metaImage} size="33vw" className="object-cover" />
           </div>
         )}
       </div>
-      <div className="p-6">
+      <div className="p-6 flex-grow flex flex-col">
         {showCategories && hasCategories && (
-          <div className="mb-3">
+          <div className="mb-3 flex-shrink-0">
             {showCategories && hasCategories && (
               <div className="flex flex-wrap gap-2">
                 {categories?.map((category, index) => {
@@ -75,7 +75,7 @@ export const Card: React.FC<{
           </div>
         )}
         {titleToUse && (
-          <div className="prose">
+          <div className="prose flex-shrink-0">
             <h3 className="text-gradient font-semibold text-xl mb-2">
               <Link
                 className="not-prose hover:opacity-90 transition-opacity"
@@ -88,11 +88,13 @@ export const Card: React.FC<{
           </div>
         )}
         {description && (
-          <div className="mt-2 text-foreground/90">
-            {description && <p className="line-clamp-3">{sanitizedDescription}</p>}
+          <div className="mt-2 flex-grow">
+            {description && (
+              <p className="line-clamp-3 text-foreground/90">{sanitizedDescription}</p>
+            )}
           </div>
         )}
-        <div className="mt-4">
+        <div className="mt-4 flex-shrink-0">
           <Link
             href={href}
             ref={link.ref}

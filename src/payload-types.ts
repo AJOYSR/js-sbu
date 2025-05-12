@@ -824,6 +824,10 @@ export interface Tutorial {
     [k: string]: unknown;
   };
   image: number | Media;
+  /**
+   * Enter the YouTube video URL (e.g., https://www.youtube.com/watch?v=xxxxx or https://youtu.be/xxxxx)
+   */
+  youtubeUrl?: string | null;
   category: 'web-development' | 'mobile-development' | 'backend-development' | 'ai-ml' | 'devops';
   level: 'beginner' | 'intermediate' | 'advanced';
   /**
@@ -1451,6 +1455,7 @@ export interface TutorialsSelect<T extends boolean = true> {
   description?: T;
   content?: T;
   image?: T;
+  youtubeUrl?: T;
   category?: T;
   level?: T;
   duration?: T;

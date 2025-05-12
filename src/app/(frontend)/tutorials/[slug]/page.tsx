@@ -8,6 +8,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Tutorial } from '@/payload-types'
 import RichText from '@/components/RichText'
+import { YouTubeEmbed } from '@/components/YouTubeEmbed'
 
 type PageParams = Promise<{ slug: string }>
 
@@ -141,6 +142,12 @@ export default async function TutorialPage({ params }: { params: PageParams }) {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Tutorial Content */}
             <div className="lg:col-span-2 animation-delay-400 animate-fadeIn">
+              {tutorial.youtubeUrl && (
+                <div className="glass-card rounded-xl shadow-md p-8 mb-8">
+                  <h2 className="text-2xl font-bold mb-4 text-gradient">Tutorial Video</h2>
+                  <YouTubeEmbed url={tutorial.youtubeUrl} title={tutorial.title} />
+                </div>
+              )}
               <div className="glass-card rounded-xl shadow-md p-8 mb-8">
                 <h2 className="text-2xl font-bold mb-4 text-gradient">About This Tutorial</h2>
                 <p className="text-gray-600 mb-8">{tutorial.description}</p>
