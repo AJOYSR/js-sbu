@@ -12,24 +12,20 @@ import PageClient from './page.client'
 export const dynamic = 'force-static'
 export const revalidate = 600
 
-interface PageProps {
-  searchParams?: { [key: string]: string | string[] | undefined }
+type PageProps = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const payload = await getPayload({ config: configPromise })
-  const POSTS_PER_PAGE = 6
+  // Await the searchParams Promise
 
-  // Get the current page from the search params, default to 1
-  const currentPage = searchParams?.page ? parseInt(searchParams.page as string, 10) : 1
+  const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
-    limit: POSTS_PER_PAGE,
-    page: currentPage,
+    limit: 3,
     overrideAccess: false,
-    sort: '-publishedAt',
     select: {
       title: true,
       slug: true,
@@ -68,8 +64,8 @@ export default async function Page({ searchParams }: PageProps) {
             <div className="mb-8 animation-delay-300 animate-fadeIn">
               <PageRange
                 collection="posts"
-                currentPage={currentPage}
-                limit={POSTS_PER_PAGE}
+                currentPage={posts.page}
+                limit={12}
                 totalDocs={posts.totalDocs}
                 className="text-foreground font-medium"
               />
@@ -80,8 +76,8 @@ export default async function Page({ searchParams }: PageProps) {
             </div>
 
             <div className="animation-delay-600 animate-fadeIn">
-              {posts.totalPages > 1 && (
-                <Pagination page={currentPage} totalPages={posts.totalPages} />
+              {posts.totalPages > 1 && posts.page && (
+                <Pagination page={posts.page} totalPages={posts.totalPages} />
               )}
             </div>
           </>
@@ -93,6 +89,6 @@ export default async function Page({ searchParams }: PageProps) {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Blog | JS-SBU`,
+    title: `Posts | JS-SBU`,
   }
 }
