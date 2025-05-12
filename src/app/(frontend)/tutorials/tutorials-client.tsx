@@ -38,84 +38,178 @@ const FilterButton = ({
 )
 
 interface TutorialsClientProps {
-  initialTutorials: Tutorial[]
+  tutorials: Tutorial[]
   categories: string[]
   levels: string[]
-  initialCategory: string
-  initialLevel: string
-  initialSearch: string
+  currentCategory: string
+  currentLevel: string
+  currentSearch: string
+  currentPage: number
+  totalPages: number
+  totalItems: number
 }
 
 export default function TutorialsClient({
-  initialTutorials,
+  tutorials,
   categories,
   levels,
-  initialCategory,
-  initialLevel,
-  initialSearch,
+  currentCategory,
+  currentLevel,
+  currentSearch,
+  currentPage,
+  totalPages,
+  totalItems,
 }: TutorialsClientProps) {
-  const [allTutorials] = useState(initialTutorials)
-  const [displayedTutorials, setDisplayedTutorials] = useState(initialTutorials)
-  const [category, setCategory] = useState(initialCategory)
-  const [level, setLevel] = useState(initialLevel)
-  const [search, setSearch] = useState(initialSearch)
-  const [searchInput, setSearchInput] = useState(initialSearch)
+  const [searchInput, setSearchInput] = useState(currentSearch)
   const router = useRouter()
   const pathname = usePathname()
 
-  // Filter tutorials when filter criteria change
-  useEffect(() => {
-    let filtered = [...allTutorials]
-
-    // Apply category filter
-    if (category !== 'All') {
-      filtered = filtered.filter((tutorial) => tutorial.category === category)
-    }
-
-    // Apply level filter (lowercase level for comparison)
-    if (level !== 'All Levels') {
-      filtered = filtered.filter((tutorial) => tutorial.level === level.toLowerCase())
-    }
-
-    // Apply search filter
-    if (search) {
-      const searchLower = search.toLowerCase()
-      filtered = filtered.filter(
-        (tutorial) =>
-          tutorial.title.toLowerCase().includes(searchLower) ||
-          tutorial.description.toLowerCase().includes(searchLower),
-      )
-    }
-
-    setDisplayedTutorials(filtered)
-  }, [category, level, search, allTutorials])
-
-  // Update the URL query parameters when filters change
-  useEffect(() => {
+  // Handle filter changes
+  const handleFilterChange = (type: 'category' | 'level', value: string) => {
     const params = new URLSearchParams()
 
-    if (category !== 'All') {
-      params.set('category', category)
+    // Reset page when changing filters
+    if (value !== 'All' && value !== 'All Levels') {
+      params.set(type, value)
     }
 
-    if (level !== 'All Levels') {
-      params.set('level', level)
+    // Preserve other existing filters
+    if (type !== 'category' && currentCategory !== 'All') {
+      params.set('category', currentCategory)
     }
-
-    if (search) {
-      params.set('search', search)
+    if (type !== 'level' && currentLevel !== 'All Levels') {
+      params.set('level', currentLevel)
+    }
+    if (currentSearch) {
+      params.set('search', currentSearch)
     }
 
     const query = params.toString()
     const url = query ? `${pathname}?${query}` : pathname
-
-    router.push(url, { scroll: false })
-  }, [category, level, search, pathname, router])
+    router.push(url)
+  }
 
   // Handle search form submission
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    setSearch(searchInput)
+    const params = new URLSearchParams()
+
+    if (searchInput) {
+      params.set('search', searchInput)
+    }
+    if (currentCategory !== 'All') {
+      params.set('category', currentCategory)
+    }
+    if (currentLevel !== 'All Levels') {
+      params.set('level', currentLevel)
+    }
+
+    const query = params.toString()
+    const url = query ? `${pathname}?${query}` : pathname
+    router.push(url)
+  }
+
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams()
+
+    params.set('page', newPage.toString())
+
+    if (currentCategory !== 'All') {
+      params.set('category', currentCategory)
+    }
+    if (currentLevel !== 'All Levels') {
+      params.set('level', currentLevel)
+    }
+    if (currentSearch) {
+      params.set('search', currentSearch)
+    }
+
+    const query = params.toString()
+    router.push(`${pathname}?${query}`)
+  }
+
+  // Pagination controls component
+  const PaginationControls = () => {
+    if (totalPages <= 1) return null
+
+    const showEllipsis = totalPages > 7
+    let pagesToShow: number[] = []
+
+    if (showEllipsis) {
+      if (currentPage <= 3) {
+        pagesToShow = [1, 2, 3, 4, 5, -1, totalPages]
+      } else if (currentPage >= totalPages - 2) {
+        pagesToShow = [
+          1,
+          -1,
+          totalPages - 4,
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        ]
+      } else {
+        pagesToShow = [1, -1, currentPage - 1, currentPage, currentPage + 1, -1, totalPages]
+      }
+    } else {
+      pagesToShow = Array.from({ length: totalPages }, (_, i) => i + 1)
+    }
+
+    return (
+      <div className="flex flex-col items-center gap-4 mt-8 mb-8">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className={`px-4 py-2 rounded-lg ${
+              currentPage <= 1
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'btn-gradient text-white btn-pop hover-scale'
+            }`}
+          >
+            Previous
+          </button>
+
+          <div className="flex items-center gap-2">
+            {pagesToShow.map((pageNum, index) =>
+              pageNum === -1 ? (
+                <span key={`ellipsis-${index}`} className="px-2">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`w-10 h-10 rounded-lg ${
+                    pageNum === currentPage
+                      ? 'btn-gradient text-white'
+                      : 'bg-card hover:bg-primary/10 hover:text-primary'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ),
+            )}
+          </div>
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className={`px-4 py-2 rounded-lg ${
+              currentPage >= totalPages
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'btn-gradient text-white btn-pop hover-scale'
+            }`}
+          >
+            Next
+          </button>
+        </div>
+        <div className="text-sm text-gray-600">
+          Showing {tutorials.length} of {totalItems} tutorials
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -127,8 +221,8 @@ export default function TutorialsClient({
             <FilterButton
               key={cat}
               label={categoryDisplayNames[cat] || cat}
-              isActive={category === cat}
-              onClick={() => setCategory(cat)}
+              isActive={currentCategory === cat}
+              onClick={() => handleFilterChange('category', cat)}
             />
           ))}
         </div>
@@ -137,8 +231,8 @@ export default function TutorialsClient({
             <FilterButton
               key={lvl}
               label={lvl}
-              isActive={level === lvl}
-              onClick={() => setLevel(lvl)}
+              isActive={currentLevel === lvl}
+              onClick={() => handleFilterChange('level', lvl)}
             />
           ))}
         </div>
@@ -164,11 +258,10 @@ export default function TutorialsClient({
       </div>
 
       {/* Tutorials Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-        {displayedTutorials.length > 0 ? (
-          displayedTutorials.map((tutorial, index) => {
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+        {tutorials.length > 0 ? (
+          tutorials.map((tutorial, index) => {
             const image = tutorial.image as Media
-            // Ensure imageUrl is always a string, using a fallback if needed
             const imageUrl =
               typeof image === 'object' && image && 'url' in image && image.url
                 ? image.url
@@ -220,6 +313,9 @@ export default function TutorialsClient({
           </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls />
     </>
   )
 }

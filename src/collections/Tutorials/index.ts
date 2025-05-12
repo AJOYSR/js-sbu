@@ -89,6 +89,25 @@ const Tutorials: CollectionConfig = {
               required: true,
             },
             {
+              name: 'youtubeUrl',
+              type: 'text',
+              admin: {
+                description:
+                  'Enter the YouTube video URL (e.g., https://www.youtube.com/watch?v=xxxxx or https://youtu.be/xxxxx)',
+                placeholder: 'https://www.youtube.com/watch?v=xxxxx',
+              },
+              validate: (value) => {
+                if (value) {
+                  const youtubeRegex =
+                    /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}([?&].*)?$/
+                  if (!youtubeRegex.test(value)) {
+                    return 'Please enter a valid YouTube URL'
+                  }
+                }
+                return true
+              },
+            },
+            {
               name: 'category',
               type: 'select',
               required: true,

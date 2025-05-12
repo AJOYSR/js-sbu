@@ -1,11 +1,9 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { Clock, BookOpen, Star } from 'lucide-react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Metadata } from 'next'
-import { Tutorial, Media } from '@/payload-types'
+import { Tutorial } from '@/payload-types'
 import TutorialsClient from './tutorials-client'
 
 export const metadata: Metadata = {
@@ -14,13 +12,16 @@ export const metadata: Metadata = {
     'Comprehensive tutorials and step-by-step guides to help you master JavaScript technologies',
 }
 
+const ITEMS_PER_PAGE = 6 // Changed to show 6 items per page
+
 export default async function TutorialsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; level?: string; search?: string }>
+  searchParams: Promise<{ category?: string; level?: string; search?: string; page?: string }>
 }) {
   const params = await searchParams
   const payload = await getPayload({ config: configPromise })
+  const currentPage = Number(params?.page) || 1
 
   const where: any = {}
 
@@ -36,13 +37,31 @@ export default async function TutorialsPage({
     where.title = { like: params.search }
   }
 
-  const { docs: tutorials } = await payload
+  const {
+    docs: tutorials,
+    totalDocs,
+    totalPages: payloadTotalPages,
+  } = await payload
     .find({
       collection: 'tutorials',
       sort: '-publishedAt',
       where,
+      limit: ITEMS_PER_PAGE,
+      page: currentPage,
+      depth: 1,
     })
-    .then((res) => ({ ...res, docs: res.docs as Tutorial[] }))
+    .then((res) => ({
+      ...res,
+      docs: res.docs as Tutorial[],
+      totalPages: Math.ceil(res.totalDocs / ITEMS_PER_PAGE),
+    }))
+
+  // Ensure we don't exceed the total number of pages
+  if (currentPage > payloadTotalPages && payloadTotalPages > 0) {
+    const params = new URLSearchParams(searchParams as any)
+    params.set('page', '1')
+    return Response.redirect(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutorials?${params.toString()}`)
+  }
 
   const categories = [
     'All',
@@ -70,12 +89,15 @@ export default async function TutorialsPage({
         {/* Client-side filtering & search component */}
         <div className="animation-delay-400 animate-fadeIn">
           <TutorialsClient
-            initialTutorials={tutorials}
+            tutorials={tutorials}
             categories={categories}
             levels={levels}
-            initialCategory={params?.category || 'All'}
-            initialLevel={params?.level || 'All Levels'}
-            initialSearch={params?.search || ''}
+            currentCategory={params?.category || 'All'}
+            currentLevel={params?.level || 'All Levels'}
+            currentSearch={params?.search || ''}
+            currentPage={currentPage}
+            totalPages={payloadTotalPages}
+            totalItems={totalDocs}
           />
         </div>
 

@@ -1,13 +1,4 @@
 'use client'
-import {
-  Pagination as PaginationComponent,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
 import { cn } from '@/utilities/cn'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -26,6 +17,22 @@ export const Pagination: React.FC<{
   const hasExtraPrevPages = page - 1 > 1
   const hasExtraNextPages = page + 1 < totalPages
 
+  // Determine if we're on the posts page or another page
+  const isPostsPage =
+    typeof window !== 'undefined' &&
+    (window.location.pathname === '/posts' || window.location.pathname.startsWith('/posts/page/'))
+
+  // Create pagination URL based on current path
+  const createPageUrl = (pageNum: number) => {
+    if (isPostsPage) {
+      return pageNum === 1 ? '/posts' : `/posts/page/${pageNum}`
+    }
+
+    // Default case - add ?page=X to current URL
+    const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+    return `${currentPath}${pageNum === 1 ? '' : `?page=${pageNum}`}`
+  }
+
   return (
     <div className={cn('my-12', className)}>
       <div className="flex justify-center items-center gap-2">
@@ -33,7 +40,7 @@ export const Pagination: React.FC<{
         <button
           disabled={!hasPrevPage}
           onClick={() => {
-            router.push(`/posts/page/${page - 1}`)
+            router.push(createPageUrl(page - 1))
           }}
           className={`flex items-center px-4 py-2 rounded-lg btn-pop ${
             !hasPrevPage
@@ -66,7 +73,7 @@ export const Pagination: React.FC<{
           {hasPrevPage && (
             <button
               onClick={() => {
-                router.push(`/posts/page/${page - 1}`)
+                router.push(createPageUrl(page - 1))
               }}
               className="px-4 py-2 rounded-lg glass-card text-foreground hover:bg-primary/10 btn-pop"
             >
@@ -76,7 +83,7 @@ export const Pagination: React.FC<{
 
           <button
             onClick={() => {
-              router.push(`/posts/page/${page}`)
+              router.push(createPageUrl(page))
             }}
             className="px-4 py-2 rounded-lg btn-gradient text-white btn-pop"
           >
@@ -86,7 +93,7 @@ export const Pagination: React.FC<{
           {hasNextPage && (
             <button
               onClick={() => {
-                router.push(`/posts/page/${page + 1}`)
+                router.push(createPageUrl(page + 1))
               }}
               className="px-4 py-2 rounded-lg glass-card text-foreground hover:bg-primary/10 btn-pop"
             >
@@ -101,7 +108,7 @@ export const Pagination: React.FC<{
         <button
           disabled={!hasNextPage}
           onClick={() => {
-            router.push(`/posts/page/${page + 1}`)
+            router.push(createPageUrl(page + 1))
           }}
           className={`flex items-center px-4 py-2 rounded-lg btn-pop ${
             !hasNextPage
