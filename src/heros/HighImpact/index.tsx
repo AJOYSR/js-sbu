@@ -7,13 +7,14 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
-
+import { useTheme } from '@/providers/Theme'
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
+  const { theme } = useTheme()
 
   useEffect(() => {
-    setHeaderTheme('dark')
-  })
+    setHeaderTheme(theme !== undefined ? theme : null)
+  }, [setHeaderTheme, theme])
 
   return (
     <div

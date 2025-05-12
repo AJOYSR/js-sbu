@@ -29,6 +29,28 @@ type Props = {
   nodes: NodeTypes[]
 }
 
+// Helper function to check for invalid nested elements
+const containsInvalidNesting = (children: React.ReactNode, tagNames: string[]): boolean => {
+  return React.Children.toArray(children).some((child) => {
+    // Check direct children
+    if (React.isValidElement(child)) {
+      // Check the element type if it's a string (standard HTML element)
+      if (typeof child.type === 'string' && tagNames.includes(child.type)) {
+        return true
+      }
+
+      // Recursively check the children
+      if (child.props) {
+        const childProps = child.props as Record<string, unknown>
+        if ('children' in childProps && childProps.children) {
+          return containsInvalidNesting(childProps.children as React.ReactNode, tagNames)
+        }
+      }
+    }
+    return false
+  })
+}
+
 export function serializeLexical({ nodes }: Props): JSX.Element {
   return (
     <Fragment>
@@ -131,6 +153,27 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
               return <br className="col-start-2" key={index} />
             }
             case 'paragraph': {
+              // Check if paragraph contains invalid nested elements (p, h1-h6)
+              // This prevents HTML validation errors
+              const hasInvalidNesting = containsInvalidNesting(serializedChildren, [
+                'p',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+              ])
+
+              // If there are invalid nestings, render as div instead of p
+              if (hasInvalidNesting) {
+                return (
+                  <div className="col-start-2 my-4" key={index}>
+                    {serializedChildren}
+                  </div>
+                )
+              }
+
               return (
                 <p className="col-start-2" key={index}>
                   {serializedChildren}
@@ -186,6 +229,39 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
             case 'link': {
               const fields = node.fields
 
+              // Get a direct representation of the children to check
+              const childrenArray = React.Children.toArray(serializedChildren)
+
+              // Check if the link contains any elements that shouldn't be in a paragraph
+              const hasInvalidNesting = containsInvalidNesting(serializedChildren, [
+                'p',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+              ])
+
+              // Handle different contexts for link rendering
+              if (hasInvalidNesting) {
+                // Special case for links with headings inside - render with a wrapper div
+                return (
+                  <div className="col-start-2" key={index}>
+                    <CMSLink
+                      newTab={Boolean(fields?.newTab)}
+                      reference={fields.doc as any}
+                      type={fields.linkType === 'internal' ? 'reference' : 'custom'}
+                      url={fields.url}
+                      className="block"
+                    >
+                      {serializedChildren}
+                    </CMSLink>
+                  </div>
+                )
+              }
+
+              // Standard link with no invalid nesting
               return (
                 <CMSLink
                   key={index}

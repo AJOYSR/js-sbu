@@ -1,15 +1,17 @@
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
+import { useTheme } from '@/providers/Theme'
 import React, { useEffect } from 'react'
 
 const PageClient: React.FC = () => {
   /* Force the header to be consistent with our new vibrant theme */
   const { setHeaderTheme } = useHeaderTheme()
+  const { theme } = useTheme()
 
   useEffect(() => {
     // Set to 'dark' when in light mode so header contrasts well
     // Header will automatically adapt in dark mode via CSS variables
-    setHeaderTheme('light')
+    setHeaderTheme(theme !== undefined ? theme : null)
 
     // Add a class to the body for specific blog page styling if needed
     document.body.classList.add('blog-page')
@@ -17,7 +19,7 @@ const PageClient: React.FC = () => {
     return () => {
       document.body.classList.remove('blog-page')
     }
-  }, [setHeaderTheme])
+  }, [setHeaderTheme, theme])
 
   return <React.Fragment />
 }
