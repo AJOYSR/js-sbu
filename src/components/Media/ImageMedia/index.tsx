@@ -47,7 +47,17 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     height = fullHeight!
     alt = altFromResource || ''
 
-    src = `${getClientSideURL()}${url}`
+    // Use the full URL directly from the Payload resource if it's an absolute URL,
+    // otherwise prefix it with the client-side URL only if needed
+    if (url && typeof url === 'string') {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        // If it's already an absolute URL, use it directly
+        src = url
+      } else {
+        // If it's a relative URL, prepend the client-side URL
+        src = `${getClientSideURL()}${url}`
+      }
+    }
   }
 
   // Only set loading property when priority is not true
