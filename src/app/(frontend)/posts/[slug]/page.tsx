@@ -36,16 +36,56 @@ export async function generateStaticParams() {
   return params
 }
 const getImageUrl = (image: Media | number | null | undefined): string => {
-  if (!image) return '/images/placeholder.jpg' // Fallback to a placeholder image
-  if (typeof image === 'number') return '/images/placeholder.jpg'
-  if (typeof image === 'object' && image?.url) {
-    // Make sure we have a full URL
-    let imageUrl = image?.sizes?.xlarge?.url || image.url
+  // Default placeholder image
+  const placeholderImage = '/images/placeholder.jpg'
+
+  // If no image is provided, return placeholder
+  if (!image) return placeholderImage
+
+  // If image is just a number ID, return placeholder
+  if (typeof image === 'number') return placeholderImage
+
+  // If image is an object with url property
+  if (typeof image === 'object' && 'url' in image && image.url) {
+    // First try to get the largest available size image URL
+    let imageUrl: string | null = null
+
+    // Try each size from largest to smallest until we find a valid URL
+    if (image.sizes) {
+      if (
+        image.sizes.xlarge?.url &&
+        !image.sizes.xlarge.url.includes('null') &&
+        image.sizes.xlarge.url !== 'https://5zxlgj9gofvvzerw.public.blob.vercel-storage.com/null'
+      ) {
+        imageUrl = image.sizes.xlarge.url
+      } else if (image.sizes.large?.url && !image.sizes.large.url.includes('null')) {
+        imageUrl = image.sizes.large.url
+      } else if (image.sizes.medium?.url && !image.sizes.medium.url.includes('null')) {
+        imageUrl = image.sizes.medium.url
+      } else if (image.sizes.small?.url && !image.sizes.small.url.includes('null')) {
+        imageUrl = image.sizes.small.url
+      } else if (image.sizes.thumbnail?.url && !image.sizes.thumbnail.url.includes('null')) {
+        imageUrl = image.sizes.thumbnail.url
+      }
+    }
+
+    // If no valid size was found, fall back to the original URL
+    if (!imageUrl) {
+      imageUrl = image.url
+    }
+
+    // Make sure we don't have "null" in the URL
+    if (!imageUrl || imageUrl.includes('null') || imageUrl.endsWith('/null')) {
+      return placeholderImage
+    }
+
     // Remove dimensions from URL if present
-    const result = imageUrl?.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+$)/, '')
-    return result || '/images/placeholder.jpg'
+    const result = imageUrl.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+$)/, '')
+    return result
   }
-  return '/images/placeholder.jpg'
+
+  // Fallback to placeholder if any issues
+  return placeholderImage
 }
 type Args = {
   params: Promise<{
@@ -59,17 +99,36 @@ export default async function Post({ params: paramsPromise }: Args) {
   const post = await queryPostBySlug({ slug })
   if (!post) return <PayloadRedirects url={url} />
 
+  // Get a safe image URL that won't contain 'null'
   const imageUrl = getImageUrl(post?.meta?.image)
+
+  // Ensure image sizes don't contain any null URLs
+  const sanitizedImage =
+    post?.meta?.image && typeof post.meta.image === 'object'
+      ? ({
+          ...post.meta.image,
+          url: imageUrl,
+          // Sanitize sizes to prevent null URLs
+          sizes: post.meta.image.sizes
+            ? {
+                ...post.meta.image.sizes,
+                xlarge: post.meta.image.sizes.xlarge?.url?.includes('null')
+                  ? null
+                  : post.meta.image.sizes.xlarge,
+              }
+            : undefined,
+        } as Media)
+      : post?.meta?.image
+
+  // Create a properly structured post with validated image
   const modifiedPost = {
     ...post,
     meta: {
       ...post.meta,
-      image: {
-        ...(post.meta?.image as Media),
-        url: imageUrl,
-      },
+      image: sanitizedImage,
     },
   }
+
   return (
     <article className="min-h-screen animate-fadeIn">
       <PageClient />

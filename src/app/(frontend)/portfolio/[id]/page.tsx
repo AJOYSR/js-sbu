@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { notFound } from 'next/navigation'
@@ -7,6 +6,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import type { Media, Portfolio } from '@/payload-types'
 import RichText from '@/components/RichText'
+import PortfolioImageSection from './PortfolioImageSection'
 
 async function getProject(projectSlug: string) {
   const payload = await getPayload({ config: configPromise })
@@ -29,16 +29,56 @@ async function getProject(projectSlug: string) {
   }
 }
 const getImageUrl = (image: Media | number | null | undefined): string => {
-  if (!image) return '/images/placeholder.jpg' // Fallback to a placeholder image
-  if (typeof image === 'number') return '/images/placeholder.jpg'
-  if (typeof image === 'object' && image?.url) {
-    // Make sure we have a full URL
-    let imageUrl = image?.sizes?.xlarge?.url || image.url
+  // Default placeholder image
+  const placeholderImage = '/images/placeholder.jpg'
+
+  // If no image is provided, return placeholder
+  if (!image) return placeholderImage
+
+  // If image is just a number ID, return placeholder
+  if (typeof image === 'number') return placeholderImage
+
+  // If image is an object with url property
+  if (typeof image === 'object' && 'url' in image && image.url) {
+    // First try to get the largest available size image URL
+    let imageUrl: string | null = null
+
+    // Try each size from largest to smallest until we find a valid URL
+    if (image.sizes) {
+      if (
+        image.sizes.xlarge?.url &&
+        !image.sizes.xlarge.url.includes('null') &&
+        image.sizes.xlarge.url !== 'https://5zxlgj9gofvvzerw.public.blob.vercel-storage.com/null'
+      ) {
+        imageUrl = image.sizes.xlarge.url
+      } else if (image.sizes.large?.url && !image.sizes.large.url.includes('null')) {
+        imageUrl = image.sizes.large.url
+      } else if (image.sizes.medium?.url && !image.sizes.medium.url.includes('null')) {
+        imageUrl = image.sizes.medium.url
+      } else if (image.sizes.small?.url && !image.sizes.small.url.includes('null')) {
+        imageUrl = image.sizes.small.url
+      } else if (image.sizes.thumbnail?.url && !image.sizes.thumbnail.url.includes('null')) {
+        imageUrl = image.sizes.thumbnail.url
+      }
+    }
+
+    // If no valid size was found, fall back to the original URL
+    if (!imageUrl) {
+      imageUrl = image.url
+    }
+
+    // Make sure we don't have "null" in the URL
+    if (!imageUrl || imageUrl.includes('null') || imageUrl.endsWith('/null')) {
+      return placeholderImage
+    }
+
     // Remove dimensions from URL if present
-    const result = imageUrl?.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+$)/, '')
-    return result || '/images/placeholder.jpg'
+    const result = imageUrl.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+$)/, '')
+    return result
   }
-  return '/images/placeholder.jpg'
+
+  // Fallback to placeholder if any issues
+  return placeholderImage
 }
 
 export async function generateStaticParams() {
@@ -66,7 +106,9 @@ export default async function ProjectPage({ params }: Args) {
   if (!project) {
     return notFound()
   }
+
   const imageUrl = getImageUrl(project?.image)
+
   return (
     <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
@@ -81,23 +123,12 @@ export default async function ProjectPage({ params }: Args) {
           </Link>
 
           <div className="glass-card rounded-xl shadow-md overflow-hidden mb-12 animation-delay-300 animate-fadeIn">
-            <div className="relative h-96">
-              <Image
-                src={imageUrl}
-                alt={project.title}
-                fill
-                className="object-cover"
-                priority
-                unoptimized={!imageUrl.includes(process.env.NEXT_PUBLIC_SERVER_URL || 'localhost')}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                <span className="btn-gradient px-4 py-2 rounded-full text-sm mb-4 inline-block">
-                  {project.category}
-                </span>
-                <h1 className="text-4xl font-bold">{project.title}</h1>
-              </div>
-            </div>
+            {/* Client component with loading state */}
+            <PortfolioImageSection
+              imageUrl={imageUrl}
+              title={project.title}
+              category={project.category || 'Project'}
+            />
           </div>
 
           <div className="glass-card rounded-xl shadow-md p-8 mb-8 animation-delay-400 animate-fadeIn">

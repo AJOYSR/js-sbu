@@ -1,5 +1,8 @@
+'use client'
+
 import { formatDateTime } from 'src/utilities/formatDateTime'
-import React from 'react'
+import React, { useState } from 'react'
+import { Loader2 } from 'lucide-react'
 
 import type { Post } from '@/payload-types'
 
@@ -9,18 +12,37 @@ export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
   const { categories, meta: { image: metaImage } = {}, populatedAuthors, publishedAt, title } = post
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Function to handle image load completion
+  const handleImageLoad = () => {
+    setIsLoading(false)
+  }
 
   return (
     <div className="relative animate-fadeIn">
       <div className="absolute inset-0 w-full min-h-[85vh] z-0">
+        {/* Loading indicator */}
+        {isLoading && metaImage && (
+          <div className="absolute inset-0 flex items-center justify-center z-10 bg-background/80">
+            <div className="flex flex-col items-center">
+              <Loader2 className="w-12 h-12 text-primary animate-spin mb-3" />
+              <span className="text-foreground text-lg">Loading image...</span>
+            </div>
+          </div>
+        )}
+
         {metaImage && typeof metaImage !== 'string' && (
-          <Media fill imgClassName="object-cover" resource={metaImage} />
+          <>
+            <Media fill imgClassName="object-cover" resource={metaImage} onLoad={handleImageLoad} />
+            <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+          </>
         )}
         <div className="absolute pointer-events-none left-0 bottom-0 w-full h-2/3 bg-gradient-to-t from-background via-background/90 to-transparent" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 pt-40">
-        <div className="max-w-4xl mx-auto text-white">
+        <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap gap-2 mb-6 animation-delay-200 animate-fadeIn">
             {categories?.map((category, index) => {
               if (typeof category === 'object' && category !== null) {
@@ -30,7 +52,7 @@ export const PostHero: React.FC<{
                 return (
                   <span
                     key={index}
-                    className="bg-primary/80 text-white px-4 py-1 rounded-full text-sm font-medium shadow-md"
+                    className="bg-primary/90 text-white px-4 py-1 rounded-full text-sm font-medium shadow-md"
                   >
                     {titleToUse}
                   </span>
@@ -40,11 +62,11 @@ export const PostHero: React.FC<{
             })}
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 animate-fadeIn animation-delay-300">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 animate-fadeIn animation-delay-300 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
             {title}
           </h1>
 
-          <div className="glass-card rounded-xl p-6 shadow-lg flex flex-col md:flex-row gap-8 animation-delay-400 animate-fadeIn">
+          <div className="glass-card rounded-xl p-6 shadow-lg flex flex-col md:flex-row gap-8 animation-delay-400 animate-fadeIn bg-background/90 backdrop-blur-md">
             {populatedAuthors && populatedAuthors.length > 0 && (
               <div className="flex items-center gap-4">
                 <div className="bg-primary/20 p-3 rounded-full text-primary">
