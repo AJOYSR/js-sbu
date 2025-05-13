@@ -72,11 +72,11 @@ const HomeSection = async () => {
       },
     },
   })) as Partner[]
-  console.log('🚀 ~ HomeSection ~ partners:', partners)
 
   // Fetch featured portfolio projects
   const projects = (await fetchDocs('portfolio', {
     limit: 3,
+    sort: '-publishedAt',
     where: {
       _status: {
         equals: 'published',
@@ -251,8 +251,8 @@ const HomeSection = async () => {
             {projects &&
               projects.map((project, index) => (
                 <Link
-                  key={project.id}
-                  href={`/portfolio/${project.id}`}
+                  key={project.slug}
+                  href={`/portfolio/${project.slug}`}
                   className={`group relative glass-card rounded-2xl overflow-hidden card-hover animation-delay-${200 + index * 100} animate-fadeIn hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300`}
                 >
                   <div className="relative h-56 overflow-hidden">

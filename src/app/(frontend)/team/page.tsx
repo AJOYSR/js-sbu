@@ -112,7 +112,7 @@ export default async function TeamPage({ searchParams }: Props) {
                     className="bg-white dark:bg-card rounded-lg shadow-md overflow-hidden card-hover shiny-card neon-glow"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="relative h-64 w-full">
+                    <div className="relative h-80 w-full overflow-hidden">
                       <Image
                         src={
                           typeof leader.image === 'object' && leader?.image?.url
@@ -121,13 +121,35 @@ export default async function TeamPage({ searchParams }: Props) {
                         }
                         alt={leader.name}
                         fill
-                        className="object-cover"
+                        className="object-cover hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        quality={100}
+                        priority={index < 3}
                       />
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-semibold mb-2">{leader.name}</h3>
                       <p className="text-primary font-medium mb-4">{leader.role}</p>
-                      <p className="text-gray-600 dark:text-gray-300">{leader.bio}</p>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">{leader.bio}</p>
+
+                      {/* Skills section */}
+                      {leader.skills && leader.skills.length > 0 && (
+                        <div className="mt-4">
+                          <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 font-semibold">
+                            Skills
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {leader.skills.map((skillObj: any) => (
+                              <span
+                                key={skillObj.id}
+                                className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm hover:bg-primary/20 hover:scale-105 transition-all duration-200"
+                              >
+                                {skillObj.skill}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -292,12 +314,13 @@ export default async function TeamPage({ searchParams }: Props) {
                                     <Image
                                       src={
                                         typeof member.image === 'object' && member.image.url
-                                          ? member.image.url
+                                          ? member.image?.url
                                           : '/team/placeholder.jpg'
                                       }
                                       alt={member.name}
                                       fill
                                       className="object-cover"
+                                      quality={85}
                                     />
                                   </div>
                                   <div>

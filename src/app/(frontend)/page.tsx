@@ -4,7 +4,8 @@ import { Metadata } from 'next'
 import HomeSection from '@/components/homeSection'
 
 export const metadata: Metadata = {
-  title: 'Home - Modern Web Solutions',
+  title: 'Home - JS-SBU|Modern Web Solutions',
+
   description: 'Building innovative solutions for tomorrow with cutting-edge technology',
 }
 

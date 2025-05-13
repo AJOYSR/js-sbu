@@ -57,10 +57,10 @@ export async function Footer() {
   ]
 
   const popularServices = [
-    'Web Application',
-    'Mobile App Development',
-    'UI/UX & Product Design',
-    'Machine Learning & AI',
+    { name: 'Web Application', href: '/services/web-app' },
+    { name: 'Mobile App Development', href: '/services/mobile-app' },
+    { name: 'UI/UX & Product Design', href: '/services/ui-ux' },
+    { name: 'Machine Learning & AI', href: '/services/ml-ai' },
   ]
 
   const techStacks = {
@@ -122,11 +122,14 @@ export async function Footer() {
             </h3>
             <ul className="space-y-3">
               {popularServices.map((service) => (
-                <li key={service} className="group flex items-center">
+                <li key={service.name} className="group flex items-center">
                   <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
-                  <span className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-300 cursor-pointer">
-                    {service}
-                  </span>
+                  <Link
+                    href={service.href}
+                    className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-300"
+                  >
+                    {service.name}
+                  </Link>
                 </li>
               ))}
             </ul>
