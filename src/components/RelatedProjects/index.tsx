@@ -14,8 +14,8 @@ const RelatedProjects = ({ projects }: { projects: Portfolio[] }) => {
               const imageUrl = image?.url || '/placeholder-image.jpg'
               return (
                 <Link
-                  href={`/portfolio/${String(project.id)}`}
-                  key={project.id}
+                  href={`/portfolio/${String(project.slug)}`}
+                  key={project.slug}
                   className="glass-card rounded-lg card-hover neon-glow overflow-hidden animate-fadeIn"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >

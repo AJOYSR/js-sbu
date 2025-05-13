@@ -114,7 +114,7 @@ export default async function PortfolioPage({ searchParams: searchParamsPromise 
 
             return (
               <Link
-                href={`/portfolio/${String(project.id)}`}
+                href={`/portfolio/${String(project.slug)}`}
                 key={project.id}
                 className={`glass-card card-hover rounded-xl shadow-md overflow-hidden transition-all animate-fadeIn ${animationDelay}`}
               >

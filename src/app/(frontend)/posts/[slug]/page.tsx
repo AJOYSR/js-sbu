@@ -11,7 +11,7 @@ import { Comments } from '@/components/Comments'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
-import type { Post } from '@/payload-types'
+import type { Media, Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -35,7 +35,18 @@ export async function generateStaticParams() {
 
   return params
 }
-
+const getImageUrl = (image: Media | number | null | undefined): string => {
+  if (!image) return '/images/placeholder.jpg' // Fallback to a placeholder image
+  if (typeof image === 'number') return '/images/placeholder.jpg'
+  if (typeof image === 'object' && image?.url) {
+    // Make sure we have a full URL
+    let imageUrl = image?.sizes?.xlarge?.url || image.url
+    // Remove dimensions from URL if present
+    const result = imageUrl?.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+$)/, '')
+    return result || '/images/placeholder.jpg'
+  }
+  return '/images/placeholder.jpg'
+}
 type Args = {
   params: Promise<{
     slug?: string
@@ -46,9 +57,19 @@ export default async function Post({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const url = '/posts/' + slug
   const post = await queryPostBySlug({ slug })
-
   if (!post) return <PayloadRedirects url={url} />
 
+  const imageUrl = getImageUrl(post?.meta?.image)
+  const modifiedPost = {
+    ...post,
+    meta: {
+      ...post.meta,
+      image: {
+        ...(post.meta?.image as Media),
+        url: imageUrl,
+      },
+    },
+  }
   return (
     <article className="min-h-screen animate-fadeIn">
       <PageClient />
@@ -56,7 +77,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      <PostHero post={post} />
+      <PostHero post={modifiedPost} />
 
       <div className="container mx-auto px-4 pb-16">
         <div className="max-w-4xl mx-auto mt-8 animation-delay-200 animate-fadeIn">

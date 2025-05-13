@@ -5,22 +5,40 @@ import { ArrowLeft } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import type { Portfolio } from '@/payload-types'
+import type { Media, Portfolio } from '@/payload-types'
 import RichText from '@/components/RichText'
 
-async function getProject(projectId: string) {
+async function getProject(projectSlug: string) {
   const payload = await getPayload({ config: configPromise })
 
   try {
-    const project = (await payload.findByID({
+    const projectQuery = await payload.find({
       collection: 'portfolio',
-      id: projectId,
-    })) as Portfolio
+      where: {
+        slug: {
+          equals: projectSlug,
+        },
+      },
+      limit: 1,
+    })
 
+    const project = projectQuery.docs[0] as Portfolio
     return project
   } catch (error) {
     return null
   }
+}
+const getImageUrl = (image: Media | number | null | undefined): string => {
+  if (!image) return '/images/placeholder.jpg' // Fallback to a placeholder image
+  if (typeof image === 'number') return '/images/placeholder.jpg'
+  if (typeof image === 'object' && image?.url) {
+    // Make sure we have a full URL
+    let imageUrl = image?.sizes?.xlarge?.url || image.url
+    // Remove dimensions from URL if present
+    const result = imageUrl?.replace(/-\d+x\d+(?=\.[a-zA-Z0-9]+$)/, '')
+    return result || '/images/placeholder.jpg'
+  }
+  return '/images/placeholder.jpg'
 }
 
 export async function generateStaticParams() {
@@ -30,27 +48,24 @@ export async function generateStaticParams() {
   })
 
   return projects.docs.map((project) => ({
-    id: String(project.id),
+    id: String(project.slug),
   }))
 }
 
 type Args = {
-  params: Promise<{
+  params: {
     id: string
-  }>
+  }
 }
 
-export default async function ProjectPage({ params: paramsPromise }: Args) {
-  const { id } = await paramsPromise
+export default async function ProjectPage({ params }: Args) {
+  const { id } = params
   const project = await getProject(id)
 
   if (!project) {
     return notFound()
   }
-
-  const imageUrl =
-    typeof project.image === 'number' ? '' : project.image.url || '/placeholder-image.jpg'
-
+  const imageUrl = getImageUrl(project?.image)
   return (
     <div className="min-h-screen py-16 animate-fadeIn">
       <div className="container mx-auto px-4">
@@ -66,7 +81,14 @@ export default async function ProjectPage({ params: paramsPromise }: Args) {
 
           <div className="glass-card rounded-xl shadow-md overflow-hidden mb-12 animation-delay-300 animate-fadeIn">
             <div className="relative h-96">
-              <Image src={imageUrl} alt={project.title} fill className="object-cover" />
+              <Image
+                src={imageUrl}
+                alt={project.title}
+                fill
+                className="object-cover"
+                priority
+                unoptimized={!imageUrl.includes(process.env.NEXT_PUBLIC_SERVER_URL || 'localhost')}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                 <span className="btn-gradient px-4 py-2 rounded-full text-sm mb-4 inline-block">
