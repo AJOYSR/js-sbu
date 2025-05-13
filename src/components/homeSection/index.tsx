@@ -13,35 +13,11 @@ import type {
 import { ArrowRight } from 'lucide-react'
 import HeroSlider from '@/components/HeroSlider'
 
-// Define the props for the HomeSection component up
-interface HomeSectionProps {
-  slides?: Slide[]
-  partners?: Partner[]
-  projects?: IPortfolio[]
-  posts?: IPost[]
-}
-
 const getImageUrl = (media: Media | number | null | undefined): string => {
   if (typeof media === 'object' && media !== null && 'url' in media && media.url) {
     return media.url
   }
   return '/placeholder.jpg'
-}
-
-const getUserName = (user: User | number | null | undefined): string => {
-  if (typeof user === 'object' && user !== null && 'name' in user && user.name) {
-    return user.name
-  }
-  return ''
-}
-
-const formatDate = (date: string | null | undefined): string => {
-  if (!date) return ''
-  return new Date(date).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
 }
 
 const HomeSection = async () => {
@@ -112,23 +88,46 @@ const HomeSection = async () => {
             </p>
           </div>
 
-          <div className="glass-card rounded-3xl p-10  shadow-xl relative overflow-hidden border border-white/5 backdrop-blur-md">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden border border-white/5 backdrop-blur-md">
             {/* Inner card decorative elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/20 to-transparent rounded-full blur-[100px]"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-[100px]"></div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-10 items-center justify-items-center relative z-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-10 items-start justify-items-center relative z-10">
               {partners && partners.length > 0
                 ? partners.map((partner, index) => (
                     <div
                       key={partner.id}
-                      className="shiny-card group w-full max-w-[200px] animate-fadeIn"
+                      className="shiny-card group w-full animate-fadeIn"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       {partner.logo ? (
                         partner.website ? (
                           <Link href={partner?.website} target="_blank" rel="noopener noreferrer">
-                            <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
+                            <div className="glass-card p-4 sm:p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5 h-full">
+                              <div className="h-16 sm:h-24 flex items-center justify-center">
+                                <Image
+                                  src={
+                                    typeof partner?.logo === 'object' && partner?.logo?.url
+                                      ? partner?.logo?.url
+                                      : '/placeholder.jpg'
+                                  }
+                                  alt={partner.name}
+                                  width={180}
+                                  height={90}
+                                  className="object-contain max-h-full mx-auto opacity-95 hover:opacity-100 transition-all duration-500"
+                                  unoptimized={true}
+                                />
+                              </div>
+                              <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-3 sm:my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
+                              <p className="mt-2 sm:mt-3 text-foreground font-medium text-xs sm:text-sm tracking-wide uppercase px-1 sm:px-2 break-words hyphens-auto min-h-[2.5rem] flex items-center justify-center">
+                                {partner.name}
+                              </p>
+                            </div>
+                          </Link>
+                        ) : (
+                          <div className="glass-card p-4 sm:p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5 h-full">
+                            <div className="h-16 sm:h-24 flex items-center justify-center">
                               <Image
                                 src={
                                   typeof partner?.logo === 'object' && partner?.logo?.url
@@ -138,65 +137,56 @@ const HomeSection = async () => {
                                 alt={partner.name}
                                 width={180}
                                 height={90}
-                                className="object-contain h-24 mx-auto opacity-95 hover:opacity-100 transition-all duration-500"
+                                className="object-contain max-h-full mx-auto opacity-95 hover:opacity-100 transition-all duration-500"
                                 unoptimized={true}
                               />
-                              <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                              <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
-                                {partner.name}
-                              </p>
                             </div>
-                          </Link>
-                        ) : (
-                          <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
-                            <Image
-                              src={
-                                typeof partner?.logo === 'object' && partner?.logo?.url
-                                  ? partner?.logo?.url
-                                  : '/placeholder.jpg'
-                              }
-                              alt={partner.name}
-                              width={180}
-                              height={90}
-                              className="object-contain h-24 mx-auto opacity-95 hover:opacity-100 transition-all duration-500"
-                              unoptimized={true}
-                            />
-                            <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                            <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
+                            <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-3 sm:my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
+                            <p className="mt-2 sm:mt-3 text-foreground font-medium text-xs sm:text-sm tracking-wide uppercase px-1 sm:px-2 break-words hyphens-auto min-h-[2.5rem] flex items-center justify-center">
                               {partner.name}
                             </p>
                           </div>
                         )
                       ) : (
-                        <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
-                          <div className="bg-gradient-to-br from-primary/10 to-primary/5 h-24 w-full flex items-center justify-center mx-auto rounded-lg">
-                            <span className="font-bold text-3xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                              {partner.name.substring(0, 2).toUpperCase()}
+                        <div className="glass-card p-4 sm:p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5 h-full">
+                          <div className="bg-gradient-to-br from-primary/10 to-primary/5 h-16 sm:h-24 w-full flex items-center justify-center mx-auto rounded-lg">
+                            <span className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+                              {(
+                                partner.name.split(' ')[0].substring(0, 1) +
+                                (partner.name.split(' ').length > 1
+                                  ? partner.name.split(' ')[1].substring(0, 1)
+                                  : partner.name.substring(1, 2))
+                              ).toUpperCase()}
                             </span>
                           </div>
-                          <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                          <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
+                          <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-3 sm:my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
+                          <p className="mt-2 sm:mt-3 text-foreground font-medium text-xs sm:text-sm tracking-wide uppercase px-1 sm:px-2 break-words hyphens-auto min-h-[2.5rem] flex items-center justify-center">
                             {partner.name}
                           </p>
                         </div>
                       )}
                     </div>
                   ))
-                : ['Tennant', 'Long Shot', 'Meed', 'TechCorp'].map((client, index) => (
+                : ['Tennant', 'Long Shot', 'Shanta Securities', 'Rehive'].map((client, index) => (
                     <div
                       key={client}
-                      className="shiny-card group w-full max-w-[200px] animate-fadeIn"
+                      className="shiny-card group w-full animate-fadeIn"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
-                      <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
-                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 h-24 w-full flex items-center justify-center mx-auto rounded-lg relative overflow-hidden">
+                      <div className="glass-card p-4 sm:p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5 h-full">
+                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 h-16 sm:h-24 w-full flex items-center justify-center mx-auto rounded-lg relative overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                          <span className="font-bold text-3xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent relative z-10">
-                            {client.substring(0, 2).toUpperCase()}
+                          <span className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent relative z-10">
+                            {(
+                              client.split(' ')[0].substring(0, 1) +
+                              (client.split(' ').length > 1
+                                ? client.split(' ')[1].substring(0, 1)
+                                : client.substring(1, 2))
+                            ).toUpperCase()}
                           </span>
                         </div>
-                        <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                        <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
+                        <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-3 sm:my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
+                        <p className="mt-2 sm:mt-3 text-foreground font-medium text-xs sm:text-sm tracking-wide uppercase px-1 sm:px-2 break-words hyphens-auto min-h-[2.5rem] flex items-center justify-center">
                           {client}
                         </p>
                       </div>
@@ -253,22 +243,13 @@ const HomeSection = async () => {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-black/25 opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 transition-opacity duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <div className="flex flex-wrap gap-2 mb-1 sm:mb-4">
-                        {project.technologies?.slice(0, 3).map((tech, i) => (
-                          <span
-                            key={i}
-                            className="text-xs px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm font-medium"
-                          >
-                            {tech.tech}
-                          </span>
-                        ))}
-                      </div>
-                      <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary/90 transition-colors duration-300">
+                      <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary/90 transition-colors duration-300 drop-shadow-[0_2px_3px_rgba(0,0,0,0.9)]">
                         {project.title}
                       </h3>
-                      <p className="text-white/90 text-sm line-clamp-2 mb-4 leading-relaxed">
+                      <p className="text-white/95 text-sm line-clamp-2 mb-4 leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                         {project.description}
                       </p>
                     </div>
@@ -319,17 +300,13 @@ const HomeSection = async () => {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-black/25 opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 transition-opacity duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        <span className="text-xs px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm font-medium">
-                          {formatDate(post.publishedAt)}
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary/90 transition-colors duration-300">
+                      <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary/90 transition-colors duration-300 drop-shadow-[0_2px_3px_rgba(0,0,0,0.9)]">
                         {post.title}
                       </h3>
-                      <p className="text-white/90 text-sm line-clamp-2 mb-4 leading-relaxed">
+                      <p className="text-white/95 text-sm line-clamp-2 mb-4 leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                         {post.meta?.description}
                       </p>
                     </div>
