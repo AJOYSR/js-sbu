@@ -53,13 +53,14 @@ export async function generateStaticParams() {
 }
 
 type Args = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function ProjectPage({ params }: Args) {
-  const { id } = params
+  const resolvedParams = await params
+  const { id } = resolvedParams
   const project = await getProject(id)
 
   if (!project) {

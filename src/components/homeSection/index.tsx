@@ -21,17 +21,6 @@ interface HomeSectionProps {
   posts?: IPost[]
 }
 
-// Add these interfaces based on the collections
-interface Portfolio {
-  id: string
-  title: string
-  description: string
-  slug: string
-  image: Media | number | null
-  category: string
-  technologies: { tech: string }[]
-}
-
 const getImageUrl = (media: Media | number | null | undefined): string => {
   if (typeof media === 'object' && media !== null && 'url' in media && media.url) {
     return media.url
@@ -149,11 +138,11 @@ const HomeSection = async () => {
                                 alt={partner.name}
                                 width={180}
                                 height={90}
-                                className="object-contain h-28 mx-auto rounded-full filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                                className="object-contain h-24 mx-auto opacity-95 hover:opacity-100 transition-all duration-500"
                                 unoptimized={true}
                               />
                               <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                              <p className="mt-3 text-foreground font-medium text-gradient">
+                              <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
                                 {partner.name}
                               </p>
                             </div>
@@ -169,24 +158,24 @@ const HomeSection = async () => {
                               alt={partner.name}
                               width={180}
                               height={90}
-                              className="object-contain h-28 mx-auto rounded-md filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                              className="object-contain h-24 mx-auto opacity-95 hover:opacity-100 transition-all duration-500"
                               unoptimized={true}
                             />
                             <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                            <p className="mt-3 text-foreground font-medium text-gradient">
+                            <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
                               {partner.name}
                             </p>
                           </div>
                         )
                       ) : (
                         <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
-                          <div className="gradient-border h-24 w-full flex items-center justify-center mx-auto">
-                            <span className="text-primary font-bold text-4xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                              {partner.name.substring(0, 1)}
+                          <div className="bg-gradient-to-br from-primary/10 to-primary/5 h-24 w-full flex items-center justify-center mx-auto rounded-lg">
+                            <span className="font-bold text-3xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+                              {partner.name.substring(0, 2).toUpperCase()}
                             </span>
                           </div>
                           <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                          <p className="mt-3 text-foreground font-medium text-gradient">
+                          <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
                             {partner.name}
                           </p>
                         </div>
@@ -200,14 +189,16 @@ const HomeSection = async () => {
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className="glass-card p-6 rounded-2xl text-center transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/5 border border-white/5">
-                        <div className="gradient-border h-24 w-full flex items-center justify-center mx-auto relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-primary/10 to-primary/5 h-24 w-full flex items-center justify-center mx-auto rounded-lg relative overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                          <span className="text-primary font-bold text-4xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent relative z-10">
-                            {client.substring(0, 1)}
+                          <span className="font-bold text-3xl bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent relative z-10">
+                            {client.substring(0, 2).toUpperCase()}
                           </span>
                         </div>
                         <div className="h-px w-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent my-4 mx-auto group-hover:w-full transition-all duration-700"></div>
-                        <p className="mt-3 text-foreground font-medium text-gradient">{client}</p>
+                        <p className="mt-3 text-foreground font-medium text-sm tracking-wide uppercase">
+                          {client}
+                        </p>
                       </div>
                     </div>
                   ))}

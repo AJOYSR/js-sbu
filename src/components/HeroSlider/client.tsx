@@ -16,7 +16,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [isClient, setIsClient] = useState(false)
   const sliderTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const slideInterval = 5000 // Slide changes every 5 seconds
+  const slideInterval = 6000 // Extended to 6 seconds for better reading time
 
   // Make sure we're on client side before initializing
   useEffect(() => {
@@ -50,7 +50,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
         nextSlide()
       }, slideInterval)
     }
-  }, [isPlaying, nextSlide])
+  }, [isPlaying, nextSlide, slideInterval])
 
   // Toggle play/pause
   const togglePlayPause = () => {
@@ -81,20 +81,22 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
 
   // Setup automatic sliding
   useEffect(() => {
-    if (isPlaying) {
-      sliderTimerRef.current = setInterval(() => {
-        nextSlide()
-      }, slideInterval)
-    } else if (sliderTimerRef.current) {
-      clearInterval(sliderTimerRef.current)
-    }
-
-    return () => {
-      if (sliderTimerRef.current) {
+    if (isClient) {
+      if (isPlaying) {
+        sliderTimerRef.current = setInterval(() => {
+          nextSlide()
+        }, slideInterval)
+      } else if (sliderTimerRef.current) {
         clearInterval(sliderTimerRef.current)
       }
+
+      return () => {
+        if (sliderTimerRef.current) {
+          clearInterval(sliderTimerRef.current)
+        }
+      }
     }
-  }, [isPlaying, nextSlide, isClient])
+  }, [isPlaying, nextSlide, isClient, slideInterval])
 
   // Reset timer when currentSlide changes
   useEffect(() => {
@@ -106,17 +108,17 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
   // For empty slides
   if (!slides || slides.length === 0) {
     return (
-      <div className="h-[600px] md:h-[700px] flex items-center justify-center bg-gradient-to-b from-gray-900 to-background">
-        <div className="text-center px-4 animate-fadeIn">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient">
+      <div className="h-[600px] md:h-[700px] flex items-center justify-center bg-gradient-to-b from-neutral-900 to-background">
+        <div className="text-center px-6 max-w-3xl">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-white">
             Innovative Digital Solutions
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-white/90">
+          <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed">
             Building tomorrow&apos;s technology today
           </p>
           <Link
             href="/services"
-            className="btn-gradient text-white px-8 py-3 rounded-lg shadow-md hover-scale btn-pop inline-flex items-center"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-md transition-all duration-300 inline-flex items-center text-lg"
           >
             Explore Services
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -130,14 +132,14 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
   if (!isClient) {
     // Simple placeholder during SSR
     return (
-      <div className="relative h-[600px] md:h-[700px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-background/80 to-background/30"></div>
-        <div className="container mx-auto px-4 h-full flex items-center relative z-10">
+      <div className="relative h-[600px] md:h-[700px] overflow-hidden bg-neutral-950">
+        <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/80 to-neutral-900/40"></div>
+        <div className="container mx-auto px-6 h-full flex items-center relative z-10">
           <div className="max-w-3xl">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
               {slides[0]?.title || 'Welcome'}
             </h2>
-            <p className="text-xl md:text-2xl mb-8 text-white/90">
+            <p className="text-xl md:text-2xl mb-8 text-white/80 leading-relaxed">
               {slides[0]?.description || 'Loading amazing content...'}
             </p>
           </div>
@@ -149,7 +151,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
   // Client-side rendering (full interactive slider)
   return (
     <div
-      className="relative h-[600px] md:h-[700px] overflow-hidden"
+      className="relative h-[600px] md:h-[700px] overflow-hidden bg-neutral-950"
       role="region"
       aria-roledescription="carousel"
       aria-label="Hero Image Slider"
@@ -157,12 +159,12 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
       onTouchMove={handleTouchMove}
     >
       {/* Slides */}
-      <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
+      <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
             key={slide.id || index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            className={`absolute inset-0 transition-all duration-1200 ease-in-out ${
+              index === currentSlide ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'
             }`}
             role="group"
             aria-roledescription="slide"
@@ -178,31 +180,34 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
                 }
                 alt={slide.title || `Slide ${index + 1}`}
                 fill
-                className={`object-cover transition-transform duration-10000 ease-out scale-105 ${
-                  index === currentSlide ? 'animate-slowZoom' : ''
-                } ${slide.gradientOverlay ? 'opacity-80' : ''}`}
+                className={`object-cover ${
+                  index === currentSlide ? 'animate-kenburns' : ''
+                } ${slide.gradientOverlay ? 'opacity-90' : ''}`}
                 priority={index === 0}
+                quality={90}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-r from-background/80 to-background/30 backdrop-blur-sm"></div>
+
+            {/* Subtle overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/70 via-neutral-900/40 to-neutral-900/30"></div>
 
             {/* Slide content */}
-            <div className="container mx-auto px-4 h-full flex items-center relative z-10">
+            <div className="container mx-auto px-6 h-full flex items-center relative z-10">
               <div
                 className={`max-w-3xl transition-all duration-1000 ${
-                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                 }`}
               >
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
                   {slide.title || `Slide ${index + 1}`}
                 </h2>
-                <p className="text-xl md:text-2xl mb-8 text-white/90">
+                <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed max-w-2xl">
                   {slide.description || 'Building innovative solutions for tomorrow'}
                 </p>
                 {slide.ctaButton?.label && (
                   <Link
                     href={slide.ctaButton?.link || '/services'}
-                    className="btn-gradient text-white px-8 py-3 rounded-lg shadow-md hover-scale btn-pop inline-flex items-center"
+                    className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-md transition-all duration-300 inline-flex items-center text-lg"
                   >
                     {slide.ctaButton.label}
                     <ArrowRight className="ml-2 w-5 h-5" />
@@ -214,63 +219,57 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
         ))}
       </div>
 
+      {/* Progress bar */}
+      <div className="absolute bottom-24 left-0 right-0 z-30 container mx-auto px-6">
+        <div className="h-1 bg-white/20 rounded-full overflow-hidden max-w-xl">
+          <div
+            className="h-full bg-primary transition-all duration-100 ease-linear"
+            style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+          ></div>
+        </div>
+      </div>
+
       {/* Slider Controls */}
-      <div className="absolute bottom-10 left-0 right-0 z-20">
-        <div className="container mx-auto px-4">
+      <div className="absolute bottom-12 left-0 right-0 z-20">
+        <div className="container mx-auto px-6">
           <div className="flex items-center justify-between">
-            {/* Navigation dots */}
-            <div className="flex space-x-2">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentSlide
-                      ? 'bg-primary scale-125'
-                      : 'bg-white/50 hover:bg-white/80'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                  aria-current={index === currentSlide ? 'true' : 'false'}
-                />
-              ))}
+            {/* Slide counter */}
+            <div className="text-white/80 font-medium">
+              <span className="text-primary">{currentSlide + 1}</span>
+              <span className="mx-2">/</span>
+              <span>{slides.length}</span>
             </div>
 
             {/* Control buttons */}
-            <div className="flex space-x-2">
+            <div className="flex items-center space-x-3">
               <button
                 onClick={prevSlide}
-                className="p-2 rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/50 transition-colors text-white"
+                className="p-3 rounded-full hover:bg-white/10 transition-colors text-white"
                 aria-label="Previous slide"
               >
-                <ArrowLeft size={18} />
+                <ArrowLeft size={20} />
               </button>
 
               <button
                 onClick={togglePlayPause}
-                className="p-2 rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/50 transition-colors text-white"
+                className="p-3 rounded-full hover:bg-white/10 transition-colors text-white"
                 aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
                 title={isPlaying ? 'Pause' : 'Play'}
               >
-                {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
               </button>
 
               <button
                 onClick={nextSlide}
-                className="p-2 rounded-full bg-background/30 backdrop-blur-sm hover:bg-background/50 transition-colors text-white"
+                className="p-3 rounded-full hover:bg-white/10 transition-colors text-white"
                 aria-label="Next slide"
               >
-                <ArrowRight size={18} />
+                <ArrowRight size={20} />
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Decorative elements */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent"></div>
-      <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute top-32 left-1/4 w-8 h-8 bg-primary/30 rounded-full blur-sm animate-pulse"></div>
-      <div className="absolute bottom-48 right-1/4 w-6 h-6 bg-primary/20 rounded-full blur-sm animate-pulse"></div>
     </div>
   )
 }

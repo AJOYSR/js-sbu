@@ -72,7 +72,7 @@ export async function Footer() {
   }
 
   return (
-    <footer className="bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 text-gray-800 dark:text-white relative overflow-hidden">
+    <footer className="bg-gradient-to-b from-secondary to-secondary/80 dark:from-background dark:to-card text-foreground relative overflow-hidden">
       {/* Decorative floating orbs - updated with more vibrant effects */}
       <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none animate-pulse"></div>
       <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/15 blur-3xl pointer-events-none"></div>
@@ -91,22 +91,20 @@ export async function Footer() {
               <Link href="/" className="inline-block mb-4 hover:scale-105 transition-transform">
                 <Logo className="h-10 w-auto" />
               </Link>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                 Creating innovative digital solutions with a focus on user experience and
                 cutting-edge technology.
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              Quick Links
-            </h3>
+            <h3 className="text-xl font-semibold mb-4 text-gradient">Quick Links</h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name} className="group flex items-center">
                   <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
                   <Link
                     href={link.href}
-                    className="hover:text-primary transition-colors duration-300 text-gray-600 dark:text-gray-300"
+                    className="hover:text-primary transition-colors duration-300 text-muted-foreground dark:text-muted-foreground"
                   >
                     {link.name}
                   </Link>
@@ -117,16 +115,14 @@ export async function Footer() {
 
           {/* Popular Services */}
           <div className="animate-fadeIn animation-delay-200">
-            <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              Popular Services
-            </h3>
+            <h3 className="text-xl font-semibold mb-4 text-gradient">Popular Services</h3>
             <ul className="space-y-3">
               {popularServices.map((service) => (
                 <li key={service.name} className="group flex items-center">
                   <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
                   <Link
                     href={service.href}
-                    className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors duration-300"
+                    className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-colors duration-300"
                   >
                     {service.name}
                   </Link>
@@ -135,8 +131,8 @@ export async function Footer() {
             </ul>
 
             {/* Trust Badges - Added for poppy visual enhancement */}
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3">
+            <div className="mt-8 pt-6 border-t border-border dark:border-border">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground dark:text-muted-foreground mb-3">
                 Trusted By
               </h4>
               <div className="flex items-center space-x-4">
@@ -155,14 +151,12 @@ export async function Footer() {
 
           {/* Technology Stacks */}
           <div className="animate-fadeIn animation-delay-400">
-            <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              Technology Stacks
-            </h3>
+            <h3 className="text-xl font-semibold mb-4 text-gradient">Technology Stacks</h3>
             <div className="space-y-3">
               {Object.entries(techStacks).map(([category, technologies]) => (
                 <div key={category} className="bounce-hover">
                   <h4 className="font-medium text-primary capitalize mb-1">{category}:</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                     {technologies.join(', ')}
                   </p>
                 </div>
@@ -172,15 +166,13 @@ export async function Footer() {
 
           {/* Follow Us & Newsletter */}
           <div className="animate-fadeIn animation-delay-400">
-            <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-pink-400 bg-clip-text text-transparent">
-              Connect With Us
-            </h3>
+            <h3 className="text-xl font-semibold mb-4 text-gradient">Connect With Us</h3>
             <div className="flex space-x-5 mb-6">
               <a
                 href="https://www.linkedin.com/company/brain-station-23"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Linkedin size={24} />
                 <span className="sr-only">LinkedIn</span>
@@ -189,7 +181,7 @@ export async function Footer() {
                 href="https://github.com/BrainStation-23/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Github size={24} />
                 <span className="sr-only">GitHub</span>
@@ -198,7 +190,7 @@ export async function Footer() {
                 href="https://x.com/BrainStation23"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Twitter size={24} />
                 <span className="sr-only">Twitter</span>
@@ -207,15 +199,17 @@ export async function Footer() {
                 href="https://www.instagram.com/brainstation23ltd/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-all duration-300 hover:scale-125"
+                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
               >
                 <Instagram size={24} />
                 <span className="sr-only">Instagram</span>
               </a>
             </div>
 
-            <div className="gradient-border p-4 bg-white/10 dark:bg-gray-800/50 shadow-sm backdrop-blur-sm">
-              <h4 className="text-lg font-semibold mb-3 text-white">Newsletter</h4>
+            <div className="gradient-border p-4 bg-card/50 dark:bg-card/50 shadow-sm backdrop-blur-sm">
+              <h4 className="text-lg font-semibold mb-3 text-white dark:text-gray-300">
+                Newsletter
+              </h4>
               {newsletterForm ? (
                 <NewsletterFormClient formId={String(newsletterForm.id)} />
               ) : (
@@ -225,8 +219,8 @@ export async function Footer() {
                     <input
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
-                             focus:outline-none focus:border-primary text-gray-800 dark:text-gray-300 pr-10"
+                      className="w-full px-4 py-2 rounded-lg bg-background dark:bg-background border border-input dark:border-input 
+                             focus:outline-none focus:border-primary text-foreground dark:text-foreground pr-10"
                     />
                     <Mail className="absolute right-3 top-2.5 text-gray-400" size={20} />
                   </div>
@@ -240,10 +234,10 @@ export async function Footer() {
         </div>
 
         {/* Copyright & Bottom Links - New */}
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+        <div className="mt-8 pt-8 border-t border-border dark:border-border">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground dark:text-muted-foreground">
                 Copyright © {CURRENT_YEAR} JS SBU. All rights reserved.
               </p>
             </div>
@@ -251,18 +245,20 @@ export async function Footer() {
             <div className="flex items-center space-x-6">
               <Link
                 href="/privacy-policy"
-                className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-colors"
               >
                 Terms of Service
               </Link>
               <div className="flex items-center ml-2">
-                <span className="text-gray-600 dark:text-gray-400 mr-2">Theme:</span>
+                <span className="text-muted-foreground dark:text-muted-foreground mr-2">
+                  Theme:
+                </span>
                 <ThemeSelector />
               </div>
             </div>
