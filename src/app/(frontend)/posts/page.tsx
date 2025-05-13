@@ -24,7 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
-    limit: 3,
+    limit: 6,
     overrideAccess: false,
     select: {
       title: true,

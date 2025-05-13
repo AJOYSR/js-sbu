@@ -16,7 +16,7 @@ const categoryOptions = [
 ]
 
 // Number of items per page
-const ITEMS_PER_PAGE = 3
+const ITEMS_PER_PAGE = 6
 
 async function getProjects(page = 1, category?: string) {
   const { isEnabled: draft } = await draftMode()

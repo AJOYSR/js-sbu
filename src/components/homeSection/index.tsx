@@ -255,7 +255,7 @@ const HomeSection = async () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-100 transition-opacity duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <div className="flex flex-wrap gap-2 mb-4">
+                      <div className="flex flex-wrap gap-2 mb-1 sm:mb-4">
                         {project.technologies?.slice(0, 3).map((tech, i) => (
                           <span
                             key={i}
@@ -275,9 +275,6 @@ const HomeSection = async () => {
                   </div>
                   <div className="p-6 bg-card/50 backdrop-blur-sm border-t border-white/10">
                     <div className="flex items-center justify-between">
-                      <span className="inline-block px-4 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                        {project.category}
-                      </span>
                       <div className="flex items-center text-primary group/link">
                         <span className="font-medium">View Case Study</span>
                         <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover/link:translate-x-1" />
@@ -307,48 +304,42 @@ const HomeSection = async () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts &&
               posts.map((post, index) => (
                 <Link
                   key={post.id}
                   href={`/posts/${post.slug}`}
-                  className={`group relative glass-card rounded-2xl overflow-hidden card-hover animation-delay-${200 + index * 100} animate-fadeIn hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col h-[420px]`}
+                  className={`group relative glass-card rounded-2xl overflow-hidden card-hover animation-delay-${200 + index * 100} animate-fadeIn hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300`}
                 >
-                  <div className="relative h-48 flex-shrink-0 overflow-hidden">
+                  <div className="relative h-56 overflow-hidden">
                     <Image
                       src={getImageUrl(post.meta?.image)}
                       alt={post.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
-                    <div className="absolute top-4 right-4">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white backdrop-blur-sm">
-                        {formatDate(post.publishedAt)}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6 flex-grow flex flex-col">
-                    <div className="flex items-center space-x-2 mb-4 flex-shrink-0">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-primary font-semibold text-sm">
-                          {getUserName(post.authors?.[0])?.charAt(0) || 'A'}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="text-xs px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm font-medium">
+                          {formatDate(post.publishedAt)}
                         </span>
                       </div>
-                      <span className="text-sm text-foreground/60">
-                        {getUserName(post.authors?.[0])}
-                      </span>
+                      <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary/90 transition-colors duration-300">
+                        {post.title}
+                      </h3>
+                      <p className="text-white/90 text-sm line-clamp-2 mb-4 leading-relaxed">
+                        {post.meta?.description}
+                      </p>
                     </div>
-                    <h3 className="text-xl font-bold mb-3 text-gradient line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                      {post.title}
-                    </h3>
-                    <p className="text-foreground/80 text-sm mb-4 line-clamp-3 flex-grow">
-                      {post.meta?.description}
-                    </p>
-                    <div className="flex items-center text-primary group/link mt-auto flex-shrink-0">
-                      <span className="font-medium text-sm">Read Article</span>
-                      <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                  </div>
+                  <div className="p-6 bg-card/50 backdrop-blur-sm border-t border-white/10">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-primary group/link">
+                        <span className="font-medium">Read Article</span>
+                        <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover/link:translate-x-1" />
+                      </div>
                     </div>
                   </div>
                 </Link>
