@@ -1,8 +1,5 @@
-'use client'
-
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
-import { Loader2 } from 'lucide-react'
 
 interface PortfolioImageSectionProps {
   imageUrl: string
@@ -15,28 +12,14 @@ export default function PortfolioImageSection({
   title,
   category,
 }: PortfolioImageSectionProps) {
-  const [isLoading, setIsLoading] = useState(true)
-
   return (
     <div className="relative h-96">
-      {/* Loading state */}
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 bg-background/80">
-          <div className="flex flex-col items-center">
-            <Loader2 className="w-10 h-10 text-primary animate-spin mb-2" />
-            <span className="text-foreground">Loading image...</span>
-          </div>
-        </div>
-      )}
-
       <Image
         src={imageUrl}
         alt={title}
         fill
         className="object-cover"
         priority
-        onLoad={() => setIsLoading(false)}
-        onError={() => setIsLoading(false)}
         sizes="(max-width: 768px) 100vw, 768px"
         unoptimized={!imageUrl.includes(process.env.NEXT_PUBLIC_SERVER_URL || 'localhost')}
       />

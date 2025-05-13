@@ -1,8 +1,5 @@
-'use client'
-
 import { formatDateTime } from 'src/utilities/formatDateTime'
-import React, { useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import React from 'react'
 
 import type { Post } from '@/payload-types'
 
@@ -12,29 +9,13 @@ export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
   const { categories, meta: { image: metaImage } = {}, populatedAuthors, publishedAt, title } = post
-  const [isLoading, setIsLoading] = useState(true)
-
-  // Function to handle image load completion
-  const handleImageLoad = () => {
-    setIsLoading(false)
-  }
 
   return (
     <div className="relative animate-fadeIn">
       <div className="absolute inset-0 w-full min-h-[85vh] z-0">
-        {/* Loading indicator */}
-        {isLoading && metaImage && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 bg-background/80">
-            <div className="flex flex-col items-center">
-              <Loader2 className="w-12 h-12 text-primary animate-spin mb-3" />
-              <span className="text-foreground text-lg">Loading image...</span>
-            </div>
-          </div>
-        )}
-
         {metaImage && typeof metaImage !== 'string' && (
           <>
-            <Media fill imgClassName="object-cover" resource={metaImage} onLoad={handleImageLoad} />
+            <Media fill imgClassName="object-cover" resource={metaImage} />
             <div className="absolute inset-0 bg-black/40 pointer-events-none" />
           </>
         )}
