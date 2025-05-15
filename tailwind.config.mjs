@@ -34,6 +34,7 @@ export default {
     'delay-100',
     'delay-200',
     'animate-bounce',
+    'shadow-glow',
   ],
   theme: {
     container: {

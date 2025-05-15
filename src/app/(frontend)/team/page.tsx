@@ -4,6 +4,13 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Team | JS SBU',
+  description: 'Team JS SBU website',
+}
 
 // Team structure categories
 const teamCategories = [
@@ -91,26 +98,56 @@ export default async function TeamPage({ searchParams }: Props) {
     const teamMembers = teamMembersResponse.docs
 
     return (
-      <div className="min-h-screen py-20">
-        <div className="container mx-auto px-4">
-          {/* Hero Section */}
-          <div className="max-w-4xl mx-auto mb-20 text-center animate-fadeIn">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">Our Team</h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Meet the talented individuals who make JS-SBU a leader in JavaScript development
-            </p>
-          </div>
+      <div className="min-h-screen animate-fadeIn">
+        {/* Hero Section with Background */}
+        <section className="relative py-20 bg-gradient-to-b from-gray-900 to-background overflow-hidden">
+          {/* Background decorative elements */}
+          <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-[100px]"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
 
-          {/* Leadership Section */}
-          {leadershipTeam.length > 0 && (
-            <div className="mb-24 animate-fadeIn animation-delay-200">
-              <h2 className="text-3xl font-bold mb-12 text-center">Leadership Team</h2>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <span className="inline-block px-4 py-1 rounded-full bg-white/20 text-white text-sm font-medium mb-6 animate-fadeIn backdrop-blur-sm">
+                OUR TEAM
+              </span>
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white animation-delay-200 animate-fadeIn">
+                Meet Our <span className="text-gradient">JavaScript Experts</span>
+              </h1>
+              <p className="text-xl text-white/90 mb-10 animation-delay-300 animate-fadeIn max-w-3xl mx-auto leading-relaxed">
+                The talented individuals who make JS-SBU a leader in JavaScript development,
+                dedicated to building exceptional solutions for our clients
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Leadership Section */}
+        {leadershipTeam.length > 0 && (
+          <section className="py-20 relative overflow-hidden">
+            <div className="absolute -top-32 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
+            <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
+
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="text-center mb-16">
+                <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 animate-fadeIn">
+                  LEADERSHIP
+                </span>
+                <h2 className="text-4xl font-bold mb-6 text-gradient animation-delay-200 animate-fadeIn">
+                  Our Leadership Team
+                </h2>
+                <p className="text-foreground/80 max-w-3xl mx-auto text-lg animation-delay-300 animate-fadeIn leading-relaxed">
+                  Experienced professionals guiding our team to deliver exceptional JavaScript
+                  solutions
+                </p>
+              </div>
+
               <div className="grid md:grid-cols-3 gap-8">
                 {leadershipTeam.map((leader: any, index: number) => (
                   <div
                     key={leader.id}
-                    className="bg-white dark:bg-card rounded-lg shadow-md overflow-hidden card-hover shiny-card neon-glow"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="glass-card rounded-2xl overflow-hidden card-hover animation-delay-400 animate-fadeIn shadow-xl border border-white/5"
+                    style={{ animationDelay: `${400 + index * 100}ms` }}
                   >
                     <div className="relative h-80 w-full overflow-hidden">
                       <Image
@@ -121,22 +158,23 @@ export default async function TeamPage({ searchParams }: Props) {
                         }
                         alt={leader.name}
                         fill
-                        className="object-cover hover:scale-105 transition-transform duration-500"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 33vw"
                         quality={100}
                         priority={index < 3}
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold mb-2">{leader.name}</h3>
+                    <div className="p-8 relative">
+                      <h3 className="text-2xl font-bold mb-2 text-gradient">{leader.name}</h3>
                       <p className="text-primary font-medium mb-4">{leader.role}</p>
-                      <p className="text-gray-600 dark:text-gray-300 mb-4">{leader.bio}</p>
+                      <p className="text-foreground/80 mb-6">{leader.bio}</p>
 
                       {/* Skills section */}
                       {leader.skills && leader.skills.length > 0 && (
                         <div className="mt-4">
-                          <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 font-semibold">
-                            Skills
+                          <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3 font-semibold">
+                            Expertise
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {leader.skills.map((skillObj: any) => (
@@ -155,13 +193,28 @@ export default async function TeamPage({ searchParams }: Props) {
                 ))}
               </div>
             </div>
-          )}
+          </section>
+        )}
 
-          {/* Team Structure Section */}
-          <div className="mb-24 animate-fadeIn animation-delay-400">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gradient">
-              Our Team Structure
-            </h2>
+        {/* Team Structure Section */}
+        <section className="py-20 bg-gradient-to-b from-card/30 to-background relative overflow-hidden">
+          <div className="absolute top-1/4 right-0 w-80 h-80 bg-primary/5 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-primary/5 rounded-full blur-[100px]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-1/2 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 blur-3xl"></div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 animate-fadeIn backdrop-blur-sm">
+                TEAM STRUCTURE
+              </span>
+              <h2 className="text-4xl font-bold mb-6 text-gradient animation-delay-200 animate-fadeIn">
+                Our Development Teams
+              </h2>
+              <p className="text-foreground/80 max-w-3xl mx-auto text-lg animation-delay-300 animate-fadeIn">
+                Specialized teams working together to deliver comprehensive JavaScript solutions
+              </p>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-8">
               {teamCategories.map((category, index) => {
                 // Find all team members for this category
@@ -258,31 +311,31 @@ export default async function TeamPage({ searchParams }: Props) {
                 return (
                   <div
                     key={category.value}
-                    className="bg-white dark:bg-card overflow-hidden rounded-xl transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px] group"
-                    style={{ animationDelay: `${index * 150}ms` }}
+                    className="glass-card rounded-2xl overflow-hidden card-hover animation-delay-400 animate-fadeIn shadow-xl border border-white/5"
+                    style={{ animationDelay: `${400 + index * 150}ms` }}
                   >
                     <div className="relative">
                       {/* Decorative colorful top border */}
-                      <div className="h-2 bg-gradient-to-r from-primary to-secondary" />
+                      <div className="h-2 bg-gradient-to-r from-primary to-primary-light" />
 
-                      <div className="p-8 shadow-md overflow-hidden ">
+                      <div className="p-8 relative">
+                        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-primary/10 to-transparent rounded-full blur-[60px] -z-10"></div>
+
                         <div className="flex items-start gap-4 mb-6">
                           <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                             {getCategoryIcon(category.value)}
                           </div>
                           <div>
-                            <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white group-hover:text-primary transition-colors">
+                            <h3 className="text-2xl font-bold mb-2 text-gradient">
                               {category.title}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-300">
-                              {category.description}
-                            </p>
+                            <p className="text-foreground/80">{category.description}</p>
                           </div>
                         </div>
 
                         {uniqueSkills.length > 0 && (
                           <div className="mb-6">
-                            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-3 font-semibold">
+                            <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3 font-semibold">
                               Skills & Technologies
                             </h4>
                             <div className="flex flex-wrap gap-2">
@@ -301,7 +354,7 @@ export default async function TeamPage({ searchParams }: Props) {
                         {/* List team members in this category */}
                         {categoryMembers.length > 0 && (
                           <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-                            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-4 font-semibold">
+                            <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-4 font-semibold">
                               Team Members
                             </h4>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -324,7 +377,7 @@ export default async function TeamPage({ searchParams }: Props) {
                                     />
                                   </div>
                                   <div>
-                                    <p className="font-semibold text-gray-800 dark:text-gray-100">
+                                    <p className="font-semibold text-foreground/90">
                                       {member.name}
                                     </p>
                                     <p className="text-sm text-primary">{member.role}</p>
@@ -341,62 +394,135 @@ export default async function TeamPage({ searchParams }: Props) {
               })}
             </div>
           </div>
+        </section>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-10 mb-16 animate-fadeIn animation-delay-600">
-              <div className="flex items-center gap-2">
-                {currentPage > 1 && (
-                  <Link
-                    href={`/team?page=${currentPage - 1}`}
-                    className="px-4 py-2 border border-primary/30 rounded-md hover:bg-primary/10 transition-all"
-                  >
-                    Previous
-                  </Link>
-                )}
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <section className="py-10 relative z-10">
+            <div className="container mx-auto px-4">
+              <div className="flex justify-center animation-delay-600 animate-fadeIn">
+                <div className="flex items-center gap-2">
+                  {currentPage > 1 && (
+                    <Link
+                      href={`/team?page=${currentPage - 1}`}
+                      className="px-4 py-2 border border-primary/30 rounded-md hover:bg-primary/10 transition-all flex items-center"
+                    >
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 19l-7-7 7-7"
+                        />
+                      </svg>
+                      Previous
+                    </Link>
+                  )}
 
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <Link
-                    key={index}
-                    href={`/team?page=${index + 1}`}
-                    className={`px-4 py-2 border rounded-md transition-all ${
-                      currentPage === index + 1
-                        ? 'bg-primary text-white border-primary hover:bg-primary/90'
-                        : 'border-primary/30 hover:bg-primary/10'
-                    }`}
-                  >
-                    {index + 1}
-                  </Link>
-                ))}
+                  {Array.from({ length: totalPages }).map((_, index) => (
+                    <Link
+                      key={index}
+                      href={`/team?page=${index + 1}`}
+                      className={`px-4 py-2 border rounded-md transition-all ${
+                        currentPage === index + 1
+                          ? 'bg-primary text-white border-primary hover:bg-primary/90'
+                          : 'border-primary/30 hover:bg-primary/10'
+                      }`}
+                    >
+                      {index + 1}
+                    </Link>
+                  ))}
 
-                {currentPage < totalPages && (
-                  <Link
-                    href={`/team?page=${currentPage + 1}`}
-                    className="px-4 py-2 border border-primary/30 rounded-md hover:bg-primary/10 transition-all"
-                  >
-                    Next
-                  </Link>
-                )}
+                  {currentPage < totalPages && (
+                    <Link
+                      href={`/team?page=${currentPage + 1}`}
+                      className="px-4 py-2 border border-primary/30 rounded-md hover:bg-primary/10 transition-all flex items-center"
+                    >
+                      Next
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
-          )}
+          </section>
+        )}
 
-          {/* Join Us Section */}
-          <div className="max-w-4xl mx-auto text-center btn-gradient p-12 rounded-lg animate-fadeIn animation-delay-600">
-            <h2 className="text-3xl font-bold mb-6 text-white">Join Our Team</h2>
-            <p className="text-lg text-white/90 mb-8">
-              If you want to collaborate on cutting-edge projects, our team is here to provide
-              expert solutions. Reach out to us to discuss how we can work together to bring your
-              ideas to life.
-            </p>
-            <a
-              href="mailto:careers@js-sbu.com"
-              className="inline-block bg-white text-primary font-medium px-8 py-3 rounded-lg hover:bg-white/90 transition btn-pop"
-            >
-              Contact Us
-            </a>
+        {/* Join Us Section */}
+        <section className="py-20 bg-gradient-to-b from-card/30 to-background relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-50"></div>
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto">
+              <div className="glass-card rounded-3xl p-10 md:p-16 shadow-xl relative overflow-hidden border border-white/10 backdrop-blur-md animation-delay-300 animate-fadeIn">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-primary/15 to-transparent rounded-full blur-[80px]"></div>
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-[80px]"></div>
+
+                <div className="text-center relative z-10">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gradient animation-delay-200 animate-fadeIn">
+                    Work With Our JavaScript Experts
+                  </h2>
+                  <p className="text-foreground/90 text-lg mb-10 max-w-3xl mx-auto animation-delay-300 animate-fadeIn">
+                    If you want to collaborate on cutting-edge projects, our team is here to provide
+                    expert JavaScript solutions. Reach out to us to discuss how we can work together
+                    to bring your ideas to life.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-6 justify-center animation-delay-400 animate-fadeIn">
+                    <Link
+                      href="/contact"
+                      className="btn-gradient text-white px-8 py-4 rounded-xl shadow-lg hover-scale btn-pop flex items-center justify-center space-x-2 text-lg font-medium"
+                    >
+                      <span>Contact Our Team</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 ml-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </Link>
+                    <Link
+                      href="/portfolio"
+                      className="bg-white/10 border border-white/20 hover:bg-white/20 px-8 py-4 rounded-xl shadow-lg hover-scale btn-pop flex items-center justify-center space-x-2 text-lg font-medium backdrop-blur-sm"
+                    >
+                      <span>View Our Work</span>
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     )
   } catch (error) {

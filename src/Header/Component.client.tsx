@@ -9,7 +9,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ArrowRight } from 'lucide-react'
 
 const ThemeSelector = dynamic(
   () => import('@/providers/Theme/ThemeSelector').then((mod) => mod.ThemeSelector),
@@ -49,6 +49,30 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (
+        mobileMenuOpen &&
+        !target.closest('.mobile-menu-container') &&
+        !target.closest('.mobile-menu-button')
+      ) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [mobileMenuOpen])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [pathname])
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
   }
@@ -57,7 +81,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
     <header
       className={`w-full backdrop-blur-md z-50 fixed top-0 left-0 right-0 transition-all duration-300 ${
         scrolled
-          ? 'supports-[backdrop-filter]:bg-background/90 border-b border-primary/20 shadow-md'
+          ? 'supports-[backdrop-filter]:bg-background/90 border-b border-white/10 shadow-lg'
           : 'supports-[backdrop-filter]:bg-background/60'
       }`}
       {...(theme ? { 'data-theme': theme } : {})}
@@ -78,38 +102,52 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
             <div className="hover-scale ml-2">
               <ThemeSelector />
             </div>
+            <Link
+              href="/contact"
+              className="btn-gradient text-white px-6 py-2 rounded-xl shadow-lg hover-scale btn-pop flex items-center justify-center space-x-2 text-sm font-medium"
+            >
+              <span>Get in Touch</span>
+              <ArrowRight className="h-4 w-4 ml-1" />
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2.5 rounded-full btn-gradient text-white shadow-md hover-scale btn-pop transition-all"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center gap-3 md:hidden">
+            <div className="hover-scale">
+              <ThemeSelector />
+            </div>
+            <button
+              className="mobile-menu-button p-2.5 rounded-full glass-card border border-white/10 shadow-md hover-scale btn-pop transition-all"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X size={20} className="text-primary" />
+              ) : (
+                <Menu size={20} className="text-primary" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-card border-t border-primary/20 shadow-lg transition-all duration-300 origin-top z-50 ${
+        className={`mobile-menu-container md:hidden absolute top-full left-0 w-full bg-card border-t border-white/10 shadow-xl transition-all duration-300 origin-top z-50  ${
           mobileMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 pointer-events-none'
         }`}
       >
         <div className="py-6 px-5">
-          <div className="mb-4 flex justify-end items-center">
-            <ThemeSelector />
-          </div>
           <HeaderNav header={header} onMobileNavClick={() => setMobileMenuOpen(false)} />
 
           {/* Added CTA button to mobile menu */}
-          <div className="mt-6 pt-6 border-t border-primary/10">
+          <div className="mt-6 pt-6 border-t border-white/10">
             <Link
               href="/contact"
-              className="block w-full btn-gradient text-white text-center px-6 py-3 rounded-lg shadow-md hover-scale btn-pop transition-all"
+              className="block w-full btn-gradient text-white text-center px-6 py-3 rounded-xl shadow-lg hover-scale btn-pop transition-all flex items-center justify-center"
             >
-              Get in Touch
+              <span>Get in Touch</span>
+              <ArrowRight className="h-5 w-5 ml-2" />
             </Link>
           </div>
         </div>
@@ -123,8 +161,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
       ></div>
 
       {/* Added decorative elements */}
-      <div className="absolute -top-10 right-0 w-40 h-40 translate-x-1/3 bg-gradient-to-bl from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute -top-10 left-0 w-40 h-40 -translate-x-1/3 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute -top-10 right-0 w-64 h-64 translate-x-1/3 bg-gradient-to-bl from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute -top-10 left-0 w-64 h-64 -translate-x-1/3 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
       {/* Subtle animated glow effect under the header when scrolled */}
       <div

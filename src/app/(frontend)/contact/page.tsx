@@ -1,10 +1,15 @@
 import React from 'react'
-import { MapPin, Phone, Mail, Clock, Send, User, AtSign } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Send, User, AtSign, ArrowRight } from 'lucide-react'
 import { FormBlock } from '@/blocks/Form/Component'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Form, FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
-
+import Link from 'next/link'
+import { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Contact | JS SBU',
+  description: 'Contact JS SBU website',
+}
 const contactInfo = [
   {
     icon: MapPin,
@@ -51,17 +56,31 @@ export default async function ContactPage() {
   const contactForm = formQuery.docs.length > 0 ? formQuery.docs[0] : null
 
   return (
-    <div className="min-h-screen py-16 animate-fadeIn">
-      <div className="container mx-auto px-4">
-        {/* Hero Section */}
-        <div className="max-w-4xl mx-auto mb-16 text-center animation-delay-200 animate-fadeIn">
-          <h1 className="text-4xl font-bold mb-6 text-gradient">Contact Us</h1>
-          <p className="text-xl text-primary mb-4">Let&apos;s Connect and Collaborate</p>
-          <p className="text-foreground">
-            Get in touch with us to discuss your project or learn more about our services
-          </p>
-        </div>
+    <div className="min-h-screen animate-fadeIn">
+      {/* Hero Section with Background - Matched with other pages */}
+      <section className="relative py-20 bg-gradient-to-b from-gray-900 to-background overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-[100px]"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
 
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <span className="inline-block px-4 py-1 rounded-full bg-white/20 text-white text-sm font-medium mb-6 animate-fadeIn backdrop-blur-sm">
+              GET IN TOUCH
+            </span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white animation-delay-200 animate-fadeIn">
+              Contact <span className="text-gradient">Us</span>
+            </h1>
+            <p className="text-xl text-white/90 mb-10 animation-delay-300 animate-fadeIn max-w-3xl mx-auto leading-relaxed">
+              Let&apos;s connect and collaborate on your next project. We&apos;re here to help
+              transform your ideas into reality.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 py-20">
         <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Form */}
           <div className="glass-card rounded-xl shadow-md p-8 animation-delay-300 animate-fadeIn">
@@ -186,19 +205,50 @@ export default async function ContactPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="max-w-4xl mx-auto text-center shiny-card glass-card p-10 rounded-xl mt-16 animation-delay-800 animate-fadeIn">
-          <h2 className="text-3xl font-bold mb-6 text-gradient">Ready to Work With Us?</h2>
-          <p className="text-foreground mb-8 max-w-2xl mx-auto">
-            Our team of experts is eager to help you transform your ideas into reality. Reach out
-            today to start your journey toward exceptional digital solutions.
-          </p>
-          <a
-            href="mailto:sales@brainstation-23.com"
-            className="inline-block btn-gradient text-white px-8 py-3 rounded-lg shadow-md hover-scale btn-pop"
-          >
-            Email Us Now
-          </a>
-        </div>
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-50"></div>
+          <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto">
+              <div className="glass-card rounded-3xl p-10 md:p-16 shadow-xl relative overflow-hidden border border-white/10 backdrop-blur-md animation-delay-300 animate-fadeIn">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-primary/15 to-transparent rounded-full blur-[80px]"></div>
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-[80px]"></div>
+
+                <div className="text-center relative z-10">
+                  <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 animate-fadeIn backdrop-blur-sm">
+                    LET&apos;S COLLABORATE
+                  </span>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gradient animation-delay-200 animate-fadeIn">
+                    Ready to Work With Us?
+                  </h2>
+                  <p className="text-foreground/90 text-lg mb-10 max-w-3xl mx-auto animation-delay-300 animate-fadeIn">
+                    Our team of experts is eager to help you transform your ideas into reality.
+                    Reach out today to start your journey toward exceptional digital solutions.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-6 justify-center animation-delay-400 animate-fadeIn">
+                    <a
+                      href="mailto:sales@brainstation-23.com"
+                      className="btn-gradient text-white px-8 py-4 rounded-xl shadow-lg hover-scale btn-pop flex items-center justify-center space-x-2 text-lg font-medium"
+                    >
+                      <span>Email Us Now</span>
+                      <Mail className="h-5 w-5 ml-2" />
+                    </a>
+                    <Link
+                      href="/portfolio"
+                      className="bg-white/10 border border-white/20 hover:bg-white/20 px-8 py-4 rounded-xl shadow-lg hover-scale btn-pop flex items-center justify-center space-x-2 text-lg font-medium backdrop-blur-sm"
+                    >
+                      <span>View Our Work</span>
+                      <ArrowRight className="h-5 w-5 ml-2" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )

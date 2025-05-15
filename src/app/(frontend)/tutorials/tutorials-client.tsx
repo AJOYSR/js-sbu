@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { Clock, BookOpen, Star } from 'lucide-react'
+import { Clock, BookOpen, Star, Filter, Search, Layers, BarChart4, ArrowRight } from 'lucide-react'
 import { Tutorial, Media } from '@/payload-types'
 
 // Add a map for category display names
@@ -17,22 +17,37 @@ const categoryDisplayNames: Record<string, string> = {
   All: 'All',
 }
 
+// Map categories to icons
+const categoryIcons: Record<string, React.ReactNode> = {
+  'web-development': <BarChart4 className="w-4 h-4 mr-2" />,
+  'mobile-development': <Layers className="w-4 h-4 mr-2" />,
+  'backend-development': <BarChart4 className="w-4 h-4 mr-2" />,
+  'ai-ml': <Layers className="w-4 h-4 mr-2" />,
+  devops: <BarChart4 className="w-4 h-4 mr-2" />,
+  All: <Filter className="w-4 h-4 mr-2" />,
+}
+
 // Reusable filter button component
 const FilterButton = ({
   label,
   isActive = false,
   onClick,
+  icon,
 }: {
   label: string
   isActive?: boolean
   onClick: () => void
+  icon?: React.ReactNode
 }) => (
   <button
     onClick={onClick}
-    className={`px-6 py-2 rounded-full shadow-md transition ${
-      isActive ? 'btn-gradient text-white' : 'bg-card hover:bg-primary/10 hover:text-primary'
+    className={`px-6 py-2.5 rounded-full shadow-md transition btn-pop flex items-center ${
+      isActive
+        ? 'btn-gradient text-white'
+        : 'glass-card hover:bg-primary/10 hover:text-primary backdrop-blur-sm'
     }`}
   >
+    {icon}
     {label}
   </button>
 )
@@ -157,34 +172,49 @@ export default function TutorialsClient({
     }
 
     return (
-      <div className="flex flex-col items-center gap-4 mt-8 mb-8">
+      <div className="flex flex-col items-center gap-4 mt-12 mb-8">
         <div className="flex items-center gap-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage <= 1}
-            className={`px-4 py-2 rounded-lg ${
+            className={`flex items-center px-4 py-2 rounded-lg btn-pop ${
               currentPage <= 1
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'btn-gradient text-white btn-pop hover-scale'
+                ? 'glass-card text-foreground/50 cursor-not-allowed opacity-70'
+                : 'glass-card text-foreground hover:bg-primary/10 hover:text-primary'
             }`}
+            aria-disabled={currentPage <= 1}
           >
-            Previous
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-1 h-4 w-4"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            Prev
           </button>
 
           <div className="flex items-center gap-2">
             {pagesToShow.map((pageNum, index) =>
               pageNum === -1 ? (
-                <span key={`ellipsis-${index}`} className="px-2">
+                <span key={`ellipsis-${index}`} className="text-foreground/70">
                   ...
                 </span>
               ) : (
                 <button
                   key={pageNum}
                   onClick={() => handlePageChange(pageNum)}
-                  className={`w-10 h-10 rounded-lg ${
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg btn-pop ${
                     pageNum === currentPage
                       ? 'btn-gradient text-white'
-                      : 'bg-card hover:bg-primary/10 hover:text-primary'
+                      : 'glass-card text-foreground hover:bg-primary/10 hover:text-primary'
                   }`}
                 >
                   {pageNum}
@@ -196,16 +226,31 @@ export default function TutorialsClient({
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
-            className={`px-4 py-2 rounded-lg ${
+            className={`flex items-center px-4 py-2 rounded-lg btn-pop ${
               currentPage >= totalPages
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'btn-gradient text-white btn-pop hover-scale'
+                ? 'glass-card text-foreground/50 cursor-not-allowed opacity-70'
+                : 'glass-card text-foreground hover:bg-primary/10 hover:text-primary'
             }`}
+            aria-disabled={currentPage >= totalPages}
           >
             Next
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="ml-1 h-4 w-4"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
           </button>
         </div>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-foreground/70">
           Showing {tutorials.length} of {totalItems} tutorials
         </div>
       </div>
@@ -214,8 +259,14 @@ export default function TutorialsClient({
 
   return (
     <>
-      {/* Filters */}
+      {/* Filter Section */}
       <div className="mb-12 animate-fadeIn animation-delay-300">
+        <div className="text-center mb-8">
+          <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            <Filter className="inline-block h-4 w-4 mr-1" /> FILTER BY CATEGORY
+          </span>
+        </div>
+
         <div className="flex flex-wrap justify-center gap-4 mb-6">
           {categories.map((cat) => (
             <FilterButton
@@ -223,9 +274,11 @@ export default function TutorialsClient({
               label={categoryDisplayNames[cat] || cat}
               isActive={currentCategory === cat}
               onClick={() => handleFilterChange('category', cat)}
+              icon={categoryIcons[cat]}
             />
           ))}
         </div>
+
         <div className="flex flex-wrap justify-center gap-4">
           {levels.map((lvl) => (
             <FilterButton
@@ -246,12 +299,13 @@ export default function TutorialsClient({
             placeholder="Search tutorials..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full px-6 py-3 rounded-full border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary bg-card"
+            className="w-full px-6 py-3 rounded-full glass-card backdrop-blur-sm border border-white/10 focus:ring-2 focus:ring-primary focus:border-primary"
           />
           <button
             type="submit"
-            className="absolute right-3 top-1/2 -translate-y-1/2 px-4 py-1 btn-gradient text-white rounded-full btn-pop"
+            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 btn-gradient text-white rounded-full btn-pop flex items-center"
           >
+            <Search className="w-4 h-4 mr-1" />
             Search
           </button>
         </form>
@@ -267,49 +321,67 @@ export default function TutorialsClient({
                 ? image.url
                 : '/placeholder-image.jpg'
 
+            const animationDelay = `animation-delay-${200 + index * 100}`
+
             return (
               <Link
                 key={tutorial.id}
                 href={`/tutorials/${tutorial.slug}`}
-                className="glass-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition card-hover animate-fadeIn"
+                className="glass-card rounded-xl shadow-md overflow-hidden hover:shadow-lg transition card-hover animate-fadeIn border border-white/5"
                 style={{ animationDelay: `${(index + 1) * 100}ms` }}
               >
-                <div className="relative h-48">
-                  <Image src={imageUrl} alt={tutorial.title} fill className="object-cover" />
-                  <div className="absolute top-4 left-4 bg-card px-3 py-1 rounded-full text-sm font-medium">
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={imageUrl}
+                    alt={tutorial.title}
+                    fill
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                  <div className="absolute top-4 left-4 bg-primary/70 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
                     {tutorial.level}
                   </div>
                 </div>
+
                 <div className="p-6">
                   <div className="flex items-center gap-4 mb-4">
                     <span className="text-sm text-primary font-medium">
                       {categoryDisplayNames[tutorial.category] || tutorial.category}
                     </span>
-                    <span className="text-sm text-gray-500 flex items-center">
+                    <span className="text-sm text-foreground/70 flex items-center">
                       <Clock className="w-4 h-4 mr-1 text-primary" />
                       {tutorial.duration}
                     </span>
                   </div>
-                  <h2 className="text-xl font-semibold mb-3 text-primary">{tutorial.title}</h2>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{tutorial.description}</p>
+                  <h2 className="text-xl font-semibold mb-3 text-gradient">{tutorial.title}</h2>
+                  <p className="text-foreground/80 mb-5 text-sm line-clamp-2">
+                    {tutorial.description}
+                  </p>
+
                   <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center text-gray-500">
+                    <div className="flex items-center text-foreground/70">
                       <BookOpen className="w-4 h-4 mr-1 text-primary" />
                       {tutorial.lessons} lessons
                     </div>
                     <div className="flex items-center text-primary">
-                      <Star className="w-4 h-4 mr-1 text-primary" />
+                      <Star className="w-4 h-4 mr-1 text-amber-400" />
                       {tutorial.rating.toFixed(1)}
                     </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-gray-200/20 flex justify-end">
+                    <span className="text-primary text-xs flex items-center">
+                      Read tutorial <ArrowRight className="ml-1 h-3 w-3" />
+                    </span>
                   </div>
                 </div>
               </Link>
             )
           })
         ) : (
-          <div className="col-span-3 text-center py-12 glass-card p-8 rounded-lg soft-shadow">
-            <h3 className="text-xl font-semibold mb-2 text-primary">No tutorials found</h3>
-            <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+          <div className="col-span-3 text-center py-12 glass-card p-8 rounded-lg shadow-md border border-white/10 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold mb-2 text-gradient">No tutorials found</h3>
+            <p className="text-foreground/80">Try adjusting your search or filter criteria</p>
           </div>
         )}
       </div>

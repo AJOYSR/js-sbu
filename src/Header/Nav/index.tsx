@@ -113,7 +113,7 @@ const Dropdown: React.FC<{
 
   return (
     <div className="relative group" onMouseEnter={onHover} onMouseLeave={onLeave}>
-      <button className="flex items-center gap-1.5 px-3 py-2 text-foreground/90 hover:text-primary transition-all font-medium group-hover:text-primary">
+      <button className="flex items-center gap-1.5 px-3 py-2 text-foreground/90 hover:text-primary transition-all font-medium group-hover:text-primary hover-scale">
         {IconComponent && <IconComponent className="w-4 h-4 opacity-75 group-hover:opacity-100" />}
         {label}
         <ChevronDown
@@ -121,10 +121,10 @@ const Dropdown: React.FC<{
         />
       </button>
       <div
-        className={`absolute left-0 mt-1.5 w-60 bg-card rounded-xl shadow-lg py-2 z-50  transition-all duration-200 origin-top-left border border-primary/20
+        className={`absolute left-0 mt-1.5 w-64 bg-card rounded-xl shadow-lg py-2 z-50 transition-all duration-300 origin-top-left border border-white/10 
           ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'}`}
       >
-        <div className="h-1 w-12 bg-gradient-to-r from-primary to-pink-400 rounded-full mx-auto mb-2"></div>
+        <div className="h-1 w-12 bg-gradient-to-r from-primary to-primary-light rounded-full mx-auto mb-2"></div>
         {items.map((item, index) => (
           <React.Fragment key={index}>
             <Link
@@ -132,13 +132,15 @@ const Dropdown: React.FC<{
               onClick={onMobileNavClick}
               className={`block px-4 py-2.5 text-sm transition-all duration-150 mx-1 rounded-md ${
                 pathname === item.href
-                  ? 'text-primary font-medium bg-primary/5'
+                  ? 'text-gradient font-medium bg-primary/5'
                   : 'text-foreground/80 hover:bg-primary/10 hover:text-primary hover:translate-x-1'
               }`}
             >
               {item.label}
             </Link>
-            {index < items.length - 1 && <div className="h-px bg-primary/10 mx-4 my-1"></div>}
+            {index < items.length - 1 && (
+              <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent mx-4 my-1"></div>
+            )}
           </React.Fragment>
         ))}
       </div>
@@ -238,16 +240,18 @@ export const HeaderNav: React.FC<{
                 <Link
                   href={item.href || '#'}
                   onClick={onMobileNavClick}
-                  className={`flex items-center gap-2 py-2 px-2 transition-colors rounded-md ${
+                  className={`flex items-center gap-2 py-2 px-2 transition-colors rounded-md hover-scale ${
                     pathname === item.href
-                      ? 'text-primary font-medium bg-primary/20'
-                      : 'text-foreground hover:text-primary hover:bg-primary/15'
+                      ? 'text-gradient font-medium bg-primary/10'
+                      : 'text-foreground hover:text-primary hover:bg-primary/10'
                   }`}
                 >
                   {IconComponent && <IconComponent className="w-4 h-4 text-primary" />}
                   {item.label}
                 </Link>
-                {index < navItems.length - 1 && <div className="h-px bg-primary/30 mx-2"></div>}
+                {index < navItems.length - 1 && (
+                  <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent mx-2 my-1"></div>
+                )}
               </React.Fragment>
             )
           } else {
@@ -262,15 +266,17 @@ export const HeaderNav: React.FC<{
                   isMobile={true}
                   onMobileNavClick={onMobileNavClick}
                 />
-                {index < navItems.length - 1 && <div className="h-px bg-primary/30 mx-2"></div>}
+                {index < navItems.length - 1 && (
+                  <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent mx-2 my-1"></div>
+                )}
               </React.Fragment>
             )
           }
         })}
-        <div className="h-px bg-primary/30 mx-2"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent mx-2 my-1"></div>
         <Link
           href="/search"
-          className="flex items-center gap-2 py-2 px-2 text-primary hover:bg-primary/15 rounded-md transition-colors"
+          className="flex items-center gap-2 py-2 px-2 text-primary hover:bg-primary/10 rounded-md transition-colors hover-scale"
         >
           <SearchIcon className="w-4 h-4" />
           <span>Search</span>
@@ -292,7 +298,7 @@ export const HeaderNav: React.FC<{
               href={item.href || '#'}
               className={`px-3 py-2 transition-all hover-scale flex items-center gap-1.5 ${
                 pathname === item.href
-                  ? 'text-primary font-medium'
+                  ? 'text-gradient font-medium'
                   : 'text-foreground/80 hover:text-primary'
               }`}
             >

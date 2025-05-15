@@ -1,59 +1,53 @@
-import { getCachedGlobal } from '@/utilities/getGlobals'
+'use client'
+
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Linkedin,
   Github,
   Mail,
   Twitter,
   Instagram,
-  ArrowRight,
-  Heart,
-  Shield,
-  ExternalLink,
+  ChevronRight,
+  MapPin,
+  Phone,
 } from 'lucide-react'
-import { useTheme } from '@/providers/Theme'
 
-import type { Footer } from '@/payload-types'
-import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
-import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { Button } from '@/components/ui/button'
-import { FormBlock } from '@/blocks/Form/Component'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
-import { Form } from '@payloadcms/plugin-form-builder/types'
 import { NewsletterFormClient } from './NewsletterFormClient'
 
 // Use a constant for the copyright year to avoid hydration issues
 const CURRENT_YEAR = new Date().getFullYear()
 
-export async function Footer() {
-  const footer: Footer = await getCachedGlobal('footer', 1)()
-  const navItems = footer?.navItems || []
+export function Footer() {
+  const [newsletterFormId, setNewsletterFormId] = useState<string | null>(null)
 
-  // Fetch the newsletter form from Payload CMS
-  const payload = await getPayload({ config: configPromise })
+  useEffect(() => {
+    // Fetch newsletter form ID on client side
+    const fetchNewsletterForm = async () => {
+      try {
+        const response = await fetch('/api/forms/newsletter')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.formId) {
+            setNewsletterFormId(data.formId)
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch newsletter form:', error)
+      }
+    }
 
-  // Find the newsletter form by title
-  const formQuery = await payload.find({
-    collection: 'forms',
-    where: {
-      title: {
-        equals: 'NewsLetter',
-      },
-    },
-  })
-
-  // Get the form or null if not found
-  const newsletterForm = formQuery.docs.length > 0 ? formQuery.docs[0] : null
+    fetchNewsletterForm()
+  }, [])
 
   const quickLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services/web-app' },
     { name: 'Portfolio', href: '/portfolio' },
-    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'Contact', href: '/contact' },
   ]
 
   const popularServices = [
@@ -61,51 +55,84 @@ export async function Footer() {
     { name: 'Mobile App Development', href: '/services/mobile-app' },
     { name: 'UI/UX & Product Design', href: '/services/ui-ux' },
     { name: 'Machine Learning & AI', href: '/services/ml-ai' },
+    { name: 'Cloud Native Solutions', href: '/skills/cloud-native' },
   ]
 
-  const techStacks = {
-    backend: ['Node.js', 'NestJS', 'Express.js'],
-    mobile: ['React Native', 'Flutter'],
-    frontend: ['React.js', 'Angular', 'Vue.js', 'Next.js'],
-    devops: ['AWS', 'Vercel', 'Docker', 'CI/CD'],
-    ml: ['TensorFlow.js', 'Ollama', 'Llama'],
-  }
-
   return (
-    <footer className="bg-gradient-to-b from-secondary to-secondary/80 dark:from-background dark:to-card text-foreground relative overflow-hidden">
-      {/* Decorative floating orbs - updated with more vibrant effects */}
-      <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/15 blur-3xl pointer-events-none"></div>
-      <div className="absolute top-60 right-40 w-40 h-40 rounded-full bg-pink-400/10 blur-2xl pointer-events-none animate-pulse"></div>
+    <footer className="bg-gradient-to-b from-secondary/90 to-secondary/70 dark:from-background dark:to-background/90 text-foreground relative overflow-hidden">
+      {/* Subtle background patterns */}
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:16px_16px] pointer-events-none"></div>
+
+      {/* Subtle glass morphism effect */}
+      <div className="absolute top-0 left-0 w-full h-full backdrop-blur-[100px] pointer-events-none"></div>
+
+      {/* Decorative floating elements */}
+      <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/8 blur-3xl pointer-events-none"></div>
+      <div className="absolute top-60 right-40 w-40 h-40 rounded-full bg-pink-400/5 blur-2xl pointer-events-none"></div>
 
       <div className="container mx-auto px-4 py-16 relative z-10">
-        {/* Top Section with Gradient Line */}
+        {/* Top gradient divider */}
         <div className="relative mb-12">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-2 w-4/5 bg-gradient-to-r from-primary/30 via-primary to-primary/30 rounded-full"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-1 w-4/5 bg-gradient-to-r from-transparent via-primary/40 to-transparent rounded-full"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info & Quick Links */}
-          <div className="animate-fadeIn">
-            <div className="mb-6">
-              <Link href="/" className="inline-block mb-4 hover:scale-105 transition-transform">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Company Info & Contact - 4 columns */}
+          <div className="lg:col-span-4 space-y-6">
+            <div>
+              <Link href="/" className="inline-block mb-5 hover:opacity-90 transition-opacity">
                 <Logo className="h-10 w-auto" />
               </Link>
-              <p className="text-muted-foreground dark:text-muted-foreground mb-4">
+              <p className="text-muted-foreground dark:text-muted-foreground/90 text-sm leading-relaxed">
                 Creating innovative digital solutions with a focus on user experience and
-                cutting-edge technology.
+                cutting-edge technology. We transform ideas into powerful digital experiences.
               </p>
             </div>
 
-            <h3 className="text-xl font-semibold mb-4 text-gradient">Quick Links</h3>
-            <ul className="space-y-3">
+            {/* Contact Information */}
+            <div className="space-y-3 pt-4">
+              <div className="flex items-start space-x-3">
+                <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground/90">
+                  8th Floor, 2 Bir Uttam AK Khandakar Road, Mohakhali C/A, Dhaka 1212, Bangladesh
+                </p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Mail className="h-5 w-5 text-primary shrink-0" />
+                <a
+                  href="mailto:sales@brainstation-23.com"
+                  className="text-sm text-muted-foreground dark:text-muted-foreground/90 hover:text-primary transition-colors"
+                >
+                  sales@brainstation-23.com
+                </a>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 text-primary shrink-0" />
+                <a
+                  href="tel:+88-02-222290728"
+                  className="text-sm text-muted-foreground dark:text-muted-foreground/90 hover:text-primary transition-colors"
+                >
+                  +88-02-222290728
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links - 2 columns */}
+          <div className="lg:col-span-2">
+            <h3 className="text-base font-medium mb-5 relative">
+              <span className="relative z-10">Quick Links</span>
+              <span className="absolute bottom-0 left-0 h-[2px] w-8 bg-primary"></span>
+            </h3>
+            <ul className="space-y-2.5">
               {quickLinks.map((link) => (
-                <li key={link.name} className="group flex items-center">
-                  <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
+                <li key={link.name} className="group">
                   <Link
                     href={link.href}
-                    className="hover:text-primary transition-colors duration-300 text-muted-foreground dark:text-muted-foreground"
+                    className="text-sm text-muted-foreground dark:text-muted-foreground/90 hover:text-primary transition-colors duration-200 flex items-center"
                   >
+                    <ChevronRight className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
                     {link.name}
                   </Link>
                 </li>
@@ -113,105 +140,39 @@ export async function Footer() {
             </ul>
           </div>
 
-          {/* Popular Services */}
-          <div className="animate-fadeIn animation-delay-200">
-            <h3 className="text-xl font-semibold mb-4 text-gradient">Popular Services</h3>
-            <ul className="space-y-3">
+          {/* Services - 3 columns */}
+          <div className="lg:col-span-3">
+            <h3 className="text-base font-medium mb-5 relative">
+              <span className="relative z-10">Our Services</span>
+              <span className="absolute bottom-0 left-0 h-[2px] w-8 bg-primary"></span>
+            </h3>
+            <ul className="space-y-2.5">
               {popularServices.map((service) => (
-                <li key={service.name} className="group flex items-center">
-                  <ArrowRight className="h-3 w-0 mr-0 text-primary opacity-0 transition-all duration-300 group-hover:w-4 group-hover:mr-2 group-hover:opacity-100" />
+                <li key={service.name} className="group">
                   <Link
-                    href={service.href}
-                    className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-colors duration-300"
+                    href={service?.href || ''}
+                    className="text-sm text-muted-foreground dark:text-muted-foreground/90 hover:text-primary transition-colors duration-200 flex items-center"
                   >
+                    <ChevronRight className="h-3.5 w-3.5 mr-1.5 text-primary/70" />
                     {service.name}
                   </Link>
                 </li>
               ))}
             </ul>
-
-            {/* Trust Badges - Added for poppy visual enhancement */}
-            <div className="mt-8 pt-6 border-t border-border dark:border-border">
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground dark:text-muted-foreground mb-3">
-                Trusted By
-              </h4>
-              <div className="flex items-center space-x-4">
-                <div className="bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-sm">
-                  <Shield className="h-5 w-5 text-primary" />
-                </div>
-                <div className="bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-sm">
-                  <Heart className="h-5 w-5 text-pink-500" />
-                </div>
-                <div className="bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-sm">
-                  <ExternalLink className="h-5 w-5 text-blue-500" />
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Technology Stacks */}
-          <div className="animate-fadeIn animation-delay-400">
-            <h3 className="text-xl font-semibold mb-4 text-gradient">Technology Stacks</h3>
-            <div className="space-y-3">
-              {Object.entries(techStacks).map(([category, technologies]) => (
-                <div key={category} className="bounce-hover">
-                  <h4 className="font-medium text-primary capitalize mb-1">{category}:</h4>
-                  <p className="text-sm text-muted-foreground dark:text-muted-foreground">
-                    {technologies.join(', ')}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Follow Us & Newsletter */}
-          <div className="animate-fadeIn animation-delay-400">
-            <h3 className="text-xl font-semibold mb-4 text-gradient">Connect With Us</h3>
-            <div className="flex space-x-5 mb-6">
-              <a
-                href="https://www.linkedin.com/company/brain-station-23"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
-              >
-                <Linkedin size={24} />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-              <a
-                href="https://github.com/BrainStation-23/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
-              >
-                <Github size={24} />
-                <span className="sr-only">GitHub</span>
-              </a>
-              <a
-                href="https://x.com/BrainStation23"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
-              >
-                <Twitter size={24} />
-                <span className="sr-only">Twitter</span>
-              </a>
-              <a
-                href="https://www.instagram.com/brainstation23ltd/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-125"
-              >
-                <Instagram size={24} />
-                <span className="sr-only">Instagram</span>
-              </a>
-            </div>
-
-            <div className="gradient-border p-4 bg-card/50 dark:bg-card/50 shadow-sm backdrop-blur-sm">
-              <h4 className="text-lg font-semibold mb-3 text-white dark:text-gray-300">
-                Newsletter
-              </h4>
-              {newsletterForm ? (
-                <NewsletterFormClient formId={String(newsletterForm.id)} />
+          {/* Newsletter & Connect - 3 columns */}
+          <div className="lg:col-span-3">
+            <h3 className="text-base font-medium mb-5 relative">
+              <span className="relative z-10">Stay Updated</span>
+              <span className="absolute bottom-0 left-0 h-[2px] w-8 bg-primary"></span>
+            </h3>
+            <div className="bg-background/40 dark:bg-card/20 backdrop-blur-sm rounded-lg p-4 shadow-sm border border-background/50 dark:border-border/10 mb-5">
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground/90 mb-3">
+                Subscribe to our newsletter for the latest updates and insights.
+              </p>
+              {newsletterFormId ? (
+                <NewsletterFormClient formId={newsletterFormId} />
               ) : (
                 /* Fallback form if no form is found in CMS */
                 <form className="space-y-3">
@@ -219,71 +180,85 @@ export async function Footer() {
                     <input
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full px-4 py-2 rounded-lg bg-background dark:bg-background border border-input dark:border-input 
-                             focus:outline-none focus:border-primary text-foreground dark:text-foreground pr-10"
+                      className="w-full px-4 py-2 rounded-lg bg-background dark:bg-background/50 border border-input dark:border-input/50 
+                             focus:outline-none focus:border-primary text-foreground dark:text-foreground pr-10 text-sm"
                     />
-                    <Mail className="absolute right-3 top-2.5 text-gray-400" size={20} />
+                    <Mail className="absolute right-3 top-2.5 text-muted-foreground/70" size={18} />
                   </div>
-                  <Button type="submit" variant="gradient" className="w-full btn-pop border-2">
+                  <Button type="submit" variant="gradient" className="w-full text-sm py-1.5 h-auto">
                     Subscribe
                   </Button>
                 </form>
               )}
             </div>
+
+            <h3 className="text-base font-medium mb-5 relative">
+              <span className="relative z-10">Connect with us</span>
+              <span className="absolute bottom-0 left-0 h-[2px] w-8 bg-primary"></span>
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://www.linkedin.com/company/brain-station-23"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-background/80 dark:bg-card/30 p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-background dark:hover:bg-card/50 transition-all duration-300"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={16} />
+              </a>
+              <a
+                href="https://github.com/BrainStation-23/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-background/80 dark:bg-card/30 p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-background dark:hover:bg-card/50 transition-all duration-300"
+                aria-label="GitHub"
+              >
+                <Github size={16} />
+              </a>
+              <a
+                href="https://x.com/BrainStation23"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-background/80 dark:bg-card/30 p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-background dark:hover:bg-card/50 transition-all duration-300"
+                aria-label="Twitter"
+              >
+                <Twitter size={16} />
+              </a>
+              <a
+                href="https://www.instagram.com/brainstation23ltd/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-background/80 dark:bg-card/30 p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-background dark:hover:bg-card/50 transition-all duration-300"
+                aria-label="Instagram"
+              >
+                <Instagram size={16} />
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Copyright & Bottom Links - New */}
-        <div className="mt-8 pt-8 border-t border-border dark:border-border">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-center md:text-left mb-4 md:mb-0">
-              <p className="text-muted-foreground dark:text-muted-foreground">
-                Copyright © {CURRENT_YEAR} JS SBU. All rights reserved.
-              </p>
-            </div>
+        {/* Copyright & Bottom Links */}
+        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-center text-sm">
+            <p className="text-muted-foreground dark:text-muted-foreground/80 mb-4 md:mb-0">
+              © {CURRENT_YEAR} JS-SBU. All rights reserved.
+            </p>
 
             <div className="flex items-center space-x-6">
               <Link
                 href="/privacy-policy"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground dark:text-muted-foreground/80 hover:text-primary transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/terms"
-                className="text-muted-foreground dark:text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground dark:text-muted-foreground/80 hover:text-primary transition-colors"
               >
                 Terms of Service
               </Link>
-              <div className="flex items-center ml-2">
-                <span className="text-muted-foreground dark:text-muted-foreground mr-2">
-                  Theme:
-                </span>
-                <ThemeSelector />
-              </div>
             </div>
           </div>
-        </div>
-
-        {/* Enhanced Bottom Wave SVG with vibrant colors */}
-        <div className="relative h-16 overflow-hidden">
-          <svg
-            className="absolute bottom-0 w-full h-24"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 320"
-            preserveAspectRatio="none"
-          >
-            <path
-              fill="hsl(212, 75%, 40%)"
-              fillOpacity="0.1"
-              d="M0,224L40,213.3C80,203,160,181,240,181.3C320,181,400,203,480,218.7C560,235,640,245,720,229.3C800,213,880,171,960,170.7C1040,171,1120,213,1200,218.7C1280,224,1360,192,1400,176L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
-            ></path>
-            <path
-              fill="hsl(212, 75%, 40%)"
-              fillOpacity="0.05"
-              d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,261.3C960,256,1056,224,1152,224C1248,224,1344,256,1392,272L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
         </div>
       </div>
     </footer>
