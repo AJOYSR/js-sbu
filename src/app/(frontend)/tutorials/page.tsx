@@ -1,16 +1,15 @@
-import React, { Suspense } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Metadata } from 'next'
 import { Tutorial } from '@/payload-types'
-import { ArrowRight } from 'lucide-react'
 
-// Import client components
-import HeroSection from './components/HeroSection'
-import CTASection from './components/CTASection'
-import TutorialsClientWrapper from './components/TutorialsClientWrapper'
-import { HeroSkeleton, TutorialsContentSkeleton, CTASkeleton } from './components/SectionSkeleton'
+// Import wrapper components
+import {
+  HeroSectionWrapper,
+  TutorialsClientWrapper,
+  CTASectionWrapper,
+} from './components/Wrappers'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60 // Revalidate every minute
@@ -85,9 +84,7 @@ export default async function TutorialsPage({
 
   return (
     <div className="min-h-screen animate-fadeIn">
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <HeroSectionWrapper />
 
       <div className="container mx-auto px-4 py-16 relative">
         {/* Decorative elements */}
@@ -95,24 +92,20 @@ export default async function TutorialsPage({
         <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
 
         {/* Client-side filtering & search component */}
-        <Suspense fallback={<TutorialsContentSkeleton />}>
-          <TutorialsClientWrapper
-            tutorials={tutorials}
-            categories={categories}
-            levels={levels}
-            currentCategory={params?.category || 'All'}
-            currentLevel={params?.level || 'All Levels'}
-            currentSearch={params?.search || ''}
-            currentPage={currentPage}
-            totalPages={payloadTotalPages}
-            totalItems={totalDocs}
-          />
-        </Suspense>
+        <TutorialsClientWrapper
+          tutorials={tutorials}
+          categories={categories}
+          levels={levels}
+          currentCategory={params?.category || 'All'}
+          currentLevel={params?.level || 'All Levels'}
+          currentSearch={params?.search || ''}
+          currentPage={currentPage}
+          totalPages={payloadTotalPages}
+          totalItems={totalDocs}
+        />
 
         {/* CTA Section */}
-        <Suspense fallback={<CTASkeleton />}>
-          <CTASection />
-        </Suspense>
+        <CTASectionWrapper />
       </div>
     </div>
   )

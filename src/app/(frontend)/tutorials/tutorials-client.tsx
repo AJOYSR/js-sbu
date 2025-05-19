@@ -335,6 +335,8 @@ export default function TutorialsClient({
                     src={imageUrl}
                     alt={tutorial.title}
                     fill
+                    loading={index < 3 ? 'eager' : 'lazy'}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>

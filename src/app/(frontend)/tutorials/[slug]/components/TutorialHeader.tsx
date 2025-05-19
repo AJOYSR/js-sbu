@@ -38,7 +38,14 @@ export default function TutorialHeader({
       {/* Tutorial Header */}
       <div className="glass-card rounded-xl shadow-md overflow-hidden mb-12 animation-delay-300 animate-fadeIn">
         <div className="relative h-[400px]">
-          <Image src={imageUrl} alt={title} fill className="object-cover" />
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
             <div className="flex items-center gap-4 mb-4">

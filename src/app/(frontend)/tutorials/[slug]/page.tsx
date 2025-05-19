@@ -1,19 +1,16 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Tutorial } from '@/payload-types'
 
-// Components
-import TutorialHeader from './components/TutorialHeader'
-import TutorialContent from './components/TutorialContent'
-import TutorialSidebar from './components/TutorialSidebar'
+// Import wrapper components
 import {
-  TutorialHeaderSkeleton,
-  TutorialContentSkeleton,
-  TutorialSidebarSkeleton,
-} from './components/SectionSkeleton'
+  TutorialHeaderWrapper,
+  TutorialContentWrapper,
+  TutorialSidebarWrapper,
+} from './components/DetailWrappers'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60 // Revalidate every minute
@@ -111,32 +108,29 @@ export default async function TutorialPage({ params }: { params: PageParams }) {
     return (
       <div className="min-h-screen py-16 animate-fadeIn">
         <div className="container mx-auto px-4">
-          <Suspense fallback={<TutorialHeaderSkeleton />}>
-            <TutorialHeader
-              title={tutorial.title}
-              category={tutorial.category}
-              level={tutorial.level}
-              duration={tutorial.duration}
-              lessons={tutorial.lessons}
-              rating={tutorial.rating}
-              imageUrl={imageUrl}
-            />
-          </Suspense>
+          <TutorialHeaderWrapper
+            title={tutorial.title}
+            category={tutorial.category}
+            level={tutorial.level}
+            duration={tutorial.duration}
+            lessons={tutorial.lessons}
+            rating={tutorial.rating}
+            imageUrl={imageUrl}
+          />
 
           {/* Main Content */}
           <div className="grid lg:grid-cols-3 gap-8">
-            <Suspense fallback={<TutorialContentSkeleton />}>
-              <TutorialContent
-                title={tutorial.title}
-                description={tutorial.description}
-                content={tutorial.content}
-                youtubeUrl={youtubeUrl}
-              />
-            </Suspense>
+            <TutorialContentWrapper
+              title={tutorial.title}
+              description={tutorial.description}
+              content={tutorial.content}
+              youtubeUrl={youtubeUrl}
+            />
 
-            <Suspense fallback={<TutorialSidebarSkeleton />}>
-              <TutorialSidebar prerequisites={prerequisites} learningOutcomes={learningOutcomes} />
-            </Suspense>
+            <TutorialSidebarWrapper
+              prerequisites={prerequisites}
+              learningOutcomes={learningOutcomes}
+            />
           </div>
         </div>
       </div>
