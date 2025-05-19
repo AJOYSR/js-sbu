@@ -15,7 +15,7 @@ export const PostHero: React.FC<{
       <div className="absolute inset-0 w-full min-h-[85vh] z-0">
         {metaImage && typeof metaImage !== 'string' && (
           <>
-            <Media fill imgClassName="object-cover" resource={metaImage} />
+            <Media fill imgClassName="object-cover" resource={metaImage} priority size="100vw" />
             <div className="absolute inset-0 bg-black/40 pointer-events-none" />
           </>
         )}
