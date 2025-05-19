@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 interface PortfolioImageSectionProps {
@@ -12,16 +14,38 @@ export default function PortfolioImageSection({
   title,
   category,
 }: PortfolioImageSectionProps) {
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Preload the image
+  useEffect(() => {
+    if (imageUrl) {
+      const img = new window.Image()
+      img.src = imageUrl
+      img.onload = () => {
+        setIsLoading(false)
+      }
+    }
+  }, [imageUrl])
+
   return (
     <div className="relative h-96">
+      {/* Loading placeholder - shows during image load */}
+      <div
+        className={`absolute inset-0 bg-gray-200 animate-pulse ${isLoading ? 'visible' : 'hidden'}`}
+      />
+
       <Image
         src={imageUrl}
         alt={title}
         fill
-        className="object-cover"
+        className={`object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         priority
-        sizes="(max-width: 768px) 100vw, 768px"
+        quality={80}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         unoptimized={!imageUrl.includes(process.env.NEXT_PUBLIC_SERVER_URL || 'localhost')}
+        onLoadingComplete={() => setIsLoading(false)}
+        placeholder="blur"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvWS1LgAGJQIpt50GkgAAAABJRU5ErkJggg=="
       />
 
       {/* Dark overlay across entire image */}

@@ -7,6 +7,7 @@ import configPromise from '@payload-config'
 import type { Media, Portfolio } from '@/payload-types'
 import RichText from '@/components/RichText'
 import PortfolioImageSection from './PortfolioImageSection'
+import { Metadata, ResolvingMetadata } from 'next'
 
 async function getProject(projectSlug: string) {
   const payload = await getPayload({ config: configPromise })
@@ -29,7 +30,7 @@ async function getProject(projectSlug: string) {
   }
 }
 const getImageUrl = (image: Media | number | null | undefined): string => {
-  // Default placeholder image
+  // Default placeholder image - using a modern blur placeholder
   const placeholderImage = '/images/placeholder.jpg'
 
   // If no image is provided, return placeholder
@@ -40,21 +41,22 @@ const getImageUrl = (image: Media | number | null | undefined): string => {
 
   // If image is an object with url property
   if (typeof image === 'object' && 'url' in image && image.url) {
-    // First try to get the largest available size image URL
+    // First try to get the appropriate size image URL based on viewport
     let imageUrl: string | null = null
 
-    // Try each size from largest to smallest until we find a valid URL
+    // Try sizes in order of priority for portfolio detail page (optimized for performance)
     if (image.sizes) {
-      if (
+      // For portfolio detail page, large size is optimal balance of quality/performance
+      if (image.sizes.large?.url && !image.sizes.large.url.includes('null')) {
+        imageUrl = image.sizes.large.url
+      } else if (image.sizes.medium?.url && !image.sizes.medium.url.includes('null')) {
+        imageUrl = image.sizes.medium.url
+      } else if (
         image.sizes.xlarge?.url &&
         !image.sizes.xlarge.url.includes('null') &&
         image.sizes.xlarge.url !== 'https://5zxlgj9gofvvzerw.public.blob.vercel-storage.com/null'
       ) {
         imageUrl = image.sizes.xlarge.url
-      } else if (image.sizes.large?.url && !image.sizes.large.url.includes('null')) {
-        imageUrl = image.sizes.large.url
-      } else if (image.sizes.medium?.url && !image.sizes.medium.url.includes('null')) {
-        imageUrl = image.sizes.medium.url
       } else if (image.sizes.small?.url && !image.sizes.small.url.includes('null')) {
         imageUrl = image.sizes.small.url
       } else if (image.sizes.thumbnail?.url && !image.sizes.thumbnail.url.includes('null')) {
@@ -96,6 +98,38 @@ type Args = {
   params: Promise<{
     id: string
   }>
+}
+
+export async function generateMetadata(
+  { params }: Args,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const resolvedParams = await params
+  const { id } = resolvedParams
+  const project = await getProject(id)
+
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+    }
+  }
+
+  const imageUrl = getImageUrl(project?.image)
+
+  return {
+    title: `${project.title} | Portfolio`,
+    description: project.description,
+    openGraph: {
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+    },
+  }
 }
 
 export default async function ProjectPage({ params }: Args) {
