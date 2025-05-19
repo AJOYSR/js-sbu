@@ -69,9 +69,19 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         </div>
 
-        <Suspense fallback={<SearchResultsSkeleton />}>
-          <SearchResultsLoader query={query} />
-        </Suspense>
+        <div id="search-results">
+          <Suspense fallback={<SearchResultsSkeleton />}>
+            {query ? (
+              <SearchResultsLoader query={query} />
+            ) : (
+              <div className="text-center py-12 animation-delay-400 animate-fadeIn">
+                <p className="text-foreground/70 text-lg">
+                  Enter a search term above to find content.
+                </p>
+              </div>
+            )}
+          </Suspense>
+        </div>
       </div>
     </div>
   )
