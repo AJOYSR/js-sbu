@@ -4,24 +4,25 @@ import React from 'react'
  * Loading fallback component for Suspense boundaries.
  * Shows a spinner when a page or component is loading.
  */
-export function PageLoadingFallback() {
+export const PageLoadingFallback = () => {
   return (
-    <div className="flex items-center justify-center min-h-[200px] w-full animate-fade-in">
-      <div className="relative flex flex-col items-center">
-        {/* Pulsing circle animation */}
-        <div className="w-12 h-12 relative">
-          <div className="absolute inset-0 rounded-full border-4 border-primary/30"></div>
-          <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary animate-spin"></div>
-        </div>
-
-        {/* Loading text */}
-        <div className="mt-3 text-primary font-medium flex items-center text-sm">
-          <span>Loading</span>
-          <span className="ml-1 inline-flex">
-            <span className="animate-bounce delay-0 mx-0.5">.</span>
-            <span className="animate-bounce delay-100 mx-0.5">.</span>
-            <span className="animate-bounce delay-200 mx-0.5">.</span>
-          </span>
+    <div className="animate-fadeIn min-h-[70vh] flex flex-col items-center justify-center">
+      <div className="relative w-20 h-20">
+        <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+        <div className="absolute inset-0 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
+      </div>
+      <p className="mt-6 text-foreground/70 text-lg">Loading content...</p>
+      <div className="mt-10 max-w-md w-full">
+        <div className="animate-pulse space-y-8">
+          <div className="h-8 bg-gray-700/20 rounded-lg w-3/4 mx-auto"></div>
+          <div className="space-y-3">
+            <div className="h-4 bg-gray-700/20 rounded w-full"></div>
+            <div className="h-4 bg-gray-700/20 rounded w-5/6"></div>
+            <div className="h-4 bg-gray-700/20 rounded w-4/6"></div>
+          </div>
+          <div className="flex justify-center">
+            <div className="h-10 bg-gray-700/20 rounded-lg w-32"></div>
+          </div>
         </div>
       </div>
     </div>

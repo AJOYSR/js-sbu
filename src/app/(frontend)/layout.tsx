@@ -47,11 +47,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <div className="fixed -top-32 -left-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
           <div className="fixed -bottom-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
 
-          <Header />
+          <Suspense fallback={<div className="h-16 bg-background"></div>}>
+            <Header />
+          </Suspense>
           <main className="flex-grow pt-24 relative z-10 animate-fadeIn">
             <Suspense fallback={<PageLoadingFallback />}>{children}</Suspense>
           </main>
-          <Footer />
+          <Suspense fallback={<div className="h-64 bg-background"></div>}>
+            <Footer />
+          </Suspense>
         </Providers>
       </body>
     </html>
