@@ -10,82 +10,30 @@ export const Search: React.FC = () => {
   const [value, setValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [manualSubmit, setManualSubmit] = useState(false)
-  const [lastQuery, setLastQuery] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
 
   // Initialize search input with current query
   useEffect(() => {
     const query = searchParams?.get('q')
-    if (query && query !== lastQuery) {
+    if (query) {
       setValue(query)
-      setLastQuery(query)
     }
-  }, [searchParams, lastQuery])
-
-  // Listen for popstate (browser back/forward) to handle history navigation
-  useEffect(() => {
-    const handlePopState = () => {
-      const query = new URL(window.location.href).searchParams.get('q') || ''
-      setValue(query)
-      setLastQuery(query)
-    }
-
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [])
+  }, [searchParams])
 
   const debouncedValue = useDebounce(value)
 
-  // Function to update URL without scrolling
-  const updateSearchParams = (query: string) => {
-    if (query === lastQuery) return
-
-    // Create new URL with the current pathname and search params
-    const url = new URL(window.location.href)
-
-    // Set or remove the query parameter
-    if (query) {
-      url.searchParams.set('q', query)
-    } else {
-      url.searchParams.delete('q')
-    }
-
-    // Update the URL without scrolling using history API
-    window.history.pushState({ path: url.toString(), query }, '', url.toString())
-
-    // Update last query
-    setLastQuery(query)
-
-    // Manually trigger a state update in router without navigation
-    router.refresh()
-  }
-
   useEffect(() => {
     if (debouncedValue || manualSubmit) {
-      // Save current scroll position
-      const scrollPosition = window.scrollY
-
-      // Update URL without navigation
-      updateSearchParams(debouncedValue)
+      router.push(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`)
 
       if (manualSubmit) {
         setIsLoading(true)
+        // Reset manual submit flag
         setManualSubmit(false)
-
         // We'll turn off loading in 1 second to give time for results to load
         setTimeout(() => {
           setIsLoading(false)
-
-          // Find and scroll to the search results section
-          const searchResultsElement = document.getElementById('search-results')
-          if (searchResultsElement) {
-            // Smooth scroll to the results section
-            searchResultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          } else {
-            // Restore the previous scroll position
-            window.scrollTo(0, scrollPosition)
-          }
         }, 1000)
       }
     }
