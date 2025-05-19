@@ -71,7 +71,7 @@ export function Footer() {
       <div className="absolute bottom-40 right-10 w-72 h-72 rounded-full bg-primary/8 blur-3xl pointer-events-none"></div>
       <div className="absolute top-60 right-40 w-40 h-40 rounded-full bg-pink-400/5 blur-2xl pointer-events-none"></div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Top gradient divider */}
         <div className="relative mb-12">
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-1 w-4/5 bg-gradient-to-r from-transparent via-primary/40 to-transparent rounded-full"></div>
