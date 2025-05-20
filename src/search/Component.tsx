@@ -25,7 +25,8 @@ export const Search: React.FC = () => {
 
   useEffect(() => {
     if (debouncedValue || manualSubmit) {
-      router.push(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`)
+      // Use replace instead of push to prevent scroll jumping
+      router.replace(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`, { scroll: false })
 
       if (manualSubmit) {
         setIsLoading(true)

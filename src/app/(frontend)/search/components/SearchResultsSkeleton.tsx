@@ -5,7 +5,7 @@ import { SearchIcon, Loader2 } from 'lucide-react'
 
 export function SearchResultsSkeleton() {
   return (
-    <div className="animation-delay-400 animate-pulse">
+    <div className="animation-delay-400 animate-pulse min-h-[600px]">
       <div className="mb-10 text-center">
         <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
           <SearchIcon className="inline-block h-4 w-4 mr-1" /> SEARCH RESULTS

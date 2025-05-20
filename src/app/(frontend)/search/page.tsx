@@ -73,7 +73,7 @@ export default async function Page({ searchParams }: PageProps) {
           {query ? (
             <SearchResultsLoader query={query} />
           ) : (
-            <div className="text-center py-12 animation-delay-400 animate-fadeIn">
+            <div className="text-center py-12 animation-delay-400 animate-fadeIn min-h-[600px]">
               <p className="text-foreground/70 text-lg">
                 Enter a search term above to find content.
               </p>

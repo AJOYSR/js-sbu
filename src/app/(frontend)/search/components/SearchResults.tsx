@@ -81,7 +81,7 @@ export default function SearchResults({ results, totalResults, query }: SearchRe
 
   if (totalResults === 0) {
     return (
-      <div className="animation-delay-400 animate-fadeIn">
+      <div className="animation-delay-400 animate-fadeIn min-h-[600px]">
         <div className="glass-card rounded-xl shadow-xl p-12 text-center max-w-3xl mx-auto border border-white/10 backdrop-blur-md">
           <div className="flex justify-center mb-6">
             <SearchIcon className="w-16 h-16 text-primary/80" />
@@ -105,7 +105,7 @@ export default function SearchResults({ results, totalResults, query }: SearchRe
   }
 
   return (
-    <div className="animation-delay-400 animate-fadeIn">
+    <div className="animation-delay-400 animate-fadeIn min-h-[600px]">
       <div className="mb-10 text-center">
         <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
           <SearchIcon className="inline-block h-4 w-4 mr-1" /> SEARCH RESULTS
