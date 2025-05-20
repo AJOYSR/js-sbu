@@ -12,13 +12,16 @@ import {
   TutorialSidebarWrapper,
 } from './components/DetailWrappers'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60 // Revalidate every minute
-
-type PageParams = Promise<{ slug: string }>
+// Change from dynamic to static with ISR
+export const dynamic = 'force-static'
+export const revalidate = 300 // Revalidate every 5 minutes
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
   try {
     const { slug } = await params
     const payload = await getPayload({ config: configPromise })
@@ -68,7 +71,39 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   }
 }
 
-export default async function TutorialPage({ params }: { params: PageParams }) {
+// Generate static paths for popular tutorials
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  try {
+    const payload = await getPayload({ config: configPromise })
+
+    // Get top tutorials by rating to pre-render
+    const tutorials = await payload
+      .find({
+        collection: 'tutorials',
+        sort: '-rating',
+        limit: 10, // Pre-render top 10 tutorials
+        depth: 0,
+      })
+      .then((res) => res.docs as Tutorial[])
+
+    // Filter out any tutorials without a valid slug
+    return tutorials
+      .filter((tutorial) => typeof tutorial.slug === 'string')
+      .map((tutorial) => ({
+        slug: tutorial.slug as string,
+      }))
+  } catch (error) {
+    console.error('Error generating static paths:', error)
+    return []
+  }
+}
+
+// Update the component to handle Promise-based params in Next.js 15
+type PageProps = {
+  params: Promise<{ slug: string }>
+}
+
+export default async function TutorialPage({ params }: PageProps) {
   try {
     const { slug } = await params
     const payload = await getPayload({ config: configPromise })

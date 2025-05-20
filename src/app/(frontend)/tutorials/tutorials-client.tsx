@@ -338,6 +338,8 @@ export default function TutorialsClient({
                     loading={index < 3 ? 'eager' : 'lazy'}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 hover:scale-105"
+                    priority={index === 0}
+                    fetchPriority={index < 3 ? 'high' : 'auto'}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                   <div className="absolute top-4 left-4 bg-primary/70 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">

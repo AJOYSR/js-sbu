@@ -1,31 +1,40 @@
 'use client'
 
-import React, { Suspense, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import {
   TutorialHeaderSkeleton,
   TutorialContentSkeleton,
   TutorialSidebarSkeleton,
 } from './SectionSkeleton'
 
-// Dynamically import components with lazy loading
-const TutorialHeader = React.lazy(() => import('./TutorialHeader'))
-const TutorialContent = React.lazy(() => import('./TutorialContent'))
-const TutorialSidebar = React.lazy(() => import('./TutorialSidebar'))
+// Dynamically import components with optimized loading
+const TutorialHeader = dynamic(() => import('./TutorialHeader'), {
+  loading: () => <TutorialHeaderSkeleton />,
+  ssr: true,
+})
 
-// Preload components strategically
+const TutorialContent = dynamic(() => import('./TutorialContent'), {
+  loading: () => <TutorialContentSkeleton />,
+  ssr: true,
+})
+
+const TutorialSidebar = dynamic(() => import('./TutorialSidebar'), {
+  loading: () => <TutorialSidebarSkeleton />,
+  ssr: true,
+})
+
+// Improved preloading strategy
 const preloadComponents = () => {
-  const preloadAfterHeader = () => {
-    import('./TutorialContent')
-    import('./TutorialSidebar')
-  }
+  // Prefetch header component immediately
+  import('./TutorialHeader')
 
-  // Schedule preloading
+  // Slightly delay loading content components
   if (typeof window !== 'undefined') {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(preloadAfterHeader)
-    } else {
-      setTimeout(preloadAfterHeader, 1000)
-    }
+    setTimeout(() => {
+      import('./TutorialContent')
+      import('./TutorialSidebar')
+    }, 100)
   }
 }
 
@@ -53,17 +62,15 @@ export function TutorialHeaderWrapper({
   }, [])
 
   return (
-    <Suspense fallback={<TutorialHeaderSkeleton />}>
-      <TutorialHeader
-        title={title}
-        category={category}
-        level={level}
-        duration={duration}
-        lessons={lessons}
-        rating={rating}
-        imageUrl={imageUrl}
-      />
-    </Suspense>
+    <TutorialHeader
+      title={title}
+      category={category}
+      level={level}
+      duration={duration}
+      lessons={lessons}
+      rating={rating}
+      imageUrl={imageUrl}
+    />
   )
 }
 
@@ -81,14 +88,12 @@ export function TutorialContentWrapper({
   youtubeUrl,
 }: TutorialContentProps) {
   return (
-    <Suspense fallback={<TutorialContentSkeleton />}>
-      <TutorialContent
-        title={title}
-        description={description}
-        content={content}
-        youtubeUrl={youtubeUrl}
-      />
-    </Suspense>
+    <TutorialContent
+      title={title}
+      description={description}
+      content={content}
+      youtubeUrl={youtubeUrl}
+    />
   )
 }
 
@@ -106,9 +111,5 @@ interface TutorialSidebarProps {
 }
 
 export function TutorialSidebarWrapper({ prerequisites, learningOutcomes }: TutorialSidebarProps) {
-  return (
-    <Suspense fallback={<TutorialSidebarSkeleton />}>
-      <TutorialSidebar prerequisites={prerequisites} learningOutcomes={learningOutcomes} />
-    </Suspense>
-  )
+  return <TutorialSidebar prerequisites={prerequisites} learningOutcomes={learningOutcomes} />
 }

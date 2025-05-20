@@ -11,8 +11,9 @@ import {
   CTASectionWrapper,
 } from './components/Wrappers'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60 // Revalidate every minute
+// Change from dynamic to static rendering with ISR
+export const dynamic = 'force-static'
+export const revalidate = 300 // Change to 5 minutes for better caching
 
 export const metadata: Metadata = {
   title: 'Tutorials & Guides | Learn JavaScript Technologies',
@@ -22,27 +23,35 @@ export const metadata: Metadata = {
 
 const ITEMS_PER_PAGE = 6 // Changed to show 6 items per page
 
+// Add generateStaticParams for common filter combinations
+export async function generateStaticParams(): Promise<
+  { category?: string; level?: string; page?: string }[]
+> {
+  // Pre-generate first page only - we'll rely on ISR for other pages
+  return [{}] // Empty params will generate the default page
+}
+
 export default async function TutorialsPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string; level?: string; search?: string; page?: string }>
 }) {
-  const params = await searchParams
+  const paramsData = await searchParams
   const payload = await getPayload({ config: configPromise })
-  const currentPage = Number(params?.page) || 1
+  const currentPage = Number(paramsData?.page) || 1
 
   const where: any = {}
 
-  if (params?.category && params.category !== 'All') {
-    where.category = { equals: params.category }
+  if (paramsData?.category && paramsData.category !== 'All') {
+    where.category = { equals: paramsData.category }
   }
 
-  if (params?.level && params.level !== 'All Levels') {
-    where.level = { equals: params.level.toLowerCase() }
+  if (paramsData?.level && paramsData.level !== 'All Levels') {
+    where.level = { equals: paramsData.level.toLowerCase() }
   }
 
-  if (params?.search) {
-    where.title = { like: params.search }
+  if (paramsData?.search) {
+    where.title = { like: paramsData.search }
   }
 
   const {
@@ -66,9 +75,11 @@ export default async function TutorialsPage({
 
   // Ensure we don't exceed the total number of pages
   if (currentPage > payloadTotalPages && payloadTotalPages > 0) {
-    const params = new URLSearchParams(searchParams as any)
-    params.set('page', '1')
-    return Response.redirect(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutorials?${params.toString()}`)
+    const searchParamsObj = new URLSearchParams(paramsData as any)
+    searchParamsObj.set('page', '1')
+    return Response.redirect(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tutorials?${searchParamsObj.toString()}`,
+    )
   }
 
   const categories = [
@@ -96,9 +107,9 @@ export default async function TutorialsPage({
           tutorials={tutorials}
           categories={categories}
           levels={levels}
-          currentCategory={params?.category || 'All'}
-          currentLevel={params?.level || 'All Levels'}
-          currentSearch={params?.search || ''}
+          currentCategory={paramsData?.category || 'All'}
+          currentLevel={paramsData?.level || 'All Levels'}
+          currentSearch={paramsData?.search || ''}
           currentPage={currentPage}
           totalPages={payloadTotalPages}
           totalItems={totalDocs}
