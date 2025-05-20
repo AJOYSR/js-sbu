@@ -21,6 +21,8 @@ import Link from 'next/link'
 import SearchHero from './components/SearchHero'
 import SearchResults from './components/SearchResults'
 import { SearchResultsSkeleton } from './components/SearchResultsSkeleton'
+import CTASection from './components/CTASection'
+
 interface PageProps {
   params: Promise<any>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -73,13 +75,16 @@ export default async function Page({ searchParams }: PageProps) {
           {query ? (
             <SearchResultsLoader query={query} />
           ) : (
-            <div className="text-center py-12 animation-delay-400 animate-fadeIn min-h-[600px]">
+            <div className="text-center py-12 animation-delay-400 animate-fadeIn">
               <p className="text-foreground/70 text-lg">
                 Enter a search term above to find content.
               </p>
             </div>
           )}
         </Suspense>
+
+        {/* Always show the CTA section */}
+        <CTASection />
       </div>
     </div>
   )
