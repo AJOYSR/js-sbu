@@ -1,28 +1,39 @@
 'use client'
 
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { HeroSkeleton, TutorialsContentSkeleton, CTASkeleton } from './SectionSkeleton'
 import { Tutorial } from '@/payload-types'
 
-// Dynamically import components with lazy loading
-const HeroSection = React.lazy(() => import('./HeroSection'))
-const CTASection = React.lazy(() => import('./CTASection'))
-const TutorialsClient = React.lazy(() => import('../tutorials-client'))
+// Preload all components upfront
+import dynamic from 'next/dynamic'
 
-// Preload components strategically
+// Dynamically import components with optimized loading
+const HeroSection = dynamic(() => import('./HeroSection'), {
+  loading: () => <HeroSkeleton />,
+  ssr: true,
+})
+
+const CTASection = dynamic(() => import('./CTASection'), {
+  loading: () => <CTASkeleton />,
+  ssr: true,
+})
+
+const TutorialsClient = dynamic(() => import('../tutorials-client'), {
+  loading: () => <TutorialsContentSkeleton />,
+  ssr: true,
+})
+
+// Improved preloading strategy
 const preloadComponents = () => {
-  const preloadAfterHero = () => {
-    import('../tutorials-client')
-    import('./CTASection')
-  }
+  // Prefetch all components right away
+  import('./HeroSection')
 
-  // Schedule preloading
+  // Delay non-critical components slightly
   if (typeof window !== 'undefined') {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(preloadAfterHero)
-    } else {
-      setTimeout(preloadAfterHero, 1000)
-    }
+    setTimeout(() => {
+      import('../tutorials-client')
+      import('./CTASection')
+    }, 100)
   }
 }
 
@@ -31,11 +42,7 @@ export function HeroSectionWrapper() {
     preloadComponents()
   }, [])
 
-  return (
-    <Suspense fallback={<HeroSkeleton />}>
-      <HeroSection />
-    </Suspense>
-  )
+  return <HeroSection />
 }
 
 interface TutorialsClientWrapperProps {
@@ -62,28 +69,22 @@ export function TutorialsClientWrapper({
   totalItems,
 }: TutorialsClientWrapperProps) {
   return (
-    <Suspense fallback={<TutorialsContentSkeleton />}>
-      <div className="animation-delay-400 animate-fadeIn">
-        <TutorialsClient
-          tutorials={tutorials}
-          categories={categories}
-          levels={levels}
-          currentCategory={currentCategory}
-          currentLevel={currentLevel}
-          currentSearch={currentSearch}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
-        />
-      </div>
-    </Suspense>
+    <div className="animation-delay-400 animate-fadeIn">
+      <TutorialsClient
+        tutorials={tutorials}
+        categories={categories}
+        levels={levels}
+        currentCategory={currentCategory}
+        currentLevel={currentLevel}
+        currentSearch={currentSearch}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+      />
+    </div>
   )
 }
 
 export function CTASectionWrapper() {
-  return (
-    <Suspense fallback={<CTASkeleton />}>
-      <CTASection />
-    </Suspense>
-  )
+  return <CTASection />
 }

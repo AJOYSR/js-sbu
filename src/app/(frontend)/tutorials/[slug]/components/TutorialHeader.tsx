@@ -45,6 +45,7 @@ export default function TutorialHeader({
             priority
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             className="object-cover"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
