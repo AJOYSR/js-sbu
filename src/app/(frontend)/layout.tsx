@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Suspense fallback={<div className="h-16 bg-background"></div>}>
             <Header />
           </Suspense>
-          <main className="flex-grow pt-24 relative z-10 animate-fadeIn">
+          <main className="flex-grow pt-20 relative z-10 animate-fadeIn">
             <Suspense fallback={<PageLoadingFallback />}>{children}</Suspense>
           </main>
           <Suspense fallback={<div className="h-64 bg-background"></div>}>
