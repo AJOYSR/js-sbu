@@ -8,6 +8,7 @@ import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import PageClient from './page.client'
+import HeroImage from '@/components/HeroImage'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -37,13 +38,11 @@ export default async function Page({ searchParams }: PageProps) {
       {/* Hero Section with Background */}
       <section className="relative py-20 overflow-hidden">
         {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('https://png.pngtree.com/thumb_back/fh260/background/20220625/pngtree-blog-banner-text-blog-photo-image_32028900.jpg')`,
-            filter: 'brightness(0.7)',
-          }}
-        ></div>
+        <HeroImage
+          src="https://png.pngtree.com/thumb_back/fh260/background/20220625/pngtree-blog-banner-text-blog-photo-image_32028900.jpg"
+          alt="Blog and Insights"
+          brightness={0.7}
+        />
 
         {/* Background decorative elements */}
         <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] z-10"></div>

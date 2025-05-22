@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import SkeletonImage from '@/components/SkeletonImage'
 
 interface PortfolioImageSectionProps {
   imageUrl: string
@@ -30,9 +31,7 @@ export default function PortfolioImageSection({
   return (
     <div className="relative h-96">
       {/* Loading placeholder - shows during image load */}
-      <div
-        className={`absolute inset-0 bg-gray-200 animate-pulse ${isLoading ? 'visible' : 'hidden'}`}
-      />
+      <SkeletonImage isLoading={isLoading} />
 
       <Image
         src={imageUrl}

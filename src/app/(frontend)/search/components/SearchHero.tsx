@@ -1,24 +1,17 @@
+'use client'
+
 import React from 'react'
-import Image from 'next/image'
+import HeroImage from '@/components/HeroImage'
 
 export default function SearchHero() {
   return (
     <section className="relative py-20 overflow-hidden">
       {/* Background image with Next.js Image for optimization */}
-      <div className="absolute inset-0">
-        <Image
-          src="https://www.searchenginejournal.com/wp-content/uploads/2025/03/alternative-search-710.png"
-          alt="Search background"
-          fill
-          priority
-          sizes="100vw"
-          quality={75}
-          className="object-cover object-center"
-          style={{
-            filter: 'brightness(0.7)',
-          }}
-        />
-      </div>
+      <HeroImage
+        src="https://www.searchenginejournal.com/wp-content/uploads/2025/03/alternative-search-710.png"
+        alt="Search background"
+        brightness={0.7}
+      />
 
       {/* Background decorative elements */}
       <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] z-10"></div>

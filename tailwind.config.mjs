@@ -35,6 +35,7 @@ export default {
     'delay-200',
     'animate-bounce',
     'shadow-glow',
+    'animate-shimmer',
   ],
   theme: {
     container: {
@@ -64,6 +65,7 @@ export default {
         'scale-in': 'scaleIn 0.2s ease-out',
         slowZoom: 'slowZoom 10s ease-out forwards',
         'spin-slow': 'spin 3s linear infinite',
+        shimmer: 'shimmer 2s infinite',
       },
       animationDelay: {
         0: '0ms',
@@ -144,6 +146,10 @@ export default {
         slowZoom: {
           '0%': { transform: 'scale(1.05)' },
           '100%': { transform: 'scale(1.15)' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       typography: ({ theme }) => ({

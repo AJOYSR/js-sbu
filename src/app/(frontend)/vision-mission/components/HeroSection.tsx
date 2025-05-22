@@ -1,29 +1,18 @@
 'use client'
 
 import React from 'react'
-import Image from 'next/image'
+import HeroImage from '@/components/HeroImage'
 
 export default function HeroSection() {
   return (
     <section className="relative py-20 overflow-hidden">
       {/* Background image with Next.js Image for optimization */}
-      <div className="absolute inset-0">
-        <Image
-          src="https://i0.wp.com/base.ac.in/wp-content/uploads/2018/10/vision-mission-banner-e1539427773777.png?ssl=1"
-          alt="Vision and Mission"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          quality={75}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAIAAAB1kpiRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAPElEQVQImWWOSQ4AIAgDW///Z72gEQnFXJqZDgWg2gZAkjOzJN29d1vMzHOOmSmlKKVCCHPOiIjee+8NAHnTJANJ0/TlAAAAAElFTkSuQmCC"
-          className="object-cover object-center"
-          style={{
-            filter: 'brightness(0.7)',
-          }}
-        />
-      </div>
+      <HeroImage
+        src="https://i0.wp.com/base.ac.in/wp-content/uploads/2018/10/vision-mission-banner-e1539427773777.png?ssl=1"
+        alt="Vision and Mission"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAIAAAB1kpiRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAPElEQVQImWWOSQ4AIAgDW///Z72gEQnFXJqZDgWg2gZAkjOzJN29d1vMzHOOmSmlKKVCCHPOiIjee+8NAHnTJANJ0/TlAAAAAElFTkSuQmCC"
+        brightness={0.7}
+      />
 
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/30 z-10"></div>
@@ -35,14 +24,13 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 relative z-20">
         <div className="max-w-4xl mx-auto text-center">
           <span className="inline-block px-4 py-1 rounded-full bg-white/20 text-white text-sm font-medium mb-6 animate-fadeIn backdrop-blur-sm">
-            OUR PURPOSE
+            OUR VISION & MISSION
           </span>
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white animation-delay-200 animate-fadeIn">
             Vision & <span className="text-gradient">Mission</span>
           </h1>
           <p className="text-xl text-white/90 mb-10 animation-delay-300 animate-fadeIn max-w-3xl mx-auto leading-relaxed">
-            Driving innovation and excellence in JavaScript development to transform businesses in
-            the digital age
+            Our guiding principles and aspirations that shape everything we do
           </p>
         </div>
       </div>

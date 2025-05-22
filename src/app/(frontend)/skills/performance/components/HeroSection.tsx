@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import HeroImage from '@/components/HeroImage'
 
 interface HeroSectionProps {
   priority?: boolean
@@ -12,23 +12,13 @@ export default function HeroSection({ priority = false }: HeroSectionProps) {
   return (
     <section className="relative py-20 overflow-hidden">
       {/* Background image with Next.js Image for optimization */}
-      <div className="absolute inset-0">
-        <Image
-          src="https://lh7-us.googleusercontent.com/docsz/AD_4nXdi-DRVpPEu9LskgiLi9fpb48vMlWakwc0GNaCq-A4vFUimfpRaAxOeIRM7pAWKY5AxUMlbymn_H-ZapILnpWOKJlOc1wXXwSJBBwt6kTm9Bf7jn9F5WDjH3-wzk55Yqqc2iac3FQgYIygMzy0nvfcuSyEs?key=ht1ogYP4TGtrXd33nuljxw"
-          alt="Performance Optimization"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          quality={75}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAIAAAB1kpiRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAP0lEQVQImWP4z8DA8J+BgYGJgYGBmYGBgZmBgYEFymZmYGBgYmJiYmZmZmFhYWVlZWNj42BnZ+fg4ODk5OTi4gIAMb4HNL0LO2QAAAAASUVORK5CYII="
-          className="object-cover object-center"
-          style={{
-            filter: 'brightness(0.6)',
-          }}
-        />
-      </div>
+      <HeroImage
+        src="https://lh7-us.googleusercontent.com/docsz/AD_4nXdi-DRVpPEu9LskgiLi9fpb48vMlWakwc0GNaCq-A4vFUimfpRaAxOeIRM7pAWKY5AxUMlbymn_H-ZapILnpWOKJlOc1wXXwSJBBwt6kTm9Bf7jn9F5WDjH3-wzk55Yqqc2iac3FQgYIygMzy0nvfcuSyEs?key=ht1ogYP4TGtrXd33nuljxw"
+        alt="Performance Optimization"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAGCAIAAAB1kpiRAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAP0lEQVQImWP4z8DA8J+BgYGJgYGBmYGBgZmBgYEFymZmYGBgYmJiYmZmZmFhYWVlZWNj42BnZ+fg4ODk5OTi4gIAMb4HNL0LO2QAAAAASUVORK5CYII="
+        brightness={0.6}
+        priority={priority}
+      />
 
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/30 z-10"></div>
