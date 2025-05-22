@@ -40,14 +40,20 @@ const RichTextSkeleton = () => (
 const RelatedPostsSkeleton = () => (
   <div className="animation-delay-400 animate-fadeIn">
     <div className="h-8 bg-gray-700/20 rounded-lg w-56 mb-6"></div>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 equal-height-cards">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="glass-card rounded-xl shadow-md overflow-hidden animate-pulse">
+        <div
+          key={i}
+          className="glass-card rounded-xl shadow-md overflow-hidden animate-pulse h-full"
+        >
           <div className="h-48 bg-gray-700/20"></div>
-          <div className="p-6">
+          <div className="p-6 flex flex-col">
             <div className="h-6 bg-gray-700/20 rounded-lg mb-3 w-3/4"></div>
             <div className="h-4 bg-gray-700/10 rounded-lg mb-4 w-full"></div>
             <div className="h-4 bg-gray-700/10 rounded-lg w-2/3"></div>
+            <div className="mt-auto pt-4">
+              <div className="h-4 bg-gray-700/20 rounded-lg w-24"></div>
+            </div>
           </div>
         </div>
       ))}
@@ -148,10 +154,7 @@ export function RelatedPostsWrapper({ posts }: RelatedPostsWrapperProps) {
   return (
     <div className="animation-delay-400 animate-fadeIn">
       <h2 className="text-2xl font-semibold mb-6 text-gradient">Related Articles</h2>
-      <RelatedPostsComponent
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        docs={posts}
-      />
+      <RelatedPostsComponent docs={posts} />
     </div>
   )
 }
