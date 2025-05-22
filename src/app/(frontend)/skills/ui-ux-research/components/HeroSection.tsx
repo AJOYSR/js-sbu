@@ -2,29 +2,20 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import HeroImage from '@/components/HeroImage'
 
 export default function HeroSection() {
   return (
     <section className="relative py-20 overflow-hidden">
       {/* Background image with Next.js Image for optimization */}
-      <div className="absolute inset-0 w-full">
-        <Image
-          src="https://www.uxdesigninstitute.com/blog/wp-content/uploads/2024/11/101_UX_vs_UI_illustration_blog-1.png"
-          alt="UI/UX Research"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          quality={80}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nGNkYGD4z8DA8J+BAYIZoRxGBgYGRgYGhv9wDlQMIoaQQYojy2GIw9UzMAAAuSIGy2zyJ5AAAAAASUVORK5CYII="
-          className="object-cover object-center w-full"
-          style={{
-            objectPosition: 'center 30%',
-          }}
-        />
-      </div>
+      <HeroImage
+        src="https://www.uxdesigninstitute.com/blog/wp-content/uploads/2024/11/101_UX_vs_UI_illustration_blog-1.png"
+        alt="UI/UX Research"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMklEQVR4nGNkYGD4z8DA8J+BAYIZoRxGBgYGRgYGhv9wDlQMIoaQQYojy2GIw9UzMAAAuSIGy2zyJ5AAAAAASUVORK5CYII="
+        brightness={1} // No brightness filter in original
+        quality={80}
+        className="w-full"
+      />
 
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-black/30 z-10"></div>

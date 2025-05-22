@@ -1,18 +1,18 @@
 'use client'
 
 import React from 'react'
+import HeroImage from '@/components/HeroImage'
 
 export default function HeroSection() {
   return (
     <section className="relative py-20 overflow-hidden">
       {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://www.thoughtco.com/thmb/2XQUFDikVdXBS_bBZUzAGS140ck=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/533766325-56a2af1c5f9b58b7d0cd61b8.jpg')`,
-          filter: 'brightness(0.7)',
-        }}
-      ></div>
+      <HeroImage
+        src="https://www.thoughtco.com/thmb/2XQUFDikVdXBS_bBZUzAGS140ck=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/533766325-56a2af1c5f9b58b7d0cd61b8.jpg"
+        alt="Tutorials and Guides"
+        brightness={0.7}
+        quality={75}
+      />
 
       {/* Background decorative elements */}
       <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] z-10"></div>

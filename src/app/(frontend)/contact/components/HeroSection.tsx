@@ -1,18 +1,17 @@
 'use client'
 
 import React from 'react'
+import HeroImage from '@/components/HeroImage'
 
 export default function HeroSection() {
   return (
     <section className="relative py-20 overflow-hidden">
       {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://agrovimltd.com/wp-content/themes/Agro%20Vim%20Ltd%20Theme/assets/images/contact3.png')`,
-          filter: 'brightness(0.7)',
-        }}
-      ></div>
+      <HeroImage
+        src="https://agrovimltd.com/wp-content/themes/Agro%20Vim%20Ltd%20Theme/assets/images/contact3.png"
+        alt="Contact Us"
+        brightness={0.7}
+      />
 
       {/* Background decorative elements */}
       <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] z-10"></div>
