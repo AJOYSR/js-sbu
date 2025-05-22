@@ -4,8 +4,9 @@ import React from 'react'
 
 export function HeroSkeleton() {
   return (
-    <section className="relative py-20 bg-gradient-to-b from-gray-900 to-background animate-pulse">
-      <div className="container mx-auto px-4">
+    <section className="relative py-20 overflow-hidden animate-pulse">
+      <div className="absolute inset-0 bg-gray-700/50"></div>
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="h-8 w-32 bg-white/20 rounded-full mx-auto mb-6"></div>
           <div className="h-16 bg-white/10 rounded-lg mb-6 mx-auto"></div>
