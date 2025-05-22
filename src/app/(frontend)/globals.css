@@ -159,6 +159,12 @@ html[data-theme='light'] {
   .text-gradient {
     @apply bg-gradient-to-r from-primary via-primary/90 to-[#2c5282] bg-clip-text text-transparent;
   }
+
+  /* Equal height cards for related posts */
+  .equal-height-cards {
+    display: grid;
+    grid-auto-rows: 1fr;
+  }
 }
 
 @keyframes fadeIn {
