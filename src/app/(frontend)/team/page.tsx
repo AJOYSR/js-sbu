@@ -237,8 +237,30 @@ export const metadata: Metadata = {
   description: 'Team JS SBU website',
 }
 
-// Data fetching function to be used with React.cache
-const fetchLeadershipTeam = async () => {
+// Change revalidation time to 1 hour
+export const revalidate = 3600 // Revalidate every hour
+
+// Add generateStaticParams for static generation
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const response = await payload.find({
+    collection: 'team-members',
+    where: {
+      teamType: {
+        not_equals: 'leadership',
+      },
+    },
+    limit: 0,
+  })
+
+  const totalPages = Math.ceil(response.totalDocs / ITEMS_PER_PAGE)
+  return Array.from({ length: totalPages }, (_, i) => ({
+    page: (i + 1).toString(),
+  }))
+}
+
+// Optimize data fetching with React.cache
+const fetchLeadershipTeam = React.cache(async () => {
   const payload = await getPayload({ config: configPromise })
   const response = await payload.find({
     collection: 'team-members',
@@ -250,9 +272,9 @@ const fetchLeadershipTeam = async () => {
     sort: 'order',
   })
   return response.docs
-}
+})
 
-const fetchTeamMembers = async (page: number) => {
+const fetchTeamMembers = React.cache(async (page: number) => {
   const payload = await getPayload({ config: configPromise })
   return await payload.find({
     collection: 'team-members',
@@ -266,7 +288,7 @@ const fetchTeamMembers = async (page: number) => {
     limit: ITEMS_PER_PAGE,
     sort: ['teamType', 'order'],
   })
-}
+})
 
 const fetchTotalCount = async () => {
   const payload = await getPayload({ config: configPromise })
@@ -283,7 +305,6 @@ const fetchTotalCount = async () => {
 }
 
 export const dynamicParams = true
-export const revalidate = 3600 // Revalidate every hour
 
 export default async function TeamPage({ searchParams }: Props) {
   // Parse current page from search params or default to 1
@@ -291,105 +312,30 @@ export default async function TeamPage({ searchParams }: Props) {
   const currentPage = Number(params?.page) || 1
 
   try {
-    // Fetch data in parallel
-    const [leadershipTeam, teamMembersResponse, totalItems] = await Promise.all([
+    // Fetch data in parallel with Promise.all
+    const [leadershipTeam, teamMembersResponse] = await Promise.all([
       fetchLeadershipTeam(),
       fetchTeamMembers(currentPage),
-      fetchTotalCount(),
     ])
 
-    // Calculate total pages
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
     const teamMembers = teamMembersResponse.docs
+    const totalPages = Math.ceil(teamMembersResponse.totalDocs / ITEMS_PER_PAGE)
 
     return (
       <div className="min-h-screen animate-fadeIn">
-        <Suspense fallback={<TeamHeroSkeleton />}>
-          <TeamHero />
-        </Suspense>
+        <TeamHero />
 
-        {/* Leadership Section */}
-        {leadershipTeam.length > 0 && (
-          <Suspense
-            fallback={
-              <div className="py-20 relative overflow-hidden">
-                <div className="container mx-auto px-4">
-                  <div className="text-center mb-16">
-                    <div className="w-32 h-8 bg-primary/10 rounded-full mx-auto mb-4 animate-pulse"></div>
-                    <div className="h-12 bg-gray-700/20 rounded-lg mb-6 w-96 mx-auto animate-pulse"></div>
-                    <div className="h-20 bg-gray-700/10 rounded-lg mb-10 max-w-3xl mx-auto animate-pulse"></div>
-                  </div>
-                  <div className="grid md:grid-cols-3 gap-8">
-                    {[1, 2, 3].map((i) => (
-                      <TeamCardSkeleton key={i} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            }
-          >
-            <LeadershipSection leadershipTeam={leadershipTeam} />
-          </Suspense>
-        )}
+        {leadershipTeam.length > 0 && <LeadershipSection leadershipTeam={leadershipTeam} />}
 
-        {/* Team Structure Section */}
-        <Suspense
-          fallback={
-            <div className="py-20 bg-gradient-to-b from-card/30 to-background">
-              <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                  <div className="w-32 h-8 bg-primary/10 rounded-full mx-auto mb-4 animate-pulse"></div>
-                  <div className="h-12 bg-gray-700/20 rounded-lg mb-6 w-96 mx-auto animate-pulse"></div>
-                  <div className="h-8 bg-gray-700/10 rounded-lg mb-10 max-w-lg mx-auto animate-pulse"></div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="glass-card rounded-2xl overflow-hidden animate-pulse h-96"
-                    ></div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          }
-        >
-          <TeamStructureSection
-            teamMembers={teamMembers}
-            teamCategories={teamCategories}
-            GetCategoryIcon={GetCategoryIcon}
-          />
-        </Suspense>
+        <TeamStructureSection
+          teamMembers={teamMembers}
+          teamCategories={teamCategories}
+          GetCategoryIcon={GetCategoryIcon}
+        />
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <Suspense
-            fallback={
-              <div className="py-10 relative z-10">
-                <div className="container mx-auto px-4">
-                  <div className="flex justify-center animation-delay-600 animate-fadeIn">
-                    <div className="h-10 w-64 bg-gray-100/10 rounded-lg animate-pulse"></div>
-                  </div>
-                </div>
-              </div>
-            }
-          >
-            <PaginationSection currentPage={currentPage} totalPages={totalPages} />
-          </Suspense>
-        )}
+        {totalPages > 1 && <PaginationSection currentPage={currentPage} totalPages={totalPages} />}
 
-        {/* Join Us Section */}
-        <Suspense
-          fallback={
-            <div className="py-20 bg-gradient-to-b from-card/30 to-background">
-              <div className="max-w-4xl mx-auto px-4">
-                <div className="glass-card rounded-3xl p-10 md:p-16 animate-pulse h-80"></div>
-              </div>
-            </div>
-          }
-        >
-          <JoinUsSection />
-        </Suspense>
+        <JoinUsSection />
       </div>
     )
   } catch (error) {

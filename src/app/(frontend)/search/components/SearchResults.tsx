@@ -139,9 +139,9 @@ export default function SearchResults({ results, totalResults, query }: SearchRe
                         resource={result.image || result.meta?.image}
                         fill
                         alt={result.title}
-                        priority={false}
+                        priority={index < 3}
+                        loading={index < 3 ? 'eager' : 'lazy'}
                         imgClassName="object-cover transition-transform duration-700 hover:scale-105"
-                        loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full bg-card/30 flex items-center justify-center">
