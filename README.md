@@ -21,63 +21,149 @@ This boilerplate is a pre-configured, ready-to-deploy solution for Payload CMS a
 
 ## Features
 
-- **Modern Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS
-- **Authentication System**: Complete user authentication with roles and permissions
-- **Access Control**: Role-based access control for admins and users
-- **Premium Content**: Gated content accessible only to authenticated users
-- **Content Management**:
-  - Layout Builder with flexible blocks
-  - Rich text editor powered by Lexical
-  - Media library with image optimization
-  - Collections for structured content
-- **User Engagement**:
-  - Commenting system with admin approval
-  - SEO optimization tools built-in
-  - Social sharing capabilities
-- **Developer Experience**:
+### Core Features
+- **Modern Tech Stack**: 
+  - Next.js 15 with App Router
+  - React 19 with Server Components
   - TypeScript for type safety
-  - API endpoints for custom logic
-  - Draft Preview for content before publishing
-  - Hot reloading during development
-- **Performance**:
-  - Server-side rendering
-  - Static site generation capabilities
+  - Tailwind CSS for styling
+  - PostgreSQL for database
+
+### Authentication & Security
+- **Complete Authentication System**:
+  - User registration and login
+  - Role-based access control
+  - JWT token authentication
+  - Password reset functionality
+  - Email verification
+- **Access Control**:
+  - Granular permissions system
+  - Role-based access for admins and users
+  - Protected routes and API endpoints
+
+### Content Management
+- **Advanced Layout Builder**:
+  - Drag-and-drop interface
+  - Customizable blocks
+  - Responsive layouts
+  - Real-time preview
+- **Rich Text Editor**:
+  - Powered by Lexical
+  - Custom formatting options
+  - Media embedding
+  - Code block support
+- **Media Management**:
   - Image optimization with Sharp
-- **Production-Ready**:
-  - URL redirects management
-  - PostgreSQL database support
-  - Railway deployment configuration
+  - Cloud storage integration
+  - Responsive image handling
+  - Media library organization
+
+### User Engagement
+- **Commenting System**:
+  - Nested comments
+  - Admin moderation
+  - Spam protection
+  - Email notifications
+- **SEO Optimization**:
+  - Meta tags management
+  - Sitemap generation
+  - Robots.txt configuration
+  - Open Graph support
+- **Social Features**:
+  - Social sharing
+  - Social media integration
+  - User profiles
+  - Activity tracking
+
+### Developer Experience
+- **TypeScript Integration**:
+  - Full type safety
+  - Auto-generated types
+  - Type checking in development
+- **API Development**:
+  - RESTful endpoints
+  - GraphQL support
+  - Custom API routes
+  - Webhook integration
+- **Development Tools**:
+  - Hot reloading
+  - Error boundaries
+  - Development logging
+  - Debug utilities
+
+### Performance
+- **Optimization Features**:
+  - Server-side rendering
+  - Static site generation
+  - Image optimization
+  - Code splitting
+  - Route prefetching
+- **Caching Strategy**:
+  - Redis integration
+  - Browser caching
+  - API response caching
+  - Static asset caching
 
 ## Project Structure
 
 ```
-├── public/              # Static files
-├── src/                 # Source code
-│   ├── access/          # Access control functions
-│   ├── app/             # Next.js app directory
-│   ├── blocks/          # Content blocks for layout builder
-│   ├── collections/     # Payload collections (data models)
-│   ├── components/      # React components
-│   ├── endpoints/       # API endpoints
-│   ├── fields/          # Custom field types
-│   ├── Footer/          # Footer components
-│   ├── Header/          # Header components
-│   ├── heros/           # Hero section components
-│   ├── hooks/           # Custom React hooks
-│   ├── migrations/      # Database migrations
-│   ├── plugins/         # Payload plugins
-│   ├── providers/       # React context providers
-│   ├── search/          # Search functionality
-│   ├── utilities/       # Utility functions
-│   ├── payload.config.ts # Payload configuration
-│   └── environment.d.ts  # TypeScript environment declarations
-├── .next/               # Next.js build output
-├── node_modules/        # Dependencies
-├── docker-compose.yml   # Docker configuration
-├── next.config.js       # Next.js configuration
-├── package.json         # Project dependencies and scripts
-├── tailwind.config.mjs  # Tailwind CSS configuration
-└── tsconfig.json        # TypeScript configuration
+├── public/                    # Static files and assets
+│   ├── images/               # Image assets
+│   ├── fonts/                # Font files
+│   └── favicon.ico           # Site favicon
+│
+├── src/                      # Source code
+│   ├── access/              # Access control functions
+│   │   ├── roles.ts        # Role definitions
+│   │   └── permissions.ts  # Permission handlers
+│   │
+│   ├── app/                 # Next.js app directory
+│   │   ├── (frontend)/     # Frontend routes
+│   │   ├── (admin)/        # Admin panel routes
+│   │   └── api/            # API routes
+│   │
+│   ├── blocks/             # Content blocks
+│   │   ├── Hero/          # Hero section blocks
+│   │   ├── Features/      # Feature blocks
+│   │   └── Content/       # Content blocks
+│   │
+│   ├── collections/        # Payload collections
+│   │   ├── Users/         # User collection
+│   │   ├── Media/         # Media collection
+│   │   └── Pages/         # Page collection
+│   │
+│   ├── components/         # React components
+│   │   ├── ui/            # UI components
+│   │   ├── forms/         # Form components
+│   │   └── layout/        # Layout components
+│   │
+│   ├── endpoints/          # API endpoints
+│   │   ├── auth/          # Authentication endpoints
+│   │   └── api/           # Custom API endpoints
+│   │
+│   ├── fields/            # Custom field types
+│   │   ├── RichText/      # Rich text fields
+│   │   └── Media/         # Media fields
+│   │
+│   ├── Footer/            # Footer components
+│   ├── Header/            # Header components
+│   ├── heros/             # Hero section components
+│   ├── hooks/             # Custom React hooks
+│   ├── migrations/        # Database migrations
+│   ├── plugins/           # Payload plugins
+│   ├── providers/         # React context providers
+│   ├── search/            # Search functionality
+│   ├── utilities/         # Utility functions
+│   ├── payload.config.ts  # Payload configuration
+│   └── environment.d.ts   # TypeScript environment declarations
+│
+├── .env.example           # Environment variables example
+├── .gitignore            # Git ignore file
+├── docker-compose.yml    # Docker configuration
+├── next.config.js        # Next.js configuration
+├── package.json          # Project dependencies
+├── tailwind.config.mjs   # Tailwind CSS configuration
+└── tsconfig.json         # TypeScript configuration
 ```
 
 ## Getting Started
@@ -87,88 +173,133 @@ This boilerplate is a pre-configured, ready-to-deploy solution for Payload CMS a
 - Node.js: ^18.20.2 or >=20.9.0
 - PostgreSQL database
 - Yarn package manager
+- Git
 
-### Railway Deployment (Recommended)
+### Local Development Setup
 
-Use the one-click deploy template:
-
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/L8TUlT?referralCode=-Yg50p)
-
-### Local Setup
-
-1. Clone the project:
-
+1. **Clone the Repository**:
    ```bash
    git clone <repository-url>
    cd payload-3-boilerplate
    ```
 
-2. Copy `.env.example` to `.env` and fill in your PostgreSQL database connection details and other environment variables.
+2. **Environment Setup**:
+   ```bash
+   # Copy environment variables
+   cp .env.example .env
+   
+   # Update the following variables in .env:
+   - DATABASE_URI=postgres://username:password@localhost:5432/database_name
+   - PAYLOAD_SECRET=your-secret-key
+   - NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+   ```
 
-3. Install dependencies:
-
+3. **Install Dependencies**:
    ```bash
    yarn install
    ```
 
-4. Run in development mode:
+4. **Database Setup**:
+   ```bash
+   # Start PostgreSQL (if using Docker)
+   docker-compose up -d
+   
+   # Or use your local PostgreSQL instance
+   ```
 
+5. **Run Development Server**:
    ```bash
    yarn dev
    ```
 
-5. Access the site at http://localhost:3000 and the admin panel at http://localhost:3000/admin
+6. **Access the Application**:
+   - Website: http://localhost:3000
+   - Admin Panel: http://localhost:3000/admin
 
 ### Production Deployment
 
-1. Build the project:
+#### Railway Deployment (Recommended)
 
+1. **One-Click Deploy**:
+   - Click the "Deploy on Railway" button above
+   - Connect your GitHub repository
+   - Configure environment variables
+   - Deploy
+
+2. **Manual Railway Setup**:
+   ```bash
+   # Install Railway CLI
+   npm i -g @railway/cli
+   
+   # Login to Railway
+   railway login
+   
+   # Link your project
+   railway link
+   
+   # Deploy
+   railway up
+   ```
+
+#### Manual Deployment
+
+1. **Build the Project**:
    ```bash
    yarn build
    ```
 
-2. Start the production server:
-
+2. **Start Production Server**:
    ```bash
    yarn start
    ```
 
-3. For a production-like environment locally:
+3. **Environment Variables**:
+   - Set up all required environment variables in your hosting platform
+   - Ensure database connection is properly configured
+   - Set appropriate security keys and secrets
+
+### Development Workflow
+
+1. **Generate Types**:
    ```bash
-   yarn dev:prod
+   yarn generate:types
    ```
 
-### Working with the Codebase
+2. **Linting**:
+   ```bash
+   # Check for issues
+   yarn lint
+   
+   # Fix issues automatically
+   yarn lint:fix
+   ```
 
-- Generate TypeScript types from your collections:
+3. **Database Migrations**:
+   ```bash
+   # Create migration
+   yarn migration:create
+   
+   # Run migrations
+   yarn migration:up
+   ```
 
-  ```bash
-  yarn generate:types
-  ```
-
-- Run linting:
-
-  ```bash
-  yarn lint
-  ```
-
-- Fix linting issues:
-
-  ```bash
-  yarn lint:fix
-  ```
-
-- Rebuild dependencies (if needed):
-  ```bash
-  yarn reinstall
-  ```
+4. **Testing**:
+   ```bash
+   # Run tests
+   yarn test
+   
+   # Run tests in watch mode
+   yarn test:watch
+   ```
 
 ## Useful Resources
 
-- **[Official Documentation](https://funkyton.com/payload-cms/)**: Step-by-step guide and instructions
+- **[Official Documentation](https://funkyton.com/payload-cms/)**: Complete guide and instructions
 - **[Payload CMS Docs](https://payloadcms.com/docs)**: Official Payload documentation
-- **[Next.js Documentation](https://nextjs.org/docs)**: Learn about Next.js features
-- **[TypeScript Documentation](https://www.typescriptlang.org/docs/)**: TypeScript language reference
+- **[Next.js Documentation](https://nextjs.org/docs)**: Next.js features and API
+- **[TypeScript Documentation](https://www.typescriptlang.org/docs/)**: TypeScript reference
+- **[Tailwind CSS Docs](https://tailwindcss.com/docs)**: Tailwind CSS documentation
+- **[PostgreSQL Docs](https://www.postgresql.org/docs/)**: PostgreSQL documentation
 
 ## License
 
