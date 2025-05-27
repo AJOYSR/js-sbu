@@ -43,58 +43,9 @@ interface SearchResultItem {
   level?: string
 }
 
-export default async function Page({ searchParams }: PageProps) {
-  const resolvedSearchParams = await searchParams
-  const { q: query } = resolvedSearchParams || {}
-
-  return (
-    <div className="min-h-screen animate-fadeIn">
-      <SearchHero />
-
-      <div className="container mx-auto px-4 py-16 relative">
-        {/* Decorative elements */}
-        <div className="absolute -top-32 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
-        <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
-
-        <PageClient />
-
-        <div className="glass-card rounded-xl shadow-xl p-10 mb-12 max-w-3xl mx-auto animation-delay-300 animate-fadeIn border border-white/10 backdrop-blur-md relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-[50px]"></div>
-          <div className="relative z-10">
-            <div className="flex items-center mb-4">
-              <SearchIcon className="w-5 h-5 text-primary mr-2" />
-              <h2 className="text-xl font-semibold text-gradient">
-                Find what you&apos;re looking for
-              </h2>
-            </div>
-            <Search />
-          </div>
-        </div>
-
-        <Suspense fallback={<SearchResultsSkeleton />}>
-          {query ? (
-            <SearchResultsLoader query={query} />
-          ) : (
-            <div className="text-center py-12 animation-delay-400 animate-fadeIn">
-              <p className="text-foreground/70 text-lg">
-                Enter a search term above to find content.
-              </p>
-            </div>
-          )}
-        </Suspense>
-
-        {/* Always show the CTA section */}
-        <CTASection />
-      </div>
-    </div>
-  )
-}
-
-// This component handles data fetching with suspense
-async function SearchResultsLoader({ query }: { query: string | string[] | undefined }) {
-  if (!query) {
-    return null
-  }
+// Cache the data fetching functions
+const fetchSearchResults = React.cache(async (query: string | string[] | undefined) => {
+  if (!query) return { results: [], totalResults: 0 }
 
   const payload = await getPayload({ config: configPromise })
 
@@ -199,9 +150,69 @@ async function SearchResultsLoader({ query }: { query: string | string[] | undef
     return bHasInTitle - aHasInTitle
   })
 
-  const totalResults = sortedResults.length
+  return {
+    results: sortedResults,
+    totalResults: sortedResults.length,
+  }
+})
 
-  return <SearchResults results={sortedResults} totalResults={totalResults} query={query} />
+export const revalidate = 3600 // Revalidate every hour
+
+export default async function Page({ searchParams }: PageProps) {
+  const resolvedSearchParams = await searchParams
+  const { q: query } = resolvedSearchParams || {}
+
+  return (
+    <div className="min-h-screen animate-fadeIn">
+      <SearchHero />
+
+      <div className="container mx-auto px-4 py-16 relative">
+        {/* Decorative elements */}
+        <div className="absolute -top-32 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
+        <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>
+
+        <PageClient />
+
+        <div className="glass-card rounded-xl shadow-xl p-10 mb-12 max-w-3xl mx-auto animation-delay-300 animate-fadeIn border border-white/10 backdrop-blur-md relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-[50px]"></div>
+          <div className="relative z-10">
+            <div className="flex items-center mb-4">
+              <SearchIcon className="w-5 h-5 text-primary mr-2" />
+              <h2 className="text-xl font-semibold text-gradient">
+                Find what you&apos;re looking for
+              </h2>
+            </div>
+            <Search />
+          </div>
+        </div>
+
+        <Suspense fallback={<SearchResultsSkeleton />}>
+          {query ? (
+            <SearchResultsLoader query={query} />
+          ) : (
+            <div className="text-center py-12 animation-delay-400 animate-fadeIn">
+              <p className="text-foreground/70 text-lg">
+                Enter a search term above to find content.
+              </p>
+            </div>
+          )}
+        </Suspense>
+
+        {/* Always show the CTA section */}
+        <CTASection />
+      </div>
+    </div>
+  )
+}
+
+// This component handles data fetching with suspense
+async function SearchResultsLoader({ query }: { query: string | string[] | undefined }) {
+  if (!query) {
+    return null
+  }
+
+  const { results, totalResults } = await fetchSearchResults(query)
+  return <SearchResults results={results} totalResults={totalResults} query={query} />
 }
 
 export async function generateMetadata(
