@@ -11,9 +11,6 @@ export default function SearchHero() {
         src="https://www.searchenginejournal.com/wp-content/uploads/2025/03/alternative-search-710.png"
         alt="Search background"
         brightness={0.7}
-        priority={true}
-        quality={75}
-        sizes="100vw"
       />
 
       {/* Background decorative elements */}

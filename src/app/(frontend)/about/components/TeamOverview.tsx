@@ -59,7 +59,7 @@ export default function TeamOverview() {
               <Link
                 href="/team"
                 className="inline-flex items-center text-primary hover:text-primary/80 group relative overflow-hidden px-6 py-3 rounded-full animation-delay-600 animate-fadeIn"
-                prefetch={true}
+                prefetch={false}
               >
                 <span className="relative z-10 text-gradient font-medium">Meet our full team</span>
                 <span className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></span>

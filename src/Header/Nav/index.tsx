@@ -22,7 +22,7 @@ import { usePathname } from 'next/navigation'
 const aboutDropdown = [
   { label: 'About JS SBU', href: '/about' },
   { label: 'Our Vision & Mission', href: '/vision-mission' },
-  { label: 'Our Team', href: '/team', prefetch: true },
+  { label: 'Our Team', href: '/team' },
 ]
 
 const servicesDropdown = [
@@ -245,7 +245,6 @@ export const HeaderNav: React.FC<{
                       ? 'text-gradient font-medium bg-primary/10'
                       : 'text-foreground hover:text-primary hover:bg-primary/10'
                   }`}
-                  prefetch={item.href === '/team'}
                 >
                   {IconComponent && <IconComponent className="w-4 h-4 text-primary" />}
                   {item.label}
