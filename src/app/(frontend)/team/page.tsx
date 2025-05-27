@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Image from 'next/image'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -128,34 +128,22 @@ const GetCategoryIcon = ({ value }: { value: string }) => {
   }
 }
 
-export const metadata: Metadata = {
-  title: 'Team | JS SBU',
-  description: 'Team JS SBU website',
-}
+// Loading component
+const LoadingSkeleton = () => (
+  <div className="min-h-screen animate-pulse">
+    <div className="h-[60vh] bg-gray-200 dark:bg-gray-800"></div>
+    <div className="container mx-auto px-4 py-20">
+      <div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-full mx-auto mb-8"></div>
+      <div className="grid md:grid-cols-3 gap-8">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-96 bg-gray-200 dark:bg-gray-800 rounded-2xl"></div>
+        ))}
+      </div>
+    </div>
+  </div>
+)
 
-// Change revalidation time to 1 hour
-export const revalidate = 3600 // Revalidate every hour
-
-// Add generateStaticParams for static generation
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const response = await payload.find({
-    collection: 'team-members',
-    where: {
-      teamType: {
-        not_equals: 'leadership',
-      },
-    },
-    limit: 0,
-  })
-
-  const totalPages = Math.ceil(response.totalDocs / ITEMS_PER_PAGE)
-  return Array.from({ length: totalPages }, (_, i) => ({
-    page: (i + 1).toString(),
-  }))
-}
-
-// Optimize data fetching with React.cache
+// Optimize data fetching with React.cache and add stale-while-revalidate pattern
 const fetchLeadershipTeam = React.cache(async () => {
   const payload = await getPayload({ config: configPromise })
   const response = await payload.find({
@@ -186,13 +174,30 @@ const fetchTeamMembers = React.cache(async (page: number) => {
   })
 })
 
-export const dynamicParams = true
+// Add generateMetadata for better SEO
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Team | JS SBU',
+    description: 'Meet our team of JavaScript experts at JS SBU',
+  }
+}
+
+// Change revalidation time to 5 minutes for more frequent updates
+export const revalidate = 300
 
 export default async function TeamPage({ searchParams }: Props) {
-  // Parse current page from search params or default to 1
   const params = await searchParams
   const currentPage = Number(params?.page) || 1
 
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <TeamPageContent currentPage={currentPage} />
+    </Suspense>
+  )
+}
+
+// Separate content component for better suspense boundaries
+async function TeamPageContent({ currentPage }: { currentPage: number }) {
   try {
     // Fetch data in parallel with Promise.all
     const [leadershipTeam, teamMembersResponse] = await Promise.all([
