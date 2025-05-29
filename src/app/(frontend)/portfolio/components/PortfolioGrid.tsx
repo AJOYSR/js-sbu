@@ -22,18 +22,24 @@ export default function PortfolioGrid({
   return (
     <>
       {/* Projects Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 transition-all duration-500">
         {projects.map((project: Portfolio, index: number) => {
           const image = project.image as Media
           const imageUrl = image?.url || '/placeholder-image.jpg'
-          const animationDelay = `animation-delay-${200 + index * 100}`
 
           return (
             <Link
               href={`/portfolio/${String(project.slug)}`}
               key={project.id}
-              className="glass-card rounded-2xl overflow-hidden card-hover animation-delay-400 animate-fadeIn shadow-xl border border-white/5 transition-all duration-300 hover:shadow-2xl"
-              style={{ animationDelay: `${400 + index * 100}ms` }}
+              className="glass-card rounded-2xl overflow-hidden card-hover shadow-xl border border-white/5 transition-all duration-500 hover:shadow-2xl"
+              style={{
+                opacity: 0,
+                animationName: 'fadeIn',
+                animationDuration: '0.5s',
+                animationTimingFunction: 'ease-out',
+                animationFillMode: 'forwards',
+                animationDelay: `${400 + index * 100}ms`,
+              }}
             >
               <div className="relative h-52 overflow-hidden">
                 <Image
@@ -46,8 +52,8 @@ export default function PortfolioGrid({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
-                  <span className="inline-flex px-3 py-1 rounded-full text-xs bg-primary/70 text-white backdrop-blur-sm">
-                    {project.category}
+                  <span className="inline-flex px-3 py-1 rounded-full text-xs bg-white/10 backdrop-blur-md border border-white/20 text-white">
+                    {categoryDisplayNames[project.category] || project.category}
                   </span>
                 </div>
               </div>
@@ -218,4 +224,13 @@ export default function PortfolioGrid({
       </section>
     </>
   )
+}
+
+// Categories for display
+const categoryDisplayNames = {
+  all: 'All',
+  'web-application': 'Web Application',
+  'mobile-development': 'Mobile Development',
+  'machine-learning-ai': 'Machine Learning & AI',
+  'ui-ux-design': 'UI/UX Design',
 }

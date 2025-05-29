@@ -161,7 +161,7 @@ export default async function ProjectPage({ params }: Args) {
             <PortfolioImageSection
               imageUrl={imageUrl}
               title={project.title}
-              category={project.category || 'Project'}
+              category={categoryDisplayNames[project.category] || project.category}
             />
           </div>
 
@@ -229,4 +229,13 @@ export default async function ProjectPage({ params }: Args) {
       </div>
     </div>
   )
+}
+
+// Categories for display
+const categoryDisplayNames = {
+  all: 'All',
+  'web-application': 'Web Application',
+  'mobile-development': 'Mobile Development',
+  'machine-learning-ai': 'Machine Learning & AI',
+  'ui-ux-design': 'UI/UX Design',
 }

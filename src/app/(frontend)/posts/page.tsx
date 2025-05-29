@@ -100,7 +100,7 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         ) : (
           <>
-            <div className="text-center mb-12 animation-delay-200 animate-fadeIn">
+            <div className="text-center  animation-delay-200 animate-fadeIn">
               <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
                 <BookOpen className="inline-block h-4 w-4 mr-1" /> LATEST ARTICLES
               </span>

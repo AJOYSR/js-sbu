@@ -50,8 +50,8 @@ export default function TutorialHeader({
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
             <div className="flex items-center gap-4 mb-4">
-              <span className="btn-gradient px-3 py-1 rounded-full text-sm font-medium">
-                {category}
+              <span className="inline-flex px-3 py-1 rounded-full text-sm font-medium bg-white/10 backdrop-blur-md border border-white/20 text-white">
+                {categoryDisplayNames[category] || category}
               </span>
               <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
                 {level}
@@ -77,4 +77,14 @@ export default function TutorialHeader({
       </div>
     </>
   )
+}
+
+// Add a map for category display names
+const categoryDisplayNames: Record<string, string> = {
+  'web-development': 'Web Development',
+  'mobile-development': 'Mobile Development',
+  'backend-development': 'Backend Development',
+  'ai-ml': 'AI & ML',
+  devops: 'DevOps',
+  All: 'All',
 }

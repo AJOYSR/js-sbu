@@ -81,67 +81,84 @@ export default function TutorialsClient({
 
   // Handle filter changes
   const handleFilterChange = (type: 'category' | 'level', value: string) => {
-    const params = new URLSearchParams()
+    const params = new URLSearchParams(window.location.search)
 
     // Reset page when changing filters
-    if (value !== 'All' && value !== 'All Levels') {
-      params.set(type, value)
+    params.set('page', '1')
+
+    // Handle category filter
+    if (type === 'category') {
+      if (value === 'All') {
+        params.delete('category')
+      } else {
+        params.set('category', value.toLowerCase())
+      }
     }
 
-    // Preserve other existing filters
-    if (type !== 'category' && currentCategory !== 'All') {
-      params.set('category', currentCategory)
+    // Handle level filter
+    if (type === 'level') {
+      if (value === 'All Levels') {
+        params.delete('level')
+      } else {
+        params.set('level', value.toLowerCase())
+      }
     }
-    if (type !== 'level' && currentLevel !== 'All Levels') {
-      params.set('level', currentLevel)
-    }
+
+    // Preserve search if it exists
     if (currentSearch) {
       params.set('search', currentSearch)
     }
 
     const query = params.toString()
     const url = query ? `${pathname}?${query}` : pathname
-    router.push(url)
+    router.replace(url, { scroll: false })
   }
 
   // Handle search form submission
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    const params = new URLSearchParams()
+    const params = new URLSearchParams(window.location.search)
 
-    if (searchInput) {
-      params.set('search', searchInput)
+    // Reset page when searching
+    params.set('page', '1')
+
+    if (searchInput.trim()) {
+      params.set('search', searchInput.trim())
+    } else {
+      params.delete('search')
     }
+
+    // Preserve existing filters
     if (currentCategory !== 'All') {
-      params.set('category', currentCategory)
+      params.set('category', currentCategory.toLowerCase())
     }
     if (currentLevel !== 'All Levels') {
-      params.set('level', currentLevel)
+      params.set('level', currentLevel.toLowerCase())
     }
 
     const query = params.toString()
     const url = query ? `${pathname}?${query}` : pathname
-    router.push(url)
+    router.replace(url, { scroll: false })
   }
 
   // Handle page change
   const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams()
-
+    const params = new URLSearchParams(window.location.search)
     params.set('page', newPage.toString())
 
+    // Preserve all existing filters and search
     if (currentCategory !== 'All') {
-      params.set('category', currentCategory)
+      params.set('category', currentCategory.toLowerCase())
     }
     if (currentLevel !== 'All Levels') {
-      params.set('level', currentLevel)
+      params.set('level', currentLevel.toLowerCase())
     }
     if (currentSearch) {
       params.set('search', currentSearch)
     }
 
     const query = params.toString()
-    router.push(`${pathname}?${query}`)
+    router.replace(`${pathname}?${query}`, { scroll: false })
   }
 
   // Pagination controls component
@@ -342,8 +359,10 @@ export default function TutorialsClient({
                     fetchPriority={index < 3 ? 'high' : 'auto'}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-                  <div className="absolute top-4 left-4 bg-primary/70 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
-                    {tutorial.level}
+                  <div className="absolute top-4 left-4">
+                    <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-white/10 backdrop-blur-md border border-white/20 text-white">
+                      {categoryDisplayNames[tutorial.category] || tutorial.category}
+                    </span>
                   </div>
                 </div>
 

@@ -54,7 +54,7 @@ export default function PortfolioImageSection({
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
 
       <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-        <span className="bg-primary/90 text-white px-4 py-2 rounded-full text-sm mb-4 inline-block shadow-md">
+        <span className="inline-flex px-4 py-2 rounded-full text-sm mb-4 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md">
           {category}
         </span>
         <h1 className="text-4xl md:text-5xl font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">

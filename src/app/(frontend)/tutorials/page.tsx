@@ -11,9 +11,9 @@ import {
   CTASectionWrapper,
 } from './components/Wrappers'
 
-// Change from dynamic to static rendering with ISR
-export const dynamic = 'force-static'
-export const revalidate = 300 // Change to 5 minutes for better caching
+// Change from static to dynamic rendering for proper filtering
+export const dynamic = 'force-dynamic'
+export const revalidate = 0 // Disable caching for now to ensure filters work
 
 export const metadata: Metadata = {
   title: 'Tutorials & Guides | Learn JavaScript Technologies',
@@ -51,7 +51,7 @@ export default async function TutorialsPage({
   }
 
   if (paramsData?.search) {
-    where.title = { like: paramsData.search }
+    where.title = { contains: paramsData.search }
   }
 
   const {
