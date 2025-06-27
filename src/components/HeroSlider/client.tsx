@@ -163,8 +163,8 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
         {slides.map((slide, index) => (
           <div
             key={slide.id || index}
-            className={`absolute inset-0 transition-all duration-1200 ease-in-out ${
-              index === currentSlide ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'
+            className={`absolute inset-0 transition-transform duration-1000 ease-in-out ${
+              index === currentSlide ? 'translate-x-0 z-10' : 'translate-x-full z-0'
             }`}
             role="group"
             aria-roledescription="slide"
@@ -189,7 +189,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
             )}
 
             {/* Subtle overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/70 via-neutral-900/40 to-neutral-900/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/80 via-neutral-900/50 to-transparent"></div>
 
             {/* Slide content */}
             <div className="container mx-auto px-6 h-full flex items-center relative z-10">
@@ -207,10 +207,10 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
                 {slide.ctaButton?.label && (
                   <Link
                     href={slide.ctaButton?.link || '/services'}
-                    className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-md transition-all duration-300 inline-flex items-center text-lg"
+                    className="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-full transition-all duration-300 inline-flex items-center text-lg font-semibold shadow-lg"
                   >
                     {slide.ctaButton.label}
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                    <ArrowRight className="ml-3 w-5 h-5" />
                   </Link>
                 )}
               </div>
@@ -221,7 +221,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
 
       {/* Progress bar */}
       <div className="absolute bottom-24 left-0 right-0 z-30 container mx-auto px-6">
-        <div className="h-1 bg-white/20 rounded-full overflow-hidden max-w-xl">
+        <div className="h-2 bg-white/30 rounded-full overflow-hidden max-w-xl mx-auto">
           <div
             className="h-full bg-primary transition-all duration-100 ease-linear"
             style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
@@ -232,39 +232,39 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
       {/* Slider Controls */}
       <div className="absolute bottom-12 left-0 right-0 z-20">
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center md:justify-between">
             {/* Slide counter */}
-            <div className="text-white/80 font-medium">
-              <span className="text-primary">{currentSlide + 1}</span>
+            <div className="hidden md:block text-white/80 font-medium text-lg">
+              <span className="text-primary font-bold">{currentSlide + 1}</span>
               <span className="mx-2">/</span>
               <span>{slides.length}</span>
             </div>
 
             {/* Control buttons */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-full p-2 shadow-xl">
               <button
                 onClick={prevSlide}
-                className="p-3 rounded-full hover:bg-white/10 transition-colors text-white"
+                className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                 aria-label="Previous slide"
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={24} />
               </button>
 
               <button
                 onClick={togglePlayPause}
-                className="p-3 rounded-full hover:bg-white/10 transition-colors text-white"
+                className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                 aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
                 title={isPlaying ? 'Pause' : 'Play'}
               >
-                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                {isPlaying ? <Pause size={24} /> : <Play size={24} />}
               </button>
 
               <button
                 onClick={nextSlide}
-                className="p-3 rounded-full hover:bg-white/10 transition-colors text-white"
+                className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                 aria-label="Next slide"
               >
-                <ArrowRight size={20} />
+                <ArrowRight size={24} />
               </button>
             </div>
           </div>
