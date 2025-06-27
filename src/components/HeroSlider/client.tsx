@@ -219,16 +219,6 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
         ))}
       </div>
 
-      {/* Progress bar */}
-      <div className="absolute bottom-24 left-0 right-0 z-30 container mx-auto px-6">
-        <div className="h-2 bg-white/30 rounded-full overflow-hidden max-w-xl mx-auto">
-          <div
-            className="h-full bg-primary transition-all duration-100 ease-linear"
-            style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
-          ></div>
-        </div>
-      </div>
-
       {/* Slider Controls */}
       <div className="absolute bottom-12 left-0 right-0 z-20">
         <div className="container mx-auto px-6">
