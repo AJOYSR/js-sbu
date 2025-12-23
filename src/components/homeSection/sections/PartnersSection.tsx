@@ -20,7 +20,7 @@ const getImageUrl = (media: Media | number | null | undefined): string => {
 
 const PartnersSection: React.FC<PartnersSectionProps> = ({ partners }) => {
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidden bg-white dark:bg-black text-slate-900 dark:text-white transition-colors duration-300">
       <FloatingElement
         className="bg-primary/5 left-1/4 -top-32"
         size="xl"

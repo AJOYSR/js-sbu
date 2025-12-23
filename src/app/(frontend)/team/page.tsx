@@ -210,7 +210,7 @@ async function TeamPageContent({ currentPage }: { currentPage: number }) {
 
     return (
       <div className="min-h-screen animate-fadeIn">
-        <TeamHero />
+        {/* <TeamHero /> */}
 
         {leadershipTeam.length > 0 && <LeadershipSection leadershipTeam={leadershipTeam} />}
 

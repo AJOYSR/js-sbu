@@ -84,7 +84,7 @@ export default async function PortfolioPage({ searchParams: searchParamsPromise 
 
   return (
     <div className="min-h-screen animate-fadeIn">
-      <PortfolioHero />
+      {/* <PortfolioHero /> */}
 
       {/* Categories & Projects Section */}
       <section className="py-20 relative overflow-hidden">

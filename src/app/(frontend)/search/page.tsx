@@ -164,7 +164,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen animate-fadeIn">
-      <SearchHero />
+      {/* <SearchHero /> */}
 
       <div className="container mx-auto px-4 py-16 relative">
         {/* Decorative elements */}

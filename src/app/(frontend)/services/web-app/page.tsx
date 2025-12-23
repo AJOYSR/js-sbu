@@ -21,7 +21,7 @@ export default async function WebAppPage() {
   return (
     <div className="min-h-screen animate-fadeIn">
       {/* Hero Section with Background */}
-      <HeroSection />
+      {/* <HeroSection /> */}
 
       {/* Technologies Section */}
       <TechnologiesSection />

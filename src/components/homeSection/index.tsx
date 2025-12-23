@@ -24,6 +24,7 @@ import PartnersSection from './sections/PartnersSection'
 import PortfolioSection from './sections/PortfolioSection'
 import BlogSection from './sections/BlogSection'
 import CTASection from './sections/CTASection'
+import ServicesSection from './sections/ServicesSection'
 
 const getImageUrl = (media: Media | number | null | undefined): string => {
   if (typeof media === 'object' && media !== null && 'url' in media && media.url) {
@@ -107,12 +108,12 @@ const HomeSection = async () => {
 
   return (
     <div className="relative z-10">
-      <HeroSection slides={slides} />
       <AboutSection />
+      <HeroSection slides={slides} />
+      <ServicesSection />
       <PartnersSection partners={partners} />
       <PortfolioSection projects={projects} />
       <BlogSection posts={posts} />
-      <CTASection />
     </div>
   )
 }

@@ -22,9 +22,7 @@ export const metadata: Metadata = {
 export default function VisionMissionPage() {
   return (
     <div className="min-h-screen animate-fadeIn">
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       <Suspense fallback={<SectionSkeleton />}>
         <VisionSection />

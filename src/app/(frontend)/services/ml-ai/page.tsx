@@ -35,9 +35,7 @@ export default async function MLAIPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section with Suspense */}
-      <Suspense fallback={<HeroSectionSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSectionSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       {/* Services Section with Suspense */}
       <Suspense fallback={<ServicesSectionSkeleton />}>

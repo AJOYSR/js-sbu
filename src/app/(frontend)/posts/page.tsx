@@ -14,11 +14,14 @@ export const dynamic = 'force-static'
 export const revalidate = 600
 
 type PageProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function Page({ searchParams }: PageProps) {
   const payload = await getPayload({ config: configPromise })
+  // Resolve search params if provided as a Promise (App Router typing)
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  void resolvedSearchParams
 
   const posts = await payload.find({
     collection: 'posts',
@@ -35,36 +38,6 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen animate-fadeIn">
-      {/* Hero Section with Background */}
-      <section className="relative py-20 overflow-hidden">
-        {/* Background image */}
-        <HeroImage
-          src="https://png.pngtree.com/thumb_back/fh260/background/20220625/pngtree-blog-banner-text-blog-photo-image_32028900.jpg"
-          alt="Blog and Insights"
-          brightness={0.7}
-        />
-
-        {/* Background decorative elements */}
-        <div className="absolute -top-32 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px] z-10"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-[100px] z-10"></div>
-        <div className="absolute inset-0 bg-black/40 z-10"></div>
-
-        <div className="container mx-auto px-4 relative z-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="inline-block px-4 py-1 rounded-full bg-white/20 text-white text-sm font-medium mb-6 animate-fadeIn backdrop-blur-sm">
-              BLOG & INSIGHTS
-            </span>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white animation-delay-200 animate-fadeIn">
-              Our <span className="text-gradient">Blog</span>
-            </h1>
-            <p className="text-xl text-white/90 mb-10 animation-delay-300 animate-fadeIn max-w-3xl mx-auto leading-relaxed">
-              Explore our collection of articles, tutorials, and industry insights to stay ahead in
-              the world of technology
-            </p>
-          </div>
-        </div>
-      </section>
-
       <div className="container mx-auto px-4 py-16 relative">
         {/* Decorative elements */}
         <div className="absolute -top-32 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px]"></div>

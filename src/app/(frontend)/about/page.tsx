@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="min-h-screen animate-fadeIn">
-      <AboutHero />
+      {/* <AboutHero /> */}
 
       <Suspense fallback={<SectionSkeleton />}>
         <MissionSection />
