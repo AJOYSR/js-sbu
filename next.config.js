@@ -117,7 +117,6 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
