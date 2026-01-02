@@ -15,8 +15,10 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
   const [isPlaying, setIsPlaying] = useState(true)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [isClient, setIsClient] = useState(false)
+  const [progress, setProgress] = useState(0)
   const sliderTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const slideInterval = 6000 // Extended to 6 seconds for better reading time
+  const progressTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const slideInterval = 6000 // 6s for readability
 
   // Make sure we're on client side before initializing
   useEffect(() => {
@@ -44,11 +46,22 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
     if (sliderTimerRef.current) {
       clearInterval(sliderTimerRef.current)
     }
+    if (progressTimerRef.current) {
+      clearInterval(progressTimerRef.current)
+    }
+
+    setProgress(0)
 
     if (isPlaying) {
       sliderTimerRef.current = setInterval(() => {
         nextSlide()
       }, slideInterval)
+      progressTimerRef.current = setInterval(() => {
+        setProgress((prev) => {
+          const next = prev + (100 * 120) / slideInterval
+          return next >= 100 ? 100 : next
+        })
+      }, 120)
     }
   }, [isPlaying, nextSlide, slideInterval])
 
@@ -86,13 +99,25 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
         sliderTimerRef.current = setInterval(() => {
           nextSlide()
         }, slideInterval)
+        progressTimerRef.current = setInterval(() => {
+          setProgress((prev) => {
+            const next = prev + (100 * 120) / slideInterval
+            return next >= 100 ? 100 : next
+          })
+        }, 120)
       } else if (sliderTimerRef.current) {
         clearInterval(sliderTimerRef.current)
+        if (progressTimerRef.current) {
+          clearInterval(progressTimerRef.current)
+        }
       }
 
       return () => {
         if (sliderTimerRef.current) {
           clearInterval(sliderTimerRef.current)
+        }
+        if (progressTimerRef.current) {
+          clearInterval(progressTimerRef.current)
         }
       }
     }
@@ -151,7 +176,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
   // Client-side rendering (full interactive slider)
   return (
     <div
-      className="relative h-[600px] md:h-[700px] overflow-hidden bg-neutral-950"
+      className="relative h-[600px] md:h-[720px] overflow-hidden bg-gradient-to-b from-black via-neutral-950 to-black text-white"
       role="region"
       aria-roledescription="carousel"
       aria-label="Hero Image Slider"
@@ -160,68 +185,75 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
     >
       {/* Slides */}
       <div className="absolute inset-0">
-        {slides.map((slide, index) => (
-          <div
-            key={slide.id || index}
-            className={`absolute inset-0 transition-transform duration-1000 ease-in-out ${
-              index === currentSlide ? 'translate-x-0 z-10' : 'translate-x-full z-0'
-            }`}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`Slide ${index + 1} of ${slides.length}: ${slide.title}`}
-            aria-hidden={index !== currentSlide}
-          >
-            {slide.backgroundImage && (
-              <Image
-                src={
-                  typeof slide.backgroundImage === 'object' && slide.backgroundImage?.url
-                    ? slide.backgroundImage.url
-                    : '/placeholder.jpg'
-                }
-                alt={slide.title || `Slide ${index + 1}`}
-                fill
-                className={`object-cover ${
-                  index === currentSlide ? 'animate-kenburns' : ''
-                } ${slide.gradientOverlay ? 'opacity-90' : ''}`}
-                priority={index === 0}
-                quality={90}
-              />
-            )}
+        {slides.map((slide, index) => {
+          const badge = (slide as { badge?: string }).badge
 
-            {/* Subtle overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/80 via-neutral-900/50 to-transparent"></div>
-
-            {/* Slide content */}
-            <div className="container mx-auto px-6 h-full flex items-center relative z-10">
-              <div
-                className={`max-w-3xl transition-all duration-1000 ${
-                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                }`}
-              >
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-                  {slide.title || `Slide ${index + 1}`}
-                </h2>
-                <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed max-w-2xl">
-                  {slide.description || 'Building innovative solutions for tomorrow'}
-                </p>
-                {slide.ctaButton?.label && (
-                  <Link
-                    href={slide.ctaButton?.link || '/services'}
-                    className="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-full transition-all duration-300 inline-flex items-center text-lg font-semibold shadow-lg"
-                  >
-                    {slide.ctaButton.label}
-                    <ArrowRight className="ml-3 w-5 h-5" />
-                  </Link>
-                )}
+          return (
+            <div
+              key={slide.id || index}
+              className={`absolute inset-0 transition-opacity duration-800 ease-out ${
+                index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`Slide ${index + 1} of ${slides.length}: ${slide.title}`}
+              aria-hidden={index !== currentSlide}
+            >
+              {slide.backgroundImage && (
+                <Image
+                  src={
+                    typeof slide.backgroundImage === 'object' && slide.backgroundImage?.url
+                      ? slide.backgroundImage.url
+                      : '/placeholder.jpg'
+                  }
+                  alt={slide.title || `Slide ${index + 1}`}
+                  fill
+                  className={`object-cover transition-transform duration-[2500ms] ease-out ${
+                    index === currentSlide ? 'scale-105' : 'scale-100'
+                  } ${slide.gradientOverlay ? 'opacity-90' : ''}`}
+                  priority={index === 0}
+                  quality={90}
+                />
+              )}
+              {/* Subtle overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/20" />
+              {/* Slide content */}
+              <div className="container mx-auto px-6 h-full flex items-center relative z-10">
+                <div
+                  className={`max-w-3xl transition-all duration-1000 ${
+                    index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                  }`}
+                >
+                  {badge && (
+                    <span className="inline-flex items-center px-4 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold uppercase tracking-[0.2em] mb-4 backdrop-blur">
+                      {badge}
+                    </span>
+                  )}
+                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+                    {slide.title || `Slide ${index + 1}`}
+                  </h2>
+                  <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed max-w-2xl">
+                    {slide.description || 'Building innovative solutions for tomorrow'}
+                  </p>
+                  {slide.ctaButton?.label && (
+                    <Link
+                      href={slide.ctaButton?.link || '/services'}
+                      className="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-full transition-all duration-300 inline-flex items-center text-lg font-semibold shadow-xl shadow-primary/30"
+                    >
+                      {slide.ctaButton.label}
+                      <ArrowRight className="ml-3 w-5 h-5" />
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Slider Controls */}
-      <div className="absolute bottom-12 left-0 right-0 z-20">
-        <div className="container mx-auto px-6">
+      <div className="absolute bottom-10 left-0 right-0 z-20">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
           <div className="flex items-center justify-center md:justify-between">
             {/* Slide counter */}
             <div className="hidden md:block text-white/80 font-medium text-lg">
@@ -231,10 +263,10 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
             </div>
 
             {/* Control buttons */}
-            <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-full p-2 shadow-xl">
+            <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-md rounded-full p-2 shadow-2xl shadow-black/30 border border-white/10">
               <button
                 onClick={prevSlide}
-                className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                className="p-3 rounded-full bg-white/15 hover:bg-white/25 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                 aria-label="Previous slide"
               >
                 <ArrowLeft size={24} />
@@ -242,7 +274,7 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
 
               <button
                 onClick={togglePlayPause}
-                className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                className="p-3 rounded-full bg-white/15 hover:bg-white/25 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                 aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
                 title={isPlaying ? 'Pause' : 'Play'}
               >
@@ -251,11 +283,35 @@ const HeroSliderClient: React.FC<HeroSliderProps> = ({ slides }) => {
 
               <button
                 onClick={nextSlide}
-                className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                className="p-3 rounded-full bg-white/15 hover:bg-white/25 transition-colors text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
                 aria-label="Next slide"
               >
                 <ArrowRight size={24} />
               </button>
+            </div>
+          </div>
+
+          {/* Progress + dots */}
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <div className="w-full md:w-2/3 h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary transition-[width] duration-150 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToSlide(i)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    i === currentSlide
+                      ? 'w-6 bg-primary shadow-[0_0_0_4px_rgba(255,255,255,0.15)]'
+                      : 'w-2.5 bg-white/40 hover:bg-white/70'
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>

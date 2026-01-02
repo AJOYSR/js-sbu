@@ -20,9 +20,7 @@ export const metadata: Metadata = {
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen animate-fadeIn">
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       <div className="container mx-auto px-4 py-20">
         <Suspense fallback={<TermsContentSkeleton />}>

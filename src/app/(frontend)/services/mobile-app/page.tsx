@@ -36,9 +36,7 @@ export default async function MobileAppPage() {
   return (
     <div className="min-h-screen animate-fadeIn overflow-hidden">
       {/* Hero Section with Background */}
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       <div className="container mx-auto px-4 py-16 md:py-24">
         {/* Technologies Section */}

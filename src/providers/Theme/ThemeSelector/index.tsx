@@ -16,12 +16,16 @@ import { useTheme } from '..'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { themeLocalStorageKey } from './types'
 
+const FORCE_LIGHT = true
+
 const ThemeSelector: React.FC = () => {
   const { theme, setTheme } = useTheme()
   const { setHeaderTheme } = useHeaderTheme()
   const [value, setValue] = useState('')
 
   const onThemeChange = (themeToSet: Theme & 'auto') => {
+    if (FORCE_LIGHT) return
+
     if (themeToSet === 'auto') {
       setTheme(null)
       setHeaderTheme(null)
@@ -34,13 +38,22 @@ const ThemeSelector: React.FC = () => {
   }
 
   useEffect(() => {
+    if (FORCE_LIGHT) {
+      setTheme('light')
+      setHeaderTheme('light')
+      setValue('light')
+      window.localStorage.setItem(themeLocalStorageKey, 'light')
+      return
+    }
+
     // Initialize from localStorage or default to 'auto'
     const preference = window.localStorage.getItem(themeLocalStorageKey)
     setValue(preference ?? 'auto')
-  }, [])
+  }, [setHeaderTheme, setTheme])
 
   // Keep value in sync with theme changes
   useEffect(() => {
+    if (FORCE_LIGHT) return
     setValue(theme ?? 'auto')
   }, [theme])
 
@@ -56,7 +69,7 @@ const ThemeSelector: React.FC = () => {
   }
 
   return (
-    <Select onValueChange={onThemeChange} value={value}>
+    <Select onValueChange={onThemeChange} value={value} disabled={FORCE_LIGHT}>
       <SelectTrigger
         aria-label="Select a theme"
         className="w-auto bg-transparent gap-2 px-3 py-2 border border-transparent hover:border-primary/30 hover:bg-primary/5 rounded-full transition-all duration-300 shiny-card btn-pop"

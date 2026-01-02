@@ -1,4 +1,5 @@
 import React from 'react'
+import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Metadata } from 'next'
@@ -34,9 +35,9 @@ export async function generateStaticParams(): Promise<
 export default async function TutorialsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; level?: string; search?: string; page?: string }>
+  searchParams?: Promise<{ category?: string; level?: string; search?: string; page?: string }>
 }) {
-  const paramsData = await searchParams
+  const paramsData = searchParams ? await searchParams : {}
   const payload = await getPayload({ config: configPromise })
   const currentPage = Number(paramsData?.page) || 1
 
@@ -77,9 +78,7 @@ export default async function TutorialsPage({
   if (currentPage > payloadTotalPages && payloadTotalPages > 0) {
     const searchParamsObj = new URLSearchParams(paramsData as any)
     searchParamsObj.set('page', '1')
-    return Response.redirect(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/tutorials?${searchParamsObj.toString()}`,
-    )
+    redirect(`${process.env.NEXT_PUBLIC_SERVER_URL}/tutorials?${searchParamsObj.toString()}`)
   }
 
   const categories = [

@@ -35,9 +35,7 @@ export default async function FullStackPage() {
   return (
     <div className="min-h-screen animate-fadeIn">
       {/* Hero Section */}
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       {/* Frontend Technologies Section */}
       <Suspense fallback={<TechnologySkeleton />}>

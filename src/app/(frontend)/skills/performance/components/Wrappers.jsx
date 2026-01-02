@@ -21,7 +21,7 @@ import CTASection from './CTASection'
 export function HeroSectionWrapper() {
   return (
     <Suspense fallback={<HeroSkeleton />}>
-      <HeroSection priority={true} />
+      {/* <HeroSection priority={true} /> */}
     </Suspense>
   )
 }

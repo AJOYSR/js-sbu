@@ -50,9 +50,7 @@ export default async function MachineLearningPage() {
   return (
     <div className="min-h-screen animate-fadeIn">
       {/* Hero Section */}
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       {/* ML Technologies Section */}
       <Suspense fallback={<MLTechnologiesSkeleton />}>

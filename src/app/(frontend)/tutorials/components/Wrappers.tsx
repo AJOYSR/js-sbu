@@ -42,7 +42,7 @@ export function HeroSectionWrapper() {
     preloadComponents()
   }, [])
 
-  return <HeroSection />
+  return <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 }
 
 interface TutorialsClientWrapperProps {

@@ -33,9 +33,7 @@ export default async function UIUXResearchPage() {
   return (
     <div className="min-h-screen animate-fadeIn">
       {/* Hero Section */}
-      <Suspense fallback={<HeroSkeleton />}>
-        <HeroSection />
-      </Suspense>
+      <Suspense fallback={<HeroSkeleton />}>{/* <HeroSection /> */}</Suspense>
 
       {/* Research Methodologies Section */}
       <Suspense fallback={<ResearchMethodologiesSkeleton />}>

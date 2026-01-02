@@ -20,7 +20,7 @@ const getImageUrl = (media: Media | number | null | undefined): string => {
 
 const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects }) => {
   return (
-    <section className="py-10 bg-gradient-to-b from-card/30 to-background relative overflow-hidden">
+    <section className="py-16 bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-slate-100 transition-colors duration-300 relative overflow-hidden">
       <FloatingElement
         className="bg-primary/5 left-1/4 -top-32"
         size="lg"
@@ -44,8 +44,12 @@ const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects &&
             projects.map((project, index) => (
-              <AnimatedCard key={project.slug} delay={index + 1} className="relative">
-                <Link href={`/portfolio/${project.slug}`} className="block h-full">
+              <AnimatedCard
+                key={project.slug}
+                delay={index + 1}
+                className="relative bg-white dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800 transition-colors duration-300 shadow-lg shadow-black/5 dark:shadow-black/20"
+              >
+                <Link href={`/portfolio/${project.slug}`} className="block h-full group">
                   <div className="relative h-56 overflow-hidden">
                     <Image
                       src={getImageUrl(project.image)}
@@ -53,8 +57,8 @@ const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects }) => {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/25 opacity-100 transition-opacity duration-300" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-black/25 dark:bg-black/25 opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent opacity-100 transition-opacity duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 p-6">
                       <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary/90 transition-colors duration-300 drop-shadow-[0_2px_3px_rgba(0,0,0,0.9)]">
                         {project.title}
@@ -64,7 +68,7 @@ const PortfolioSection: React.FC<PortfolioSectionProps> = ({ projects }) => {
                       </p>
                     </div>
                   </div>
-                  <div className="p-6 bg-card/50 backdrop-blur-sm border-t border-white/10">
+                  <div className="p-6 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-neutral-700 transition-colors duration-300">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-primary group/link">
                         <span className="font-medium">View Case Study</span>
